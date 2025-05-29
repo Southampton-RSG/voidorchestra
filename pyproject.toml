@@ -1,0 +1,55 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "voidorchestra"
+version = "0.1.0"
+description = "Creates QPO sonifications, and syncs them to the Zooniverse."
+requires-python = ">=3.12"
+readme = "README.md"
+dependencies = [
+    "astropy>=7.0.1",
+    "black>=25.1.0",
+    "click>=8.1.8",
+    "mind-the-gaps>=0.5.0",
+    "moviepy>=2.1.2",
+    "panoptes-client>=1.7.0",
+    "sqlalchemy-utils>=0.41.2",
+    "sqlalchemy>=2.0.40",
+    "strauss>=1.0.1",
+]
+
+[project.optional-dependencies]
+notebooks = [
+    "ipywidgets>=8.1.5",
+    "jupyter>=1.1.1",
+]
+docs = [
+    "sphinx>=8.2.3",
+]
+
+[dependency-groups]
+dev = [
+    "black>=25.1.0",
+    "pylint>=3.3.6",
+    "tqdm>=4.67.1",
+]
+
+[project.scripts]
+void-orchestra = "voidorchestra.console.cli:cli"
+
+[tool.black]
+line-length = 120
+target-version = ["py310"]
+
+[tool.isort]
+profile = "black"
+
+[tool.pylint.design]
+max-attributes = 15
+max-locals = 20
+
+[tool.pylint.format]
+max-line-length = 120
+good-names = ["ax", "im", "i", "j", "k"]
