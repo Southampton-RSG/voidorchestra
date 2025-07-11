@@ -3,11 +3,7 @@
 """
 Defines the database object for Zooniverse subject classifications.
 """
-from sqlalchemy import Integer
-from sqlalchemy import String
-from sqlalchemy import Column
-from sqlalchemy import ForeignKey
-
+from sqlalchemy import Column, ForeignKey, Integer
 from sqlalchemy.orm import relationship
 
 from voidorchestra.db import Base

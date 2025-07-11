@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-This module contains sub-commands for `molegazer clear`.
+This module contains sub-commands for `voidorchestra clear`.
 
 These are (mostly) development commands designed to clear the DB of content to easily test re-generation
 """
@@ -15,7 +15,8 @@ from sqlalchemy.orm import Session
 import voidorchestra.db
 from voidorchestra import config
 import voidorchestra.log
-from voidorchestra.db import Sonification
+from voidorchestra.db import Sonification, SonificationMethodSoundfont, SonificationProfile
+
 
 logger: logging.Logger = voidorchestra.log.get_logger(__name__.replace(".", "-"))
 
@@ -60,11 +61,12 @@ def clear_sonifications(ctx: dict, hard: bool = False) -> None:
             num_sonifications_deleted: int = 0
 
             for sonification in sonifications:
-                if sonification.filepath_audio and (directory_output / sonification.filepath_audio).exists():
-                    # These catches allow for the possibility that the upload process was broken and created file-less images
-
-                    (directory_output / sonification.filepath_audio).unlink()
-                    (directory_output / sonification.filepath_video).unlink()
+                if sonification.path_audio and (path_audio := Path(sonification.path_audio)).is_file():
+                    path_audio.unlink()
+                if sonification.path_video and (path_video := Path(sonification.path_video)).is_file():
+                    path_video.unlink()
+                if sonification.path_image and (path_image := Path(sonification.path_image)).is_file():
+                    path_image.unlink()
 
                 num_sonifications_deleted += 1
                 logger.debug(
@@ -89,3 +91,53 @@ def clear_sonifications(ctx: dict, hard: bool = False) -> None:
         click.echo(
             f"Deleted {num_sonifications_deleted} sonification files not in database"
         )
+
+
+@clear.command(
+    name="soundfonts",
+    help="Clears added soundfonts from the database."
+)
+@click.pass_context
+def clear_soundfonts(ctx: dict) -> None:
+    """
+    Clear soundfonts that have been imported.
+    """
+    try:
+        with Session(
+            engine := voidorchestra.db.connect_to_database_engine(config["PATHS"]["database"])
+        ) as session:
+            soundfonts: List[SonificationMethodSoundfont] = session.query(SonificationMethodSoundfont).all()
+            for soundfont in soundfonts:
+                session.delete(soundfont)
+                session.commit()
+
+            if ctx.obj["VERBOSE"] or ctx.obj["DEBUG"]:
+                click.echo(f"Cleared {len(soundfonts)} soundfonts from database")
+
+    except Exception as e:
+        click.echo(f"Could not connect to database: {e}")
+
+
+@clear.command(
+    name="profiles",
+    help="Clears added sonification profiles from the database."
+)
+@click.pass_context
+def clear_sonification_profiles(ctx: dict) -> None:
+    """
+    Clear sonification profiles that have been imported.
+    """
+    try:
+        with Session(
+            engine := voidorchestra.db.connect_to_database_engine(config["PATHS"]["database"])
+        ) as session:
+            sonification_profiles: List[SonificationProfile] = session.query(SonificationProfile).all()
+            for sonification_profile in sonification_profiles:
+                session.delete(sonification_profile)
+                session.commit()
+
+            if ctx.obj["VERBOSE"] or ctx.obj["DEBUG"]:
+                click.echo(f"Cleared {len(sonification_profiles)} sonification profiles from database")
+
+    except Exception as e:
+        click.echo(f"Could not connect to database: {e}")

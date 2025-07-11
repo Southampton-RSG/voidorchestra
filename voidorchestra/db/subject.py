@@ -7,11 +7,7 @@ These are used to query the subjects which have been uploaded to the Zooniverse.
 Can be used to filter subjects which are part of a certain subject set, workflow
 or project.
 """
-from sqlalchemy import Column
-from sqlalchemy import Integer
-from sqlalchemy import Boolean
-from sqlalchemy import ForeignKey
-
+from sqlalchemy import Boolean, Column, ForeignKey, Integer
 from sqlalchemy.orm import relationship
 
 from voidorchestra.db import Base
@@ -41,22 +37,22 @@ class Subject(Base):  # pylint: disable=too-few-public-methods
     zooniverse_subject_set_id: integer
         The Zooniverse ID of the subject set this is a subject of.
 
-    classification: relationship
-        A relationship link to the classification.
+    classifications: relationship
+        A relationship link to the classifications of this subject.
     subject_set: relationship
         A relationship link to the subject set.
     sonification: relationship
         A relationship link to the sonification.
     """
-    __tablename__ = "subject"
+    __tablename__: str = "subject"
 
-    subject_id = Column("id", Integer, primary_key=True, autoincrement=True)
+    subject_id = Column("subject_id", Integer, primary_key=True, autoincrement=True)
 
     sonification_id = Column("sonification_id", Integer, ForeignKey("sonification.sonification_id"))
-    sonification = relationship("Sonification", back_populates="subject")
+    sonification = relationship("Sonification", back_populates="subject", uselist=False)
 
     subject_set_id = Column("subject_set_id", Integer, ForeignKey("subject_set.subject_set_id"))
-    subject_set = relationship("SubjectSet", back_populates="subject")
+    subject_set = relationship("SubjectSet", back_populates="subjects")
 
     classifications = relationship("Classification", back_populates="subject")
 

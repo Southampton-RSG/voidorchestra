@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 # Panoptes client https://panoptes-python-client.readthedocs.io/en/latest/
-
 """
 The subject sets module contains functions which are used to manage subject
 sets on Zooniverse. It does not contain any functionality for the active
 learning "priority" subject sets.
 """
-
 from __future__ import annotations
 
 from panoptes_client import Project
@@ -18,7 +16,8 @@ from panoptes_client import SubjectSet
 
 
 def __create_new_subject_set(project: Project, subject_set_name: str) -> SubjectSet:
-    """Create a new subject set on Zooniverse.
+    """
+    Create a new subject set on Zooniverse.
 
     Creates a new SubjectSet with the name :code:`subject_set_name` and is
     linked to the project :code:`project`.

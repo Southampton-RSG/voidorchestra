@@ -7,15 +7,14 @@ The Zooniverse module contains functions to connect to Zooniverse and modify
 the very top level objects, such as projects.
 """
 from __future__ import annotations
+
 from logging import Logger
 
-from panoptes_client import Panoptes
-from panoptes_client import Project
+from panoptes_client import Panoptes, Project
 from panoptes_client.panoptes import PanoptesAPIException
 
 import voidorchestra.log
 from voidorchestra import config
-
 
 logger: Logger = voidorchestra.log.get_logger(__name__.replace(".", "-"))
 

@@ -12,12 +12,19 @@ dependencies = [
     "astropy>=7.0.1",
     "black>=25.1.0",
     "click>=8.1.8",
-    "mind-the-gaps>=0.5.0",
+    "kaleido>=1.0.0",
+    "mind-the-gaps",
     "moviepy>=2.1.2",
+    "numba>=0.61.2",
+    "pandas>=2.2.3",
     "panoptes-client>=1.7.0",
+    "plotly>=6.2.0",
+    "pydantic>=2.11.7",
+    "ruff>=0.11.13",
     "sqlalchemy-utils>=0.41.2",
     "sqlalchemy>=2.0.40",
     "strauss>=1.0.1",
+    "watchdog>=6.0.0",
 ]
 
 [project.optional-dependencies]
@@ -39,17 +46,20 @@ dev = [
 [project.scripts]
 void-orchestra = "voidorchestra.console.cli:cli"
 
-[tool.black]
-line-length = 120
-target-version = ["py310"]
+[tool.ruff]
+line-length = 150
 
-[tool.isort]
-profile = "black"
+[tool.ruff.lint]
+extend-select = ["I"]
 
-[tool.pylint.design]
-max-attributes = 15
-max-locals = 20
+[tool.ruff.lint.isort]
+combine-as-imports = true
+default-section = "third-party"
+known-first-party = ["python_template"]
+section-order = ["future", "standard-library", "third-party", "first-party", "local-folder"]
 
-[tool.pylint.format]
-max-line-length = 120
-good-names = ["ax", "im", "i", "j", "k"]
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]
+
+[tool.uv.sources]
+mind-the-gaps = { git = "https://github.com/andresgur/mind_the_gaps" }

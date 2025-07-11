@@ -1,0 +1,14 @@
+sonification_method_id,name,description, filepath,preset,preset_modification,continuous
+0,Guitars,"Acoustic guitar, plucked.",guitars.sf2,16,,False
+1,"Flute, Long",Regular flute noise.,flute.sf2,,"{
+    'note_length': 0.15,
+    'volume_envelope': {
+        'use': 'on',
+        'A': 0.01,
+        'D': 0.0,
+        'S': 1.,
+        'R': 0.07,
+    }
+}",False
+2,"Flute, Staccato",Staccato flute noises.,flute.sf2,staccato,,False
+3,Piano,Standard piano.,piano.sf2,1,,False

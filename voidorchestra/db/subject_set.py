@@ -5,13 +5,13 @@ Defines the database object for Zooniverse subject sets.
 
 These are used to store the active subject sets in a project and workflow.
 """
-from sqlalchemy import Column, String, ForeignKey, Integer
-from sqlalchemy.orm import validates, relationship, backref
+from sqlalchemy import Column, ForeignKey, Integer, String
+from sqlalchemy.orm import relationship
 
 from voidorchestra.db import Base
 
 
-class SubjectSet(Base):  # pylint: disable=too-few-public-methods
+class SubjectSet(Base):
     """
     ORM class for subject sets.
 
@@ -33,7 +33,7 @@ class SubjectSet(Base):  # pylint: disable=too-few-public-methods
     sonification_profile: relationship
         The sonification profile used to generate the subjects in this set.
     """
-    __tablename__ = "subject_set"
+    __tablename__: str = "subject_set"
 
     subject_set_id = Column("subject_set_id", Integer, primary_key=True, autoincrement=True)
     subjects = relationship("Subject", back_populates="subject_set")
@@ -43,8 +43,8 @@ class SubjectSet(Base):  # pylint: disable=too-few-public-methods
 
     display_name = Column("display_name", String(256))
 
-    sonification_method_id = Column(
+    sonification_profile_id = Column(
         "sonification_profile_id", Integer,
         ForeignKey("sonification_profile.sonification_profile_id")
     )
-    sonification_method = relationship("Sonification", back_populates="subject_set")
+    sonification_profile = relationship("SonificationProfile", back_populates="subject_sets")

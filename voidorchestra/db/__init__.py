@@ -1,41 +1,39 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
-
 """
-The MoleDB package contains the models used to define the MoleGazer database
-used in MoleGazer and in MoleMarshal.
-
-In addition to containing the ORM models, functions are also included which
-create, open and manage the MoleGazer database.
+The Void Orchestra package contains ORM items based off of those in MoleGazer,
+which allow creating sonifications of synthetic data and synchronising them to Zooniverse.
 """
-
-import pathlib
+from pathlib import Path
 from typing import Optional
 
 from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine
-from sqlalchemy.orm import Session
-from sqlalchemy.orm import declarative_base
+from sqlalchemy.orm import DeclarativeBase, Session, declarative_base
 
-Base = declarative_base()
+Base: DeclarativeBase = declarative_base()
 
-ENGINE = None
+ENGINE: Engine|None = None
 
 # Public functions -------------------------------------------------------------
-# pylint: disable=wrong-import-position
-from voidorchestra.db.classification import Classification
-from voidorchestra.db.subject import Subject
-from voidorchestra.db.subject_set import SubjectSet
-from voidorchestra.db.sonification import Sonification, SonificationSynthetic
-from voidorchestra.db.sonification_profile import SonificationProfile
-from voidorchestra.db.sonification_method import SonificationMethod, SonificationMethodSoundfont
+from voidorchestra.db.classification import Classification  # noqa: E402
+from voidorchestra.db.lightcurve import Lightcurve  # noqa: E402
+from voidorchestra.db.lightcurve.synthetic import LightcurveSynthetic, LightcurveSyntheticRegular  # noqa: E402
+from voidorchestra.db.qpo_model import QPOModel, QPOModelBPL, QPOModelComposite, QPOModelLorentzian, QPOModelSHO  # noqa: E402
+from voidorchestra.db.sonification import Sonification  # noqa: E402
+from voidorchestra.db.sonification_method import SonificationMethod  # noqa: E402
+from voidorchestra.db.sonification_method.soundfont import SonificationMethodSoundfont  # noqa: E402
+from voidorchestra.db.sonification_method.synthesizer import SonificationMethodSynthesizer  # noqa: E402
+from voidorchestra.db.sonification_profile import SonificationProfile  # noqa: E402
+from voidorchestra.db.subject import Subject  # noqa: E402
+from voidorchestra.db.subject_set import SubjectSet  # noqa: E402
 
 
 def create_database_tables(engine: Engine) -> None:
     """
     Create the database tables.
 
-    Creates all of the (or the missing) database tables. These tables are
+    Creates all the (or the missing) database tables. These tables are
     defined in each ORM class in the :code:`__tablename__` variable.
 
     Parameters
@@ -60,7 +58,7 @@ def create_new_database(location: Optional[str]) -> Engine:
     engine: sqlalchemy.Engine
         the database Engine object.
     """
-    path = pathlib.Path(location)
+    path: Path = Path(location)
 
     if path.suffix != ".db":
         location = str(path.with_suffix(".db"))
@@ -95,9 +93,9 @@ def connect_to_database_engine(location: str) -> Engine:
     if ENGINE:
         return ENGINE
 
-    path = pathlib.Path(location)
+    path: Path  = Path(location)
 
-    if path.exists() is False:
+    if not path.exists():
         raise OSError(f"Unable to open {location} as it doesn't exist")
 
     ENGINE = create_engine(f"sqlite+pysqlite:///{location}")

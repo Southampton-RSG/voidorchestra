@@ -62,4 +62,5 @@ def assign_workflow_to_subject_set(workflow: Workflow, subject_set: SubjectSet) 
         workflow.save()
     except PanoptesAPIException:
         logger.debug("Subject set %d is already linked to workflow %d", subject_set.id, workflow.id)
+
     logger.debug("Subject set %s added to workflow %s", subject_set.id, workflow.id)

@@ -19,12 +19,14 @@ import voidorchestra.zooniverse.zooniverse
 
 @click.group()
 def check():
-    """Check info about MoleMarshal and Zooniverse"""
+    """
+    Check info about Void Orchestra and Zooniverse
+    """
 
 
 @check.command(name="version")
 def print_version() -> None:
-    """Print the MoleMarshal package version"""
+    """Print the Void Orchestra package version"""
     click.echo(f"{voidorchestra.__version__}")
 
 
@@ -39,7 +41,11 @@ def print_version() -> None:
     help="The ID of the workflow to check statistics for",
 )
 def workflow_stats(workflow_id: str) -> None:
-    """Print workflow statistics"""
+    """
+    Print workflow statistics
+
+    :param workflow_id: The ID of the workflow to check statistics for.
+    """
     voidorchestra.zooniverse.zooniverse.connect_to_zooniverse()
 
     try:
@@ -70,8 +76,14 @@ def workflow_stats(workflow_id: str) -> None:
     help="The ID of the project to check statistics for",
 )
 def project_stats(project_id: str) -> None:
-    """Print project information"""
+    """
+    Print project information
+
+    :param project_id: The ID of the project to check statistics for.
+    """
     voidorchestra.zooniverse.zooniverse.connect_to_zooniverse()
+    if not project_id:
+        project_id = voidorchestra.config['ZOONIVERSE']['project_id']
 
     try:
         project = Project.find(project_id)

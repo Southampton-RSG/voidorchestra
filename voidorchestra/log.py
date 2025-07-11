@@ -1,24 +1,22 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 """
 The logger module contains the functions required to initialise a new or
 retrieve an already existing logger, and to set the loggers across the entire
-Zooniverse Orchestrator package.
+Void Orchestra package.
 """
-
-from logging import getLogger, Logger, DEBUG, INFO, Formatter, StreamHandler, WARNING
+from logging import INFO, WARNING, Formatter, Logger, StreamHandler, getLogger
 from pkgutil import iter_modules
 from types import ModuleType
 from typing import List
 
 import voidorchestra
+import voidorchestra.process
+import voidorchestra.process.sonification
 import voidorchestra.zooniverse
 
+
 # Classes ----------------------------------------------------------------------
-
-
-# pylint: disable=invalid-name
 class __VariableFormatter(Formatter):
     """
     Enable variable formatting depending on the logging level number.
@@ -26,7 +24,6 @@ class __VariableFormatter(Formatter):
     For INFO logs, only the message is printed. For any other level of logging,
     more verbose log output is used.
     """
-
     def format(self, record):
         if record.levelno == INFO:
             formatter: Formatter = Formatter("%(message)s")
@@ -39,8 +36,6 @@ class __VariableFormatter(Formatter):
 
 
 # Private functions ------------------------------------------------------------
-
-
 def __list_module_names_in_packages(
         packages: List[ModuleType]
 ) -> List[str]:
@@ -69,8 +64,6 @@ def __list_module_names_in_packages(
 
 
 # Public functions -------------------------------------------------------------
-
-
 def get_logger(
         logger_name: str
 ) -> Logger:
@@ -114,11 +107,13 @@ def set_logger_levels(level: int) -> None:
     level: int
         The logging level to set. Usually something like logging.WARNING, etc.
     """
-    module_names = __list_module_names_in_packages(
-        (
+    module_names: List[str] = __list_module_names_in_packages(
+        [
             voidorchestra,
+            voidorchestra.process,
+            voidorchestra.process.sonification,
             voidorchestra.zooniverse,
-        )
+        ]
     )
 
     for module in module_names:

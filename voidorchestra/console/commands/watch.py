@@ -12,8 +12,7 @@ import click
 import watchdog.observers
 import watchdog.events
 
-from molegazer import config
-from molegazer.process.images import upload_images
+from voidorchestra import config
 
 
 @click.group()

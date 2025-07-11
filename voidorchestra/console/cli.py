@@ -4,23 +4,22 @@
 """
 Entry point for the `void-orchestra` command.
 """
-import click
+
 from logging import DEBUG, INFO
 
-from voidorchestra.console.commands.check import check
-from voidorchestra.console.commands.sync import sync
-from voidorchestra.console.commands.upload import upload
-from voidorchestra.console.commands.admin import admin
-from voidorchestra.console.commands.init import init
-
-from voidorchestra.console.commands.upload import upload
-from voidorchestra.console.commands.clear import clear
-from voidorchestra.console.commands.create import create
-from voidorchestra.console.commands.watch import watch
-from voidorchestra.console.commands.remove import remove
-from voidorchestra.console.commands.scan import scan
+import click
 
 from voidorchestra import log
+from voidorchestra.console.commands.add import add
+from voidorchestra.console.commands.admin import admin
+from voidorchestra.console.commands.check import check
+from voidorchestra.console.commands.clear import clear
+from voidorchestra.console.commands.create import create
+from voidorchestra.console.commands.init import init
+from voidorchestra.console.commands.remove import remove
+from voidorchestra.console.commands.sync import sync
+from voidorchestra.console.commands.upload import upload
+from voidorchestra.console.commands.watch import watch
 
 
 @click.group()
@@ -60,12 +59,12 @@ def cli(
 
 cli.add_command(init)
 
+cli.add_command(add)
 cli.add_command(upload)
 cli.add_command(clear)
 cli.add_command(create)
 cli.add_command(watch)
 cli.add_command(remove)
-cli.add_command(scan)
 
 cli.add_command(admin)
 cli.add_command(sync)

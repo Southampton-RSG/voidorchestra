@@ -42,7 +42,8 @@ def add_subjects_to_subject_database(
     new_subjects: List[Subject],
     commit_frequency: int = 1000,
 ) -> None:
-    """Add subjects to the subjects database.
+    """
+    Add subjects to the subjects database.
 
     To add a subject, its metadata is checked against the stamps table to ensure
     that there is a corresponding stamp and to ensure that the metadata is
@@ -101,7 +102,9 @@ def add_subjects_to_subject_database(
         # check if it exists, and merge if we do. first() is fine here because
         # stamp_id is part of the composite primary key of the subjects table,
         # so there should only be one returned anyway
-        subject_exists = bool(session.query(voidorchestra.db.Subject).filter(voidorchestra.db.Subject.sonification_id == sonification.sonification_id).first())
+        subject_exists = bool(
+            session.query(voidorchestra.db.Subject).filter(voidorchestra.db.Subject.sonification_id == sonification.sonification_id).first()
+        )
 
         if subject_exists:
             session.merge(subject_entry)
@@ -141,13 +144,14 @@ def add_subjects_to_subject_set(
     workflow_id: str | int,
     commit_frequency: int | None = 250,
 ) -> SubjectSet:
-    """Update a subject set with more subjects.
+    """
+    Update a subject set with more subjects.
 
     This has been designed to work with just URL manifests, therefore you cannot
     add subjects which are not URLS such as raw images.
 
-    The default behavior is to add all stamps in the stamps database to the
-    subject set. If this is not desired, then you can pass `stamp_subset` which
+    The default behavior is to add all sonifications in the sonification database to the
+    subject set. If this is not desired, then you can pass `` which
     is either a file path to a directory or to a file containing stamps. Then
     only this subset of stamps will be uploaded. Note that the stamp subset also
     have to be in the stamp database.
@@ -182,7 +186,8 @@ def add_subjects_to_subject_set(
         raise ValueError(f"Unable to find a subject set with id {subject_set_id}") from exception
 
     with Session(
-        engine := voidorchestra.db.connect_to_database_engine(voidorchestra.config["PATHS"]["database"]), info={"url": engine.url}
+        engine := voidorchestra.db.connect_to_database_engine(voidorchestra.config["PATHS"]["database"]),
+        info={"url": engine.url}
     ) as session:
         names_of_subjects_in_set = [
             subject.stamp.stamp_name
@@ -290,7 +295,8 @@ def upload_to_subject_set(
     # stamp_subset: str | Path | None = None,
     commit_frequency: int = 250,
 ) -> None:
-    """Modify a subject set with new subjects.
+    """
+    Modify a subject set with new subjects.
 
     This is a top level steering function which handles opening the project,
     creating/getting a subject set, updating the subject set with subjects

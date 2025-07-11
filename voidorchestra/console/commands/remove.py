@@ -5,21 +5,20 @@ This module contains sub-commands for `molegazer remove`.
 
 These are (mostly) development commands designed to remove the DB
 """
-from typing import List
+from logging import Logger
 from pathlib import Path
+from typing import List
 
 import click
 from sqlalchemy.orm import Session
 
+import voidorchestra.log
 import voidorchestra.db
-from voidorchestra.db.image import Image
-from voidorchestra.db.stamp import Stamp
-from voidorchestra.db.mole import Mole
-from molegazer import config
-import molegazer.log
+from voidorchestra import config_paths
+from voidorchestra.db.sonification import Sonification
 
 
-logger = molegazer.log.get_logger(__name__.replace(".", "-"))
+logger: Logger = voidorchestra.log.get_logger(__name__.replace(".", "-"))
 
 
 @click.group()
@@ -37,7 +36,7 @@ def remove_database(ctx: dict) -> None:
     Deletes the database
     """
 
-    database_path: Path = Path(config["PATHS"]["database"])
+    database_path: Path = Path(config_paths["database"])
 
     if database_path.exists():
         database_path.unlink()

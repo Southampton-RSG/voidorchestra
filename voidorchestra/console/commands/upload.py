@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-"""This module contains sub-commands for `molemarshal upload`.
+"""
+This module contains sub-commands for `voidorchestra upload`.
 
 The commands should be used to upload new things, such as subjects or subject
 sets, to the Zooniverse project.
@@ -10,14 +11,15 @@ sets, to the Zooniverse project.
 import click
 
 import voidorchestra
-import voidorchestra.zooniverse.zooniverse
 import voidorchestra.zooniverse.subjects
-
+import voidorchestra.zooniverse.zooniverse
 
 
 @click.group()
 def upload():
-    """Upload new things and changes to Zooniverse"""
+    """
+    Upload new things and changes to Zooniverse
+    """
 
 
 @upload.command(name="subjects")
@@ -46,22 +48,19 @@ def upload():
     show_default=True,
     help="The Zooniverse ID for the subject set to upload to",
 )
-@click.option("-name", "--subject_set_name", type=str, default=None, help="The name of the subject set upload to")
-# @click.option(
-#     "-s",
-#     "--stamp-subset",
-#     type=str,
-#     default=None,
-#     help="Upload a subset of stamps: either a directory or a file containing stamps",
-# )
-# pylint: disable=too-many-arguments
-def upload_new_stamps(
+@click.option(
+    "-name",
+    "--subject_set_name",
+    type=str,
+    default=None,
+    help="The name of the subject set upload to"
+)
+def upload_new_sonifications(
     ctx: dict,
     project: int,
     workflow: int,
     subject_set: int,
     subject_set_name: str,
-    # stamp_subset: str,
 ) -> None:
     """
     Add and upload stamps to MoleMarshal and Zooniverse
@@ -83,6 +82,5 @@ def upload_new_stamps(
         workflow,
         subject_set,
         subject_set_name,
-        # stamp_subset,
         ctx.obj["COMMIT_FREQUENCY"],
     )
