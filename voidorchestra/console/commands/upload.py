@@ -77,7 +77,7 @@ def upload_new_sonifications(
     subject set and upload to it.
     """
     voidorchestra.zooniverse.zooniverse.connect_to_zooniverse()
-    voidorchestra.zooniverse.subjects.upload_to_subject_set(
+    voidorchestra.zooniverse.subjects.upload_to_panoptes_subject_set(
         project,
         workflow,
         subject_set,

@@ -3,10 +3,10 @@
 """
 Defines the sonifications used.
 """
-from uuid import uuid4
 from pathlib import Path
+from uuid import uuid4
 
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
+from sqlalchemy import Boolean, Float, ForeignKey, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from voidorchestra import config_paths
@@ -25,7 +25,7 @@ class Sonification(Base):  # pylint: disable=too-few-public-methods
 
     Attributes
     ----------
-    sonification_id: integer
+    id: integer
         A unique ID for the sonification.
     uuid: string
         The UUID for the sonification files & URL.
@@ -38,9 +38,9 @@ class Sonification(Base):  # pylint: disable=too-few-public-methods
     """
     __tablename__: str = "sonification"
 
-    sonification_id: Mapped[int] = mapped_column(primary_key=True)
+    id: Mapped[int] = mapped_column(primary_key=True)
     sonification_profile_id: Mapped[int] = mapped_column(
-        ForeignKey("sonification_profile.sonification_profile_id"), nullable=False,
+        ForeignKey("sonification_profile.id"), nullable=False,
     )
 
     lightcurve_id: Mapped[int] = mapped_column(
@@ -54,12 +54,14 @@ class Sonification(Base):  # pylint: disable=too-few-public-methods
     processed: Mapped[bool] = mapped_column(Boolean(), default=False)
     figure: Mapped[bool] = mapped_column(Boolean(), default=True)
 
+    confidence: Mapped[float] = mapped_column(Float(), nullable=True)
+
     subject: Mapped[Subject] = relationship(back_populates="sonification", uselist=False)
     lightcurve: Mapped[Lightcurve] = relationship(back_populates="sonifications")
     sonification_profile: Mapped[SonificationProfile] = relationship(back_populates="sonifications")
 
     def __repr__(self) -> str:
-        return f"Sonification(id={self.sonification_id!r})"
+        return f"Sonification(id={self.id!r})"
 
 
 def create_sonification(
@@ -84,7 +86,7 @@ def create_sonification(
         The sonification, with derived columns like UUID filled in.
     """
     sonification_uuid: str = str(uuid4())
-    path_root: Path = config_paths["output"] / f"{sonification_uuid}-lightcurve-{lightcurve.lightcurve_id}-profile-{sonification_profile.sonification_profile_id}"
+    path_root: Path = config_paths["output"] / f"{sonification_uuid}-lightcurve-{lightcurve.id}-profile-{sonification_profile.id}"
 
     sonification: Sonification = Sonification(
         lightcurve=lightcurve,

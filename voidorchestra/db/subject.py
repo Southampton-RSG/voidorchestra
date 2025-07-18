@@ -46,16 +46,17 @@ class Subject(Base):  # pylint: disable=too-few-public-methods
     """
     __tablename__: str = "subject"
 
-    subject_id = Column("subject_id", Integer, primary_key=True, autoincrement=True)
+    id = Column("id", Integer, primary_key=True, autoincrement=True)
 
-    sonification_id = Column("sonification_id", Integer, ForeignKey("sonification.sonification_id"))
+    sonification_id = Column("sonification_id", Integer, ForeignKey("sonification.id"))
     sonification = relationship("Sonification", back_populates="subject", uselist=False)
 
-    subject_set_id = Column("subject_set_id", Integer, ForeignKey("subject_set.subject_set_id"))
+    subject_set_id = Column("subject_set_id", Integer, ForeignKey("subject_set.id"))
     subject_set = relationship("SubjectSet", back_populates="subjects")
 
     classifications = relationship("Classification", back_populates="subject")
 
+    zooniverse_project_id = Column("zooniverse_project_id", Integer)
     zooniverse_subject_id = Column("zooniverse_subject_id", Integer)
     zooniverse_subject_set_id = Column("zooniverse_subject_set_id", Integer)
     zooniverse_workflow_id = Column("zooniverse_workflow_id", Integer)
@@ -64,7 +65,7 @@ class Subject(Base):  # pylint: disable=too-few-public-methods
 
     def __repr__(self) -> str:
         string = "Subject("
-        string += f"subject_id={self.subject_id!r} "
+        string += f"subject_id={self.id!r} "
         string += f"subject_set_id={self.subject_set_id!r} "
         string += f"sonification_id={self.sonification_id!r}"
         string += ")"

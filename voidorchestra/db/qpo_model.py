@@ -25,7 +25,7 @@ class QPOModel(Base):  # pylint: disable=too-few-public-methods
 
     Attributes
     ----------
-    qpo_model_id: integer
+    id: integer
         A unique ID for the QPO model.
     qpo_model_parent_id: integer
         The parent, if any, of this model component.
@@ -49,8 +49,8 @@ class QPOModel(Base):  # pylint: disable=too-few-public-methods
         "polymorphic_on": "polymorphic_type",
     }
 
-    qpo_model_id: Mapped[int] = mapped_column(primary_key=True)
-    qpo_model_parent_id: Mapped[int] = mapped_column(ForeignKey("qpo_model.qpo_model_id"))
+    id: Mapped[int] = mapped_column(primary_key=True)
+    qpo_model_parent_id: Mapped[int] = mapped_column(ForeignKey("qpo_model.id"))
     name: Mapped[str] = mapped_column(String(32))
     polymorphic_type: Mapped[str] = mapped_column(String(32), unique=True, nullable=False)
     model: Mapped[str] = mapped_column(String(32))
@@ -61,12 +61,12 @@ class QPOModel(Base):  # pylint: disable=too-few-public-methods
 
     qpo_model_parent: Mapped['QPOModel'] = relationship(
         remote_side=qpo_model_parent_id, uselist=False,
-        backref=backref("qpo_model_children", remote_side=qpo_model_id, uselist=True)
+        backref=backref("qpo_model_children", remote_side=id, uselist=True)
     )
     lightcurves: List[Mapped[LightcurveSynthetic]] = relationship(back_populates="qpo_model")
 
     def __repr__(self) -> str:
-        return f"{type(self).__name__}(id={self.qpo_model_id})"
+        return f"{type(self).__name__}(id={self.id!r})"
 
     def get_model_for_mean_rate(
             self,
@@ -143,14 +143,15 @@ class QPOModelComposite(QPOModel):
 
         Returns
         -------
-        A Mind the Gaps model.
+        model: Model
+            A Mind the Gaps model.
         """
-        qpo_model: QPOModel = self.qpo_model_children[0].get_model_for_mean_rate(rate_mean)
+        model: Model = self.qpo_model_children[0].get_model_for_mean_rate(rate_mean)
 
-        for qpo_model_add in self.qpo_model_children[1:]:
-            qpo_model_add += qpo_model.get_model_for_mean_rate(rate_mean)
+        for qpo_model in self.qpo_model_children[1:]:
+            model += qpo_model.get_model_for_mean_rate(rate_mean)
 
-        return qpo_model
+        return model
 
 
 class QPOModelSHO(QPOModel):

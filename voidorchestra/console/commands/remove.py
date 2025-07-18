@@ -7,16 +7,11 @@ These are (mostly) development commands designed to remove the DB
 """
 from logging import Logger
 from pathlib import Path
-from typing import List
 
 import click
-from sqlalchemy.orm import Session
 
 import voidorchestra.log
-import voidorchestra.db
 from voidorchestra import config_paths
-from voidorchestra.db.sonification import Sonification
-
 
 logger: Logger = voidorchestra.log.get_logger(__name__.replace(".", "-"))
 

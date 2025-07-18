@@ -20,7 +20,7 @@ class SubjectSet(Base):
 
     Attributes
     ----------
-    subject_set_id: integer
+    id: integer
         Primary key.
     zooniverse_subject_set_id: integer
         The Zooniverse ID for the subject set, indexed.
@@ -30,21 +30,26 @@ class SubjectSet(Base):
         The display name of the subject set on the Zooniverse.
     subjects: relationship
         The subjects associated with the subject set.
+    sonification_profile_id: integer
+        The foreign key for the sonification profile used to generate the subjects in this set.
     sonification_profile: relationship
         The sonification profile used to generate the subjects in this set.
     """
     __tablename__: str = "subject_set"
 
-    subject_set_id = Column("subject_set_id", Integer, primary_key=True, autoincrement=True)
+    id = Column("id", Integer, primary_key=True, autoincrement=True)
+
     subjects = relationship("Subject", back_populates="subject_set")
 
     zooniverse_subject_set_id = Column("zooniverse_subject_set_id", Integer, index=True)
     zooniverse_workflow_id = Column("zooniverse_workflow_id", Integer, index=True)
 
+    priority = Column("priority", Integer)
+
     display_name = Column("display_name", String(256))
 
     sonification_profile_id = Column(
         "sonification_profile_id", Integer,
-        ForeignKey("sonification_profile.sonification_profile_id")
+        ForeignKey("sonification_profile.id")
     )
     sonification_profile = relationship("SonificationProfile", back_populates="subject_sets")

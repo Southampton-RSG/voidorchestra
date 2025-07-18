@@ -6,16 +6,15 @@ This module contains sub-commands for `voidorchestra sync`.
 The commands should be used to sync the Void Orchestra database with Zooniverse.
 """
 import click
+from panoptes_client import Subject, SubjectSet
 from sqlalchemy.orm import Session
-from panoptes_client import Subject
-from panoptes_client import SubjectSet
 
-from voidorchestra import config
 import voidorchestra.db
-import voidorchestra.zooniverse.sync
-import voidorchestra.zooniverse.subjects
 import voidorchestra.zooniverse.classifications
+import voidorchestra.zooniverse.subjects
+import voidorchestra.zooniverse.sync
 import voidorchestra.zooniverse.zooniverse
+from voidorchestra import config
 
 
 @click.group()
@@ -130,7 +129,7 @@ def update_subject_set_table(ctx: click.Context, source: str, source_id: int) ->
         engine := voidorchestra.db.connect_to_database_engine(config["PATHS"]["database"]),
         info={"url": engine.url}
     ) as session:
-        voidorchestra.zooniverse.sync.sync_subject_set_database_with_zooniverse(
+        voidorchestra.zooniverse.sync.sync_local_subject_set_database_with_zooniverse(
             session, subject_sets_to_add, subject_sets_to_add.meta["count"], ctx.obj["COMMIT_FREQUENCY"]
         )
 

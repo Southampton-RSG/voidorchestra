@@ -12,7 +12,7 @@ from numpy import floating
 from numpy.typing import NDArray
 from pandas import DataFrame, read_csv
 from sqlalchemy import Boolean, Column, String, Text
-from sqlalchemy.orm import Mapped, Session, mapped_column
+from sqlalchemy.orm import Session
 from strauss.generator import Sampler
 from strauss.score import Score
 from strauss.sonification import Sonification as StraussSonification
@@ -52,7 +52,7 @@ class SonificationMethodSoundfont(SonificationMethod):
     }
 
     def __repr__(self) -> str:
-        return f"SonificationMethodSoundfont(id={self.sonification_method_id!r})"
+        return f"SonificationMethodSoundfont(id={self.id!r})"
 
     def sonify_lightcurve(
             self,

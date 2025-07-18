@@ -6,17 +6,15 @@ This module contains sub-commands for `voidorchestra clear`.
 These are (mostly) development commands designed to clear the DB of content to easily test re-generation
 """
 import logging
-from typing import List
 from pathlib import Path
+from typing import List
 
 import click
 from sqlalchemy.orm import Session
 
-import voidorchestra.db
-from voidorchestra import config
 import voidorchestra.log
-from voidorchestra.db import Sonification, SonificationMethodSoundfont, SonificationProfile
-
+from voidorchestra import config_paths
+from voidorchestra.db import Sonification, SonificationMethodSoundfont, SonificationProfile, connect_to_database_engine
 
 logger: logging.Logger = voidorchestra.log.get_logger(__name__.replace(".", "-"))
 
@@ -50,11 +48,12 @@ def clear_sonifications(ctx: dict, hard: bool = False) -> None:
         Whether to process images that are not in the database (or if there is no database)
     """
 
-    directory_output: Path = Path(config["PATHS"]["output"])
+    directory_output: Path = Path(config_paths["output"])
 
     try:
         with Session(
-            engine := voidorchestra.db.connect_to_database_engine(config["PATHS"]["database"])
+            engine := connect_to_database_engine(config_paths["database"]),
+            info={"url": engine.url},
         ) as session:
 
             sonifications: List[Sonification] = session.query(Sonification).all()  # This bit is only here to type-hint for the IDE
@@ -104,7 +103,8 @@ def clear_soundfonts(ctx: dict) -> None:
     """
     try:
         with Session(
-            engine := voidorchestra.db.connect_to_database_engine(config["PATHS"]["database"])
+            engine := connect_to_database_engine(config_paths["database"]),
+            info={"url": engine.url},
         ) as session:
             soundfonts: List[SonificationMethodSoundfont] = session.query(SonificationMethodSoundfont).all()
             for soundfont in soundfonts:
@@ -129,7 +129,8 @@ def clear_sonification_profiles(ctx: dict) -> None:
     """
     try:
         with Session(
-            engine := voidorchestra.db.connect_to_database_engine(config["PATHS"]["database"])
+            engine := connect_to_database_engine(config_paths["database"]),
+            info={"url": engine.url},
         ) as session:
             sonification_profiles: List[SonificationProfile] = session.query(SonificationProfile).all()
             for sonification_profile in sonification_profiles:

@@ -7,7 +7,6 @@ from os import getenv
 from pathlib import Path
 from typing import Dict
 
-
 # Config -----------------------------------------------------------------------
 __version__: str = "0.1a"
 ENVIRONMENT_VARIABLE: str = "VOIDORCHESTRA"

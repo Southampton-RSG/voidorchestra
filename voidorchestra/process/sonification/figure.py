@@ -105,8 +105,8 @@ def plot_lightcurve(
             )
         ],
         layout={
-            "xaxis_title": f"TIME",
-            "yaxis_title": f"X-RAY EMISSION",
+            "xaxis_title": "TIME",
+            "yaxis_title": "X-RAY EMISSION",
             # "xaxis_title": f"Time ({time_units})",
             # "yaxis_title": f"Count rate ({rate_units})"
         }

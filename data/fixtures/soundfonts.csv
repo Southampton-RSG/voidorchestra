@@ -1,4 +1,4 @@
-sonification_method_id,name,description, filepath,preset,preset_modification,continuous
+id,name,description, filepath,preset,preset_modification,continuous
 0,Guitars,"Acoustic guitar, plucked.",guitars.sf2,16,,False
 1,"Flute, Long",Regular flute noise.,flute.sf2,,"{
     'note_length': 0.15,

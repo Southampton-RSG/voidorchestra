@@ -12,34 +12,29 @@ this module
 which handle downloading classifications and matching those classifications to
 subjects and therefore stamps, respectively.
 """
-
-from __future__ import annotations
-
 import logging
-from typing import Any
-from typing import List
+from logging import Logger
+from typing import Any, List
 
-import voidorchestra
-import voidorchestra.db.classification
-import voidorchestra.db.subject
-from panoptes_client import Caesar
-from panoptes_client import Subject
-from panoptes_client import Workflow
+from panoptes_client import Caesar, Subject, Workflow
 from panoptes_client.panoptes import PanoptesAPIException
 from sqlalchemy.orm import Session
 from tqdm import tqdm
 
 import voidorchestra
-import voidorchestra.log
+import voidorchestra.db.classification
+import voidorchestra.db.subject
+from voidorchestra.log import get_logger
 
-logger: logging.Logger = voidorchestra.log.get_logger(__name__.replace(".", "-"))
+logger: Logger = get_logger(__name__.replace(".", "-"))
 
 
 # Private functions ------------------------------------------------------------
 
 
 def __dump_classifications_to_file(classifications: list[dict[str, int]], workflow_name: str) -> None:
-    """Write a list of classifications to a CSV file.
+    """
+    Write a list of classifications to a CSV file.
 
     This function is meant to  be used with the output from
     :meth:`download_classifications_for_workflow_reducer`.
@@ -72,7 +67,8 @@ def __dump_classifications_to_file(classifications: list[dict[str, int]], workfl
 
 
 def __convert_answer_to_bool(answer: str) -> str | bool:
-    """Convert an answer to something appropriate for the database.
+    """
+    Convert an answer to something appropriate for the database.
 
     An answer of "yes" or "no" will be converted to True or False. If the answer
     string is something other than "yes" or "no", then the answer string is
@@ -98,10 +94,9 @@ def __convert_answer_to_bool(answer: str) -> str | bool:
 
 
 # Public functions -------------------------------------------------------------
-
-
 def convert_answer_index_to_value(reducer_key: str, answer_index: dict, task_answers: dict) -> Any | None:
-    """Get the classification value for a subject for a specific reducer.
+    """
+    Get the classification value for a subject for a specific reducer.
 
     The reducer output from Caesar only outputs the "answer_index" which is just
     a number. In most cases we want to know what the answer actually is, and
@@ -137,7 +132,8 @@ def convert_answer_index_to_value(reducer_key: str, answer_index: dict, task_ans
 
 
 def get_workflow_task_answers(workflow: Workflow) -> dict:
-    """Return a dictionary of answer keys for a workflow task.
+    """
+    Return a dictionary of answer keys for a workflow task.
 
     From the Caesar documentation, the extractor we use "retrieves the index of
     the answer from the classification. Indices are C-style, i.e. the first
@@ -173,7 +169,8 @@ def get_workflow_task_answers(workflow: Workflow) -> dict:
 
 
 def get_workflow_classifications(session: Session, workflow_id: str | int) -> List[dict]:
-    """Retrieve the classifications for all subjects in a workflow.
+    """
+    Retrieve the classifications for all subjects in a workflow.
 
     This will retrieve all the classifications for the subjects assigned to the
     given workflow. This function is intended to get the data from a Caesar
@@ -272,7 +269,8 @@ def get_workflow_classifications(session: Session, workflow_id: str | int) -> Li
 def process_workflow_classifications(
     session: Session, reduced_data: List[dict], workflow_id: str | int, commit_frequency: int = 250
 ) -> int:
-    """Process classifications for all subject classifications.
+    """
+    Process classifications for all subject classifications.
 
     This function iterates over the provided reduced data and matches
     classifications to subjects. If a subject is not in the database or not
@@ -383,7 +381,8 @@ def process_workflow_classifications(
 
 
 def update_classification_database(workflow_id: str | int = None, commit_frequency: int = 250) -> None:
-    """Update the classification database.
+    """
+    Update the classification database.
 
     Updates the classification database with new classifications and merges
     changes in consensus into already classified subjects. Each subject is

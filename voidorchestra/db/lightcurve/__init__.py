@@ -24,7 +24,7 @@ class Lightcurve(Base):  # pylint: disable=too-few-public-methods
 
     Attributes
     ----------
-    lightcurve_id: integer
+    id: integer
         The lightcurve method id.
     polymorphic_type: str
         The column used for single-table polymorphism.
@@ -36,7 +36,7 @@ class Lightcurve(Base):  # pylint: disable=too-few-public-methods
         "polymorphic_on": "polymorphic_type",
     }
 
-    lightcurve_id = Column("lightcurve_id", Integer, primary_key=True)
+    id = Column("id", Integer, primary_key=True)
     polymorphic_type = Column("polymorphic_type", String(64))
     name = Column(
         "name", String(64), nullable=False
@@ -45,7 +45,7 @@ class Lightcurve(Base):  # pylint: disable=too-few-public-methods
     sonifications = relationship("Sonification", back_populates="lightcurve")
 
     COLUMNS: List[str] = [
-        'lightcurve_id'
+        'id'
     ]
 
     def __repr__(self) -> str:

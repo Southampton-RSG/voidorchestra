@@ -1,25 +1,23 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 # Panoptes client https://panoptes-python-client.readthedocs.io/en/latest/
-
 """
 This module handles assigning workflows to subject sets, as well as getting
 and modifying workflows.
 """
+from logging import Logger
 
-from __future__ import annotations
-
-import logging
-
-from panoptes_client import SubjectSet, Workflow
+from panoptes_client import SubjectSet as PanoptesSubjectSet, Workflow as PanoptesWorkflow
 from panoptes_client.panoptes import PanoptesAPIException
 
-import voidorchestra.log
+from voidorchestra.log import get_logger
 
-logger: logging.Logger = voidorchestra.log.get_logger(__name__.replace(".", "-"))
+logger: Logger = get_logger(__name__.replace(".", "-"))
 
 
-def get_workflow(workflow_id: str | int) -> Workflow:
+def get_panoptes_workflow(
+        panoptes_workflow_id: str | int
+) -> PanoptesWorkflow:
     """
     Retrieve a workflow for a given workflow ID.
 
@@ -29,18 +27,21 @@ def get_workflow(workflow_id: str | int) -> Workflow:
 
     Parameters
     ----------
-    workflow_id: str | int
+    panoptes_workflow_id: str | int
         The ID of the workflow.
 
     Returns
     -------
-    workflow: panoptes_client.Workflow
+    panoptes_workflow: PanoptesWorkflow
         The workflow associated with the ID.
     """
-    return Workflow.find(workflow_id)
+    return PanoptesWorkflow.find(panoptes_workflow_id)
 
 
-def assign_workflow_to_subject_set(workflow: Workflow, subject_set: SubjectSet) -> None:
+def assign_panoptes_workflow_to_panoptes_subject_set(
+        panoptes_workflow: PanoptesWorkflow,
+        panoptes_subject_set: PanoptesSubjectSet
+) -> None:
     """
     Assign a given workflow to a subject set.
 
@@ -51,16 +52,20 @@ def assign_workflow_to_subject_set(workflow: Workflow, subject_set: SubjectSet) 
 
     Parameters
     ----------
-    workflow: panoptes_client.Workflow
+    panoptes_workflow: panoptes_client.Workflow
         The workflow object to add a subject set to.
-    subject_set: panoptes_client.SubjectSet
+    panoptes_subject_set: panoptes_client.SubjectSet
         The subject set to add to the workflow.
     """
-    workflow.reload()
+    panoptes_workflow.reload()
     try:
-        workflow.add_subject_sets([subject_set])
-        workflow.save()
+        panoptes_workflow.add_subject_sets([panoptes_subject_set])
+        panoptes_workflow.save()
     except PanoptesAPIException:
-        logger.debug("Subject set %d is already linked to workflow %d", subject_set.id, workflow.id)
+        logger.debug(
+            f"Subject set {panoptes_subject_set.id} is already linked to workflow {panoptes_workflow.id}",
+        )
 
-    logger.debug("Subject set %s added to workflow %s", subject_set.id, workflow.id)
+    logger.debug(
+        f"Subject set {panoptes_subject_set.id} added to workflow {panoptes_workflow.id}",
+    )

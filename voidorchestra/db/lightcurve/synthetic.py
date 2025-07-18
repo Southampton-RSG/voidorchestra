@@ -7,7 +7,6 @@ from pathlib import Path
 from typing import Dict, List
 
 import numpy as np
-from astropy import units as u
 from astropy.time import TimeDelta
 from astropy.timeseries import TimeSeries
 from astropy.units import Quantity, Unit
@@ -43,7 +42,7 @@ class LightcurveSynthetic(Lightcurve):
     rate_mean_units = Column("rate_mean_units", String(32), nullable=False)
     qpo_model_id = Column(
         "qpo_model_id", Integer(),
-        ForeignKey("qpo_model.qpo_model_id")
+        ForeignKey("qpo_model.id")
     )
     qpo_model = relationship(
         "QPOModel",
@@ -114,15 +113,11 @@ class LightcurveSyntheticRegular(LightcurveSynthetic):
         """
         Gets the name of the lightcurve.
         """
-        return f"LightcurveSyntheticRegular(id={self.lightcurve_id!r}, name={self.name!r})"
+        return f"LightcurveSyntheticRegular(id={self.id!r}, name={self.name!r})"
 
     def get_cadence(self) -> TimeDelta:
         """
-
-        Returns
-        -------
-        TimeDelta:
-            The cadence, as an Astropy TimeDelta
+        Gets the cadence for these observations, as an Astropy TimeDelta
         """
         return TimeDelta(self.cadence_value, format=self.cadence_format)
 

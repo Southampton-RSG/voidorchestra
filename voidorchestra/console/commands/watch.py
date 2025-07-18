@@ -78,4 +78,4 @@ def watch_images(ctx: dict, directory: Optional[str] = None) -> None:
     observer.join()
 
     if ctx.obj["VERBOSE"] or ctx.obj["DEBUG"]:
-        click.echo(f"Imported image files")
+        click.echo("Imported image files")

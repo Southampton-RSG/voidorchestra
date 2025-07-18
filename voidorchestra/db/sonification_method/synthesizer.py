@@ -43,7 +43,7 @@ class SonificationMethodSynthesizer(SonificationMethod):
     }
 
     def __repr__(self) -> str:
-        return f"SonificationMethodSynthesizer(id={self.sonification_method_id!r})"
+        return f"SonificationMethodSynthesizer(id={self.id!r})"
 
     def get_generator(self) -> Synthesizer:
         """

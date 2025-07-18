@@ -1,17 +1,14 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
-"""This module contains sub-commands for `molemarshal admin`.
+"""
+This module contains sub-commands for `molemarshal admin`.
 
 The commands should be used for admin and development purposes.
+
+TODO: Not updated
 """
-
-from __future__ import annotations
-
 import click
-from panoptes_client import Project
-from panoptes_client import Subject
-from panoptes_client import SubjectSet
+from panoptes_client import Project, Subject, SubjectSet
 from panoptes_client.panoptes import PanoptesAPIException
 from sqlalchemy.orm import Session
 from tqdm import tqdm
@@ -32,9 +29,9 @@ def admin():
 @admin.command(name="cleanup-subjects")
 @click.pass_context
 def remove_subjects(ctx: click.Context) -> None:
-    """Remove old and/ord broken subjects from the MoleMarshal database.
+    """Remove old and/or broken subjects from the Void Orchestra database.
 
-    This should be used periodically when making changes to the MoleMarshal
+    This should be used periodically when making changes to the Void Orchestra
     project in the web interface, as otherwise the database will become
     out of sync.
     """
@@ -64,9 +61,9 @@ def remove_subjects(ctx: click.Context) -> None:
 @admin.command(name="cleanup-subject-sets")
 @click.pass_context
 def remove_subject_sets(ctx: click.Context):
-    """Remove old and/or broken subject sets from the MoleMarshal database.
+    """Remove old and/or broken subject sets from the Void Orchestra database.
 
-    This should be used periodically when making changes to the MoleMarshal
+    This should be used periodically when making changes to the Void Orchestra
     project in the web interface, as otherwise the database will become
     out of sync.
     """
@@ -75,7 +72,7 @@ def remove_subject_sets(ctx: click.Context):
         subject_sets = session.query(voidorchestra.db.SubjectSet)
 
         if subject_sets.count() == 0:
-            click.echo("There are no subject sets in the MoleMarshal database")
+            click.echo("There are no subject sets in the Void Orchestra database")
             return
 
         for subject_set in tqdm(

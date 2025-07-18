@@ -17,7 +17,7 @@ class Classification(Base):  # pylint: disable=too-few-public-methods
 
     Attributes
     ----------
-    classification_id : Integer
+    id : Integer
         Caesar reduction/classification ID.
     subject_id : Integer
         Foreign key, the Zooniverse ID for the subject this
@@ -27,14 +27,14 @@ class Classification(Base):  # pylint: disable=too-few-public-methods
     """
     __tablename__ = "classification"
 
-    classification_id = Column("classification_id", Integer, primary_key=True, autoincrement=True)
+    id = Column("id", Integer, primary_key=True, autoincrement=True)
     zooniverse_classification_id = Column("zooniverse_classification_id", Integer)
 
-    subject_id = Column("subject_id", Integer, ForeignKey("subject.subject_id"), nullable=False)
+    subject_id = Column("subject_id", Integer, ForeignKey("subject.id"), nullable=False)
     subject = relationship("Subject", back_populates="classifications")
 
     def __repr__(self) -> str:
         string = "Classification("
-        string += f"classification_id={self.classification_id!r} "
+        string += f"id={self.id!r} "
         string += ")"
         return string

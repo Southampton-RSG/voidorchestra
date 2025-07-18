@@ -25,7 +25,7 @@ class SonificationMethod(Base):  # pylint: disable=too-few-public-methods
 
     Attributes
     ----------
-    sonification_method_id: integer
+    id: integer
         The sonification method id.
     name: str
         The name of the method.
@@ -41,7 +41,7 @@ class SonificationMethod(Base):  # pylint: disable=too-few-public-methods
         "polymorphic_on": "polymorphic_type",
     }
 
-    sonification_method_id = Column("sonification_method_id", Integer, primary_key=True)
+    id = Column("id", Integer, primary_key=True)
     name = Column("name", String(32), unique=True, nullable=False)
     description = Column("description", Text())
 
