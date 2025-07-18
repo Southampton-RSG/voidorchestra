@@ -3,7 +3,7 @@
 """
 Defines the QPO models, made up of components, used in synthetic lightcurve generation.
 """
-from typing import Any, Dict, List
+from typing import TYPE_CHECKING, Any, Dict, List
 
 import astropy.units as u
 import numpy as np
@@ -17,7 +17,7 @@ from sqlalchemy.orm import Mapped, backref, mapped_column, relationship
 from voidorchestra.db import Base, LightcurveSynthetic
 
 
-class QPOModel(Base):  # pylint: disable=too-few-public-methods
+class QPOModel(Base):
     """
     ORM class for QPO models used for synthetic lightcurve generation.
 
@@ -50,20 +50,20 @@ class QPOModel(Base):  # pylint: disable=too-few-public-methods
     }
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    qpo_model_parent_id: Mapped[int] = mapped_column(ForeignKey("qpo_model.id"))
+    qpo_model_parent_id: Mapped[int] = mapped_column(ForeignKey("qpo_model.id"), nullable=True)
     name: Mapped[str] = mapped_column(String(32))
     polymorphic_type: Mapped[str] = mapped_column(String(32), unique=True, nullable=False)
-    model: Mapped[str] = mapped_column(String(32))
-    coherence: Mapped[float] = mapped_column(Float())
-    variance_fraction: Mapped[float] = mapped_column(Float())
-    period_value: Mapped[float] = mapped_column(Double())
-    period_format: Mapped[str] = mapped_column(String(16))
+    model: Mapped[str] = mapped_column(String(32), nullable=True)
+    coherence: Mapped[float] = mapped_column(Float(), nullable=True)
+    variance_fraction: Mapped[float] = mapped_column(Float(), nullable=True)
+    period_value: Mapped[float] = mapped_column(Double(), nullable=True)
+    period_format: Mapped[str] = mapped_column(String(16), nullable=True)
 
     qpo_model_parent: Mapped['QPOModel'] = relationship(
         remote_side=qpo_model_parent_id, uselist=False,
         backref=backref("qpo_model_children", remote_side=id, uselist=True)
     )
-    lightcurves: List[Mapped[LightcurveSynthetic]] = relationship(back_populates="qpo_model")
+    lightcurves: Mapped[List[LightcurveSynthetic]] = relationship(back_populates="qpo_model")
 
     def __repr__(self) -> str:
         return f"{type(self).__name__}(id={self.id!r})"

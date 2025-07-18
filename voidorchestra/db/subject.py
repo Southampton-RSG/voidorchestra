@@ -7,10 +7,15 @@ These are used to query the subjects which have been uploaded to the Zooniverse.
 Can be used to filter subjects which are part of a certain subject set, workflow
 or project.
 """
+from typing import TYPE_CHECKING, List
+
 from sqlalchemy import Boolean, Column, ForeignKey, Integer
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import Mapped, relationship, mapped_column, backref
 
 from voidorchestra.db import Base
+
+if TYPE_CHECKING:
+    from voidorchestra.db import SubjectSet, Sonification, Classification
 
 
 class Subject(Base):  # pylint: disable=too-few-public-methods
@@ -46,22 +51,24 @@ class Subject(Base):  # pylint: disable=too-few-public-methods
     """
     __tablename__: str = "subject"
 
-    id = Column("id", Integer, primary_key=True, autoincrement=True)
+    id: Mapped[int] = mapped_column(primary_key=True)
 
-    sonification_id = Column("sonification_id", Integer, ForeignKey("sonification.id"))
-    sonification = relationship("Sonification", back_populates="subject", uselist=False)
+    sonification_id: Mapped[int] = mapped_column(ForeignKey("sonification.id"), nullable=False)
+    sonification: Mapped['Sonification'] = relationship(back_populates="subject", uselist=False)
 
-    subject_set_id = Column("subject_set_id", Integer, ForeignKey("subject_set.id"))
-    subject_set = relationship("SubjectSet", back_populates="subjects")
+    subject_set_id: Mapped[int] = mapped_column(ForeignKey("subject_set.id"), nullable=False)
+    subject_set: Mapped['SubjectSet'] = relationship("SubjectSet", back_populates="subjects", uselist=False)
 
-    classifications = relationship("Classification", back_populates="subject")
+    classifications: Mapped[List['Classification']] = relationship(
+        "Classification", back_populates="subject", uselist=True
+    )
 
-    zooniverse_project_id = Column("zooniverse_project_id", Integer)
-    zooniverse_subject_id = Column("zooniverse_subject_id", Integer)
-    zooniverse_subject_set_id = Column("zooniverse_subject_set_id", Integer)
-    zooniverse_workflow_id = Column("zooniverse_workflow_id", Integer)
+    zooniverse_project_id: Mapped[int] = mapped_column(Integer)
+    zooniverse_subject_id: Mapped[int] = mapped_column(Integer)
+    zooniverse_subject_set_id: Mapped[int] = mapped_column(Integer)
+    zooniverse_workflow_id: Mapped[int] = mapped_column(Integer)
 
-    retired = Column("retired", Boolean)
+    retired: Mapped[bool] = mapped_column(Boolean)
 
     def __repr__(self) -> str:
         string = "Subject("

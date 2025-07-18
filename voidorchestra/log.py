@@ -11,10 +11,6 @@ from types import ModuleType
 from typing import List
 
 import voidorchestra
-import voidorchestra.process
-import voidorchestra.process.sonification
-import voidorchestra.zooniverse
-
 
 # Classes ----------------------------------------------------------------------
 class __VariableFormatter(Formatter):
@@ -95,7 +91,7 @@ def get_logger(
     return new_logger
 
 
-logger = get_logger(__name__.replace(".", "-"))
+logger: Logger = get_logger(__name__.replace(".", "-"))
 
 
 def set_logger_levels(level: int) -> None:
@@ -111,7 +107,7 @@ def set_logger_levels(level: int) -> None:
         [
             voidorchestra,
             voidorchestra.process,
-            voidorchestra.process.sonification,
+            voidorchestra.process,
             voidorchestra.zooniverse,
         ]
     )

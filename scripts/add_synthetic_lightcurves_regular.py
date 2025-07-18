@@ -44,7 +44,7 @@ with Session(
     )
     session.add(lightcurve)
 
-    sonification_profile: SonificationProfile = session.query(SonificationProfile).where(SonificationProfile.sonification_profile_id==0).one()
+    sonification_profile: SonificationProfile = session.query(SonificationProfile).where(SonificationProfile.id==0).one()
 
     sonifications: List[Sonification] = [
         create_sonification(

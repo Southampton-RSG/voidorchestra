@@ -45,14 +45,12 @@ class SonificationMethod(Base):  # pylint: disable=too-few-public-methods
     name = Column("name", String(32), unique=True, nullable=False)
     description = Column("description", Text())
 
-    preset = Column("preset", Text())
-
     polymorphic_type = Column("polymorphic_type", String(64))
 
     sonification_profiles = relationship("SonificationProfile", back_populates="sonification_method")
 
     COLUMNS: List[str] = [
-        'sonification_method_id', 'name', 'description', 'preset'
+        'id', 'name', 'description', 'preset'
     ]
 
     def __repr__(self) -> str:

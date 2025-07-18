@@ -44,7 +44,7 @@ class Sonification(Base):  # pylint: disable=too-few-public-methods
     )
 
     lightcurve_id: Mapped[int] = mapped_column(
-        ForeignKey("lightcurve.lightcurve_id"), nullable=False,
+        ForeignKey("lightcurve.id"), nullable=False,
     )
 
     uuid: Mapped[str] = mapped_column(String(32), unique=True)

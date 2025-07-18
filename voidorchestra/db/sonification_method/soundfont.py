@@ -5,14 +5,14 @@ Defines the database object for sonification methods using soundfonts.
 """
 from json import loads
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, TYPE_CHECKING
 
 from astropy.timeseries import TimeSeries
 from numpy import floating
 from numpy.typing import NDArray
 from pandas import DataFrame, read_csv
-from sqlalchemy import Boolean, Column, String, Text
-from sqlalchemy.orm import Session
+from sqlalchemy import Boolean, Column, Integer, String, Text
+from sqlalchemy.orm import Session, Mapped, mapped_column, relationship
 from strauss.generator import Sampler
 from strauss.score import Score
 from strauss.sonification import Sonification as StraussSonification
@@ -20,6 +20,9 @@ from strauss.sources import Events
 
 from voidorchestra import config_paths
 from voidorchestra.db.sonification_method import SonificationMethod
+
+if TYPE_CHECKING:
+    from voidorchestra.db import SonificationProfile
 
 
 class SonificationMethodSoundfont(SonificationMethod):
@@ -37,14 +40,17 @@ class SonificationMethodSoundfont(SonificationMethod):
     continuous:
         aaa
     """
-    preset_modification = Column("preset_modification", Text())
-    filepath = Column("filepath", String(256), nullable=False)
-    continuous = Column("continuous", Boolean(), nullable=False)
+    preset: Mapped[int] = mapped_column(Integer(), nullable=True)
+    preset_modification: Mapped[str] = mapped_column(Text(), nullable=True)
+    path: Mapped[str] = mapped_column(String(256), nullable=False)
+    continuous: Mapped[bool] = mapped_column(Boolean(), nullable=False)
 
-    SYSTEM = 'mono'
+    sonification_profiles: Mapped[List['SonificationProfile']] = relationship(back_populates='sonification_method')
+
+    SYSTEM: str = 'mono'
 
     COLUMNS: List[str] = [
-        'preset_modification', 'filepath', 'continuous', 'preset'
+        'preset_modification', 'path', 'continuous', 'preset'
     ]
 
     __mapper_args__: Dict[str, str] = {
@@ -74,9 +80,8 @@ class SonificationMethodSoundfont(SonificationMethod):
         StraussSonification:
             The sonified sound.
         """
-        print("Preset:", self.preset)
         sampler: Sampler = Sampler(
-            config_paths['soundfonts'] / self.filepath,
+            config_paths['soundfonts'] / self.path,
             sf_preset=self.preset
         )
         if self.preset_modification:

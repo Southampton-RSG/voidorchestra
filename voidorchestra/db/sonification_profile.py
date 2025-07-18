@@ -55,14 +55,14 @@ class SonificationProfile(Base):  # pylint: disable=too-few-public-methods
     sonification_method_id: Mapped[int] = mapped_column(
         ForeignKey("sonification_method.id"),
     )
-    name: Mapped[str] = mapped_column(String(32),nullable=False)
+    name: Mapped[str] = mapped_column(String(32), nullable=False)
     description: Mapped[str] = mapped_column(String(256))
     tempo: Mapped[float] = mapped_column(Float())
     key: Mapped[str] = mapped_column(Text())
 
-    sonifications: Mapped[List[Sonification]] = relationship(back_populates="sonification_profile")
-    sonification_method: Mapped[SonificationMethod] = relationship(back_populates="sonification_profiles")
-    subject_sets: Mapped[List[SubjectSet]] = relationship(back_populates="sonification_profile")
+    sonifications: Mapped[List['Sonification']] = relationship(back_populates="sonification_profile")
+    sonification_method: Mapped['SonificationMethod'] = relationship(back_populates="sonification_profiles")
+    subject_sets: Mapped[List['SubjectSet']] = relationship(back_populates="sonification_profile")
 
     COLUMNS: List[str] = [
         'id', 'sonification_method_id', 'tempo', 'key', 'name', 'description'
