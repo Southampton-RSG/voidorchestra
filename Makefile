@@ -50,7 +50,7 @@ check: checks
 .PHONY: test coverage tests
 
 test:  ## run python tests
-	python -m pytest -v python_template/tests
+	python -m pytest -v voidorchestra/tests
 
 coverage:  ## run tests and collect test coverage
 	python -m pytest -v voidorchestra/tests --cov=voidorchestra --cov-report term-missing --cov-report xml

@@ -1,0 +1,11 @@
+# Changes here will be overwritten by Copier
+_commit: 9dfa165
+_src_path: https://github.com/python-project-templates/base.git
+add_docs: true
+add_extension: python
+email: s.mangham@soton.ac.uk
+github: Southampton-RSG
+project_description: Creates QPO sonifications, and syncs them to the Zooniverse.
+project_name: voidorchestra
+python_version_primary: '3.12'
+team: Sam Mangham

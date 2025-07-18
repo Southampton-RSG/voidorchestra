@@ -9,8 +9,8 @@ import time
 from typing import Optional
 
 import click
-import watchdog.observers
 import watchdog.events
+import watchdog.observers
 
 from voidorchestra import config
 

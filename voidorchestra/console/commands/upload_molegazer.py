@@ -8,9 +8,8 @@ The commands should upload data into MoleDB from the perspective of MoleGazer.
 from typing import Optional
 
 import click
-
-from molegazer import config
 import molegazer.process.images
+from molegazer import config
 
 
 @click.group()
@@ -52,4 +51,4 @@ def upload_images(ctx: dict, directory: Optional[str] = None) -> None:
     molegazer.process.images.upload_images(directory)
 
     if ctx.obj["VERBOSE"] or ctx.obj["DEBUG"]:
-        click.echo(f"Imported image files")
+        click.echo("Imported image files")
