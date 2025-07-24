@@ -4,15 +4,16 @@
 Defines the database object for sonification methods using soundfonts.
 """
 from json import loads
+from logging import Logger
 from pathlib import Path
-from typing import Dict, List, Tuple, TYPE_CHECKING
+from typing import TYPE_CHECKING, Dict, List, Tuple
 
 from astropy.timeseries import TimeSeries
 from numpy import floating
 from numpy.typing import NDArray
 from pandas import DataFrame, read_csv
-from sqlalchemy import Boolean, Column, Integer, String, Text
-from sqlalchemy.orm import Session, Mapped, mapped_column, relationship
+from sqlalchemy import Boolean, Integer, String, Text
+from sqlalchemy.orm import Mapped, Session, mapped_column, relationship
 from strauss.generator import Sampler
 from strauss.score import Score
 from strauss.sonification import Sonification as StraussSonification
@@ -20,9 +21,12 @@ from strauss.sources import Events
 
 from voidorchestra import config_paths
 from voidorchestra.db.sonification_method import SonificationMethod
+from voidorchestra.log import get_logger
 
 if TYPE_CHECKING:
     from voidorchestra.db import SonificationProfile
+
+logger: Logger = get_logger(__name__.replace(".", "-"))
 
 
 class SonificationMethodSoundfont(SonificationMethod):
@@ -35,8 +39,8 @@ class SonificationMethodSoundfont(SonificationMethod):
         aaa
     preset_modification:
         aaa
-    filepath:
-        aaa
+    path:
+        aaae
     continuous:
         aaa
     """
@@ -85,9 +89,14 @@ class SonificationMethodSoundfont(SonificationMethod):
             sf_preset=self.preset
         )
         if self.preset_modification:
-            sampler.modify_preset(
-                loads(self.preset_modification)
-            )
+            try:
+                sampler.modify_preset(
+                    loads(self.preset_modification)
+                )
+            except Exception as e:
+                logger.error(
+                    f"Error in JSON: {self.preset_modification}: {e}"
+                )
 
         maps: Dict[str, NDArray[floating]] = {
             "time": lightcurve["time"].mjd,

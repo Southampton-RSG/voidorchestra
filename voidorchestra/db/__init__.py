@@ -19,6 +19,7 @@ ENGINE: Engine|None = None
 from voidorchestra.db.classification import Classification  # noqa: E402
 from voidorchestra.db.lightcurve import Lightcurve  # noqa: E402
 from voidorchestra.db.lightcurve.synthetic import LightcurveSynthetic, LightcurveSyntheticRegular  # noqa: E402
+from voidorchestra.db.lightcurve_collection import LightcurveCollection  # noqa: E402
 from voidorchestra.db.qpo_model import QPOModel, QPOModelBPL, QPOModelComposite, QPOModelLorentzian, QPOModelSHO  # noqa: E402
 from voidorchestra.db.sonification import Sonification  # noqa: E402
 from voidorchestra.db.sonification_method import SonificationMethod  # noqa: E402

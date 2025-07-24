@@ -5,10 +5,16 @@ Defines the database object for Zooniverse subject sets.
 
 These are used to store the active subject sets in a project and workflow.
 """
-from sqlalchemy import Column, ForeignKey, Integer, String
-from sqlalchemy.orm import relationship
+from typing import TYPE_CHECKING, List
 
-from voidorchestra.db import Base
+from sqlalchemy import ForeignKey, String
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from voidorchestra.db import Base, LightcurveCollection
+
+if TYPE_CHECKING:
+    from voidorchestra.db.sonification_profile import SonificationProfile
+    from voidorchestra.db.subject import Subject
 
 
 class SubjectSet(Base):
@@ -37,19 +43,26 @@ class SubjectSet(Base):
     """
     __tablename__: str = "subject_set"
 
-    id = Column("id", Integer, primary_key=True, autoincrement=True)
-
-    subjects = relationship("Subject", back_populates="subject_set")
-
-    zooniverse_subject_set_id = Column("zooniverse_subject_set_id", Integer, index=True)
-    zooniverse_workflow_id = Column("zooniverse_workflow_id", Integer, index=True)
-
-    priority = Column("priority", Integer)
-
-    display_name = Column("display_name", String(256))
-
-    sonification_profile_id = Column(
-        "sonification_profile_id", Integer,
+    id: Mapped[int] = mapped_column(primary_key=True)
+    lightcurve_collection_id: Mapped[int] = mapped_column(
+        ForeignKey("lightcurve_collection.id")
+    )
+    sonification_profile_id: Mapped[int] = mapped_column(
         ForeignKey("sonification_profile.id")
     )
-    sonification_profile = relationship("SonificationProfile", back_populates="subject_sets")
+    zooniverse_subject_set_id: Mapped[int] = mapped_column(index=True)
+    priority: Mapped[int] = mapped_column()
+    display_name: Mapped[str] = mapped_column(String(256), unique=False)
+
+    sonification_profile: Mapped['SonificationProfile'] = relationship(
+        "SonificationProfile", back_populates="subject_sets",
+    )
+    lightcurve_collection: Mapped[LightcurveCollection] = relationship(
+        "LightcurveCollection", back_populates="subject_sets",
+    )
+    subjects: Mapped[List['Subject']] = relationship(
+        "Subject", back_populates="subject_set", uselist=True,
+    )
+
+
+

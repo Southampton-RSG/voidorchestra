@@ -1,18 +1,20 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 """
 This module contains sub-commands for `voidorchestra upload`.
 
 The commands should be used to upload new things, such as subjects or subject
 sets, to the Zooniverse project.
 """
-
 import click
+from click import Context
+from panoptes_client import Project as PanoptesProject, Workflow as PanoptesWorkflow
+from sqlalchemy.orm import Session
 
-import voidorchestra
-import voidorchestra.zooniverse.subjects
-import voidorchestra.zooniverse.zooniverse
+from voidorchestra import config, config_paths
+from voidorchestra.db import SonificationProfile, connect_to_database_engine
+from voidorchestra.zooniverse.subjects import upload_sonifications_to_zooniverse
+from voidorchestra.zooniverse.zooniverse import connect_to_zooniverse, open_zooniverse_project
 
 
 @click.group()
@@ -22,65 +24,30 @@ def upload():
     """
 
 
-@upload.command(name="subjects")
+@upload.command(name="sonifications")
 @click.pass_context
 @click.option(
-    "-project",
+    "--zooniverse_project_id",
     nargs=1,
     type=int,
-    default=voidorchestra.config["ZOONIVERSE"]["project_id"],
+    default=config["ZOONIVERSE"].getint("project_id"),
     show_default=True,
     help="The Zooniverse ID for a project",
 )
-@click.option(
-    "-workflow",
-    nargs=1,
-    type=int,
-    default=voidorchestra.config["ZOONIVERSE"]["workflow_id"],
-    show_default=True,
-    help="The Zooniverse ID of a workflow to link the subject set to",
-)
-@click.option(
-    "-subject_set",
-    nargs=1,
-    type=int,
-    default=voidorchestra.config["ZOONIVERSE"]["subject_set_id"],
-    show_default=True,
-    help="The Zooniverse ID for the subject set to upload to",
-)
-@click.option(
-    "-name",
-    "--subject_set_name",
-    type=str,
-    default=None,
-    help="The name of the subject set upload to"
-)
 def upload_new_sonifications(
-    ctx: dict,
-    project: int,
-    workflow: int,
-    subject_set: int,
-    subject_set_name: str,
+    ctx: Context,
+    zooniverse_project_id: int,
 ) -> None:
     """
     Add and upload stamps to MoleMarshal and Zooniverse
 
-    This sub-command can be used to upload new stamps to a subject set or to
+    This sub-command can be used to upload new sonifications to a subject set or to
     create a new subject set.
 
-    The default behaviour will upload stamps to the default "Mole Stamps"
-    subject set. All the stamps in the stamp database will be added to the
-    subject set.
-
-    To create a new subject set, or to upload to a specific subject set by name,
-    use the -name SUBJECT_SET_NAME option to either retrieve or create that
-    subject set and upload to it.
+    The default behaviour will upload sonifications to a subject set based on their sonification profile.
     """
-    voidorchestra.zooniverse.zooniverse.connect_to_zooniverse()
-    voidorchestra.zooniverse.subjects.upload_to_panoptes_subject_set(
-        project,
-        workflow,
-        subject_set,
-        subject_set_name,
-        ctx.obj["COMMIT_FREQUENCY"],
+    connect_to_zooniverse()
+    upload_sonifications_to_zooniverse(
+        panoptes_project_id=zooniverse_project_id,
+        commit_frequency=ctx.obj["COMMIT_FREQUENCY"],
     )

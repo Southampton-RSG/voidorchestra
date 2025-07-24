@@ -1,6 +1,7 @@
-"""Link Subjects in the Zooniverse database linked to a project to a specific
+"""
+Link Subjects in the Zooniverse database linked to a project to a specific
 subject set.
-    """
+"""
 
 import pickle
 from panoptes_client import Subject
@@ -106,5 +107,5 @@ with Subject.async_saves():
         database_subjects = session.query(database.Subject)
     for subject in database_subjects:
         s = Subject(subject.subject_id)
-        subject_set.add(s)
+        subject_set.input(s)
         subject_set.save()

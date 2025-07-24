@@ -24,21 +24,25 @@ def check():
 
 @check.command(name="version")
 def print_version() -> None:
-    """Print the Void Orchestra package version"""
+    """
+    Print the Void Orchestra package version
+    """
     click.echo(f"{voidorchestra.__version__}")
 
 
 @check.command(name="workflow")
 @click.option(
     "-id",
-    "--workflow_id",
+    "--panoptes_workflow_id",
     nargs=1,
     type=int,
-    default=config["ZOONIVERSE"]["workflow_id"],
+    default=config["ZOONIVERSE"].getint("workflow_id"),
     show_default=True,
     help="The ID of the workflow to check statistics for",
 )
-def workflow_stats(panoptes_workflow_id: int) -> None:
+def workflow_stats(
+        panoptes_workflow_id: int
+) -> None:
     """
     Print workflow statistics
 
@@ -69,14 +73,16 @@ def workflow_stats(panoptes_workflow_id: int) -> None:
 @check.command(name="project")
 @click.option(
     "-id",
-    "--project_id",
+    "--panoptes_project_id",
     nargs=1,
     type=int,
     default=config["ZOONIVERSE"]["project_id"],
     show_default=True,
     help="The ID of the project to check statistics for",
 )
-def project_stats(panoptes_project_id: int) -> None:
+def project_stats(
+        panoptes_project_id: int
+) -> None:
     """
     Print project information
 
@@ -87,7 +93,7 @@ def project_stats(panoptes_project_id: int) -> None:
     """
     connect_to_zooniverse()
     if not panoptes_project_id:
-        panoptes_project_id: int = config['ZOONIVERSE']['project_id']
+        panoptes_project_id: int = config['ZOONIVERSE'].getint('project_id')
 
     try:
         panoptes_project: PanoptesProject = PanoptesProject.find(panoptes_project_id)

@@ -20,7 +20,7 @@ with Session(voidorchestra.db.connect_to_database_engine(voidorchestra.config["P
             for subject in query[1:]:
                 if subject.subject_set_id not in sets:
                     sets[subject.subject_set_id] = SubjectSet.find(subject.subject_set_id)
-                sets[subject.subject_set_id].remove(Subject.find(subject.subject_id))
+                sets[subject.subject_set_id].delete(Subject.find(subject.subject_id))
                 session.delete(subject)
 
     session.commit()

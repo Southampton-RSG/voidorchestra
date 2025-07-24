@@ -5,14 +5,17 @@ Defines the database object for the lightcurve.
 
 Uses single-table inheritance to contain multiple types of lightcurve.
 """
-from typing import Dict, List
+from typing import TYPE_CHECKING, Dict, List
 
 from astropy.timeseries import TimeSeries
-from plotly.graph_objs import Figure
-from sqlalchemy import Column, Integer, String
-from sqlalchemy.orm import relationship
+from sqlalchemy import ForeignKey, String
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from voidorchestra.db import Base
+from voidorchestra.db.lightcurve_collection import LightcurveCollection
+
+if TYPE_CHECKING:
+    from voidorchestra.db.sonification import Sonification
 
 
 class Lightcurve(Base):  # pylint: disable=too-few-public-methods
@@ -36,17 +39,24 @@ class Lightcurve(Base):  # pylint: disable=too-few-public-methods
         "polymorphic_on": "polymorphic_type",
     }
 
-    id = Column("id", Integer, primary_key=True)
-    polymorphic_type = Column("polymorphic_type", String(64))
-    name = Column(
-        "name", String(64), nullable=False
+    id: Mapped[int] = mapped_column(primary_key=True)
+    polymorphic_type: Mapped[str] = mapped_column(String(64))
+    name: Mapped[str] = mapped_column(String(64), nullable=True)
+    lightcurve_collection_id: Mapped[LightcurveCollection] = mapped_column(
+        ForeignKey('lightcurve_collection.id'),
     )
 
-    sonifications = relationship("Sonification", back_populates="lightcurve")
+    lightcurve_collection: Mapped[LightcurveCollection] = relationship(
+        'LightcurveCollection', back_populates='lightcurves',
+    )
+    sonifications: Mapped[List['Sonification']] = relationship(
+        'Sonification', uselist=True, back_populates='lightcurve',
+    )
 
     COLUMNS: List[str] = [
-        'id'
+        'id', 'name'
     ]
+
 
     def __repr__(self) -> str:
         """

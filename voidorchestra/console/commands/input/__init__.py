@@ -6,27 +6,30 @@ This module contains sub-commands for `void-orchestra add`.
 The commands should add new entries to the DB from a fixture file.
 """
 from pathlib import Path
+from typing import List
 
 import click
+from click import Context
+from panoptes_client import Project as PanoptesProject, Workflow as PanoptesWorkflow
 from sqlalchemy.orm import Session
 
 from voidorchestra import config_paths
-from voidorchestra.console.commands.add.lightcurve import lightcurve
+from voidorchestra.console.commands.input.lightcurve import lightcurve
 from voidorchestra.db import connect_to_database_engine
 from voidorchestra.db.sonification_method.soundfont import SonificationMethodSoundfont
 from voidorchestra.db.sonification_profile import SonificationProfile
 
 
 @click.group()
-def add():
+def input():
     """
     Add new entities from fixture files.
     """
 
-add.add_command(lightcurve)
+input.add_command(lightcurve)
 
 
-@add.command(name="soundfonts")
+@input.command(name="soundfonts")
 @click.pass_context
 @click.option(
     "-f",
@@ -37,7 +40,7 @@ add.add_command(lightcurve)
     help="A filepath to the soundfont fixtures to add",
 )
 def add_soundfonts(
-        ctx: click.Context,
+        ctx: Context,  # noqa: undocumented-param
         filepath: Path,
 ) -> None:
     """
@@ -58,7 +61,7 @@ def add_soundfonts(
         click.echo("New soundfonts successfully added to Void Orchestra")
 
 
-@add.command(name="profiles")
+@input.command(name="profiles")
 @click.pass_context
 @click.option(
     "-f",
@@ -69,7 +72,7 @@ def add_soundfonts(
     help="A filepath to the sonification profile fixtures to add",
 )
 def add_sonification_profiles(
-        ctx: click.Context,
+        ctx: Context,  # noqa: undocumented-param
         filepath: Path,
 ) -> None:
     """
@@ -84,7 +87,9 @@ def add_sonification_profiles(
         engine := connect_to_database_engine(config_paths["database"]),
         info={"url": engine.url},
     ) as session:
-        SonificationProfile.load_fixtures(session, filepath)
+        sonification_profiles: List[SonificationProfile] =  SonificationProfile.load_fixtures(session, filepath)
 
     if ctx.obj["VERBOSE"] or ctx.obj["DEBUG"]:
-        click.echo("New sonification profiles successfully added to Void Orchestra")
+        click.echo(
+            f"{len(sonification_profiles)} sonification profiles successfully added to Void Orchestra"
+        )

@@ -6,6 +6,7 @@ Entry point for the `voidorchestra` command.
 from pathlib import Path
 
 import click
+from click import Context
 
 from voidorchestra import config_paths
 from voidorchestra.db import create_new_database
@@ -31,7 +32,7 @@ def init() -> None:
     help="The location to write a new database to.",
 )
 def init_database(
-        ctx: click.Context,
+        ctx: Context,  # noqa: undocumented-param
         db: Path,
 ) -> None:
     """
@@ -39,8 +40,6 @@ def init_database(
 
     Parameters
     ----------
-    ctx: click.Context
-        Click context
     db: Path
         Path to the database location
     """

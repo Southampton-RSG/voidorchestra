@@ -9,6 +9,7 @@ or project.
 """
 from typing import TYPE_CHECKING, List
 
+from IPython.core.tbtools import nullrepr
 from sqlalchemy import Boolean, Column, ForeignKey, Integer
 from sqlalchemy.orm import Mapped, relationship, mapped_column, backref
 
@@ -56,7 +57,7 @@ class Subject(Base):  # pylint: disable=too-few-public-methods
     sonification_id: Mapped[int] = mapped_column(ForeignKey("sonification.id"), nullable=False)
     sonification: Mapped['Sonification'] = relationship(back_populates="subject", uselist=False)
 
-    subject_set_id: Mapped[int] = mapped_column(ForeignKey("subject_set.id"), nullable=False)
+    subject_set_id: Mapped[int] = mapped_column(ForeignKey("subject_set.id"), nullable=True)
     subject_set: Mapped['SubjectSet'] = relationship("SubjectSet", back_populates="subjects", uselist=False)
 
     classifications: Mapped[List['Classification']] = relationship(
@@ -66,7 +67,7 @@ class Subject(Base):  # pylint: disable=too-few-public-methods
     zooniverse_project_id: Mapped[int] = mapped_column(Integer)
     zooniverse_subject_id: Mapped[int] = mapped_column(Integer)
     zooniverse_subject_set_id: Mapped[int] = mapped_column(Integer)
-    zooniverse_workflow_id: Mapped[int] = mapped_column(Integer)
+    zooniverse_workflow_id: Mapped[int] = mapped_column(Integer, nullable=True)
 
     retired: Mapped[bool] = mapped_column(Boolean)
 

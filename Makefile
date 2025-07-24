@@ -118,18 +118,18 @@ print-%:
 ############################################################################################
 
 database:
-	uv run void-orchestra remove database
-	uv run void-orchestra clear sonifications --hard
-	uv run void-orchestra init database
+	uv run void-orchestra --debug delete database
+	uv run void-orchestra --debug delete sonifications --hard
+	uv run void-orchestra --debug init database
 
 fixtures:
-	uv run void-orchestra clear soundfonts
-	uv run void-orchestra clear profiles
-	uv run void-orchestra add soundfonts
-	uv run void-orchestra add profiles
+	uv run void-orchestra --debug delete soundfonts
+	uv run void-orchestra --debug delete profiles
+	uv run void-orchestra --debug input soundfonts
+	uv run void-orchestra --debug input profiles
 
 synthetic:
-	uv run scripts/add_synthetic_lightcurves_regular.py
+	uv run scripts/generate_synthetic_lightcurves.py
 
 sonifications:
 	uv run void-orchestra create sonifications --regenerate

@@ -15,9 +15,13 @@ with Session(
     engine := connect_to_database_engine(config_paths["database"]),
     info={"url": engine.url}
 ) as session:
+
+
+
     composite_model: QPOModelComposite = QPOModelComposite(
         name="Composite mostly Lorentzian",
     ).add_components(
+        session=session,
         [
             {
                 'model': QPOModelBPL,
@@ -58,68 +62,68 @@ with Session(
 
 
 #
-# standard_parameters: Dict[str, Any] = {
-#     "repeats": [0, 1, 2],
-#     "rate_mean": 25 * u.s**-1,
-#     "observation_cadence": TimeDelta(3, format="jd"),
-#     "campaign_length": TimeDelta(360, format="jd"),  # ~17 periods
-#     "model_definition": [
-#         QPOModelBPL(
-#             name="BPL",
-#             variance_fraction=0.4,
-#             coherence=5.0,
-#             period=TimeDelta(21, format="jd"),
-#         ),
-#         QPOModelComposite(
-#             name="Composite mostly BPL",
-#             qpo_model_children=[
-#                 QPOModelBPL(
-#                     variance_fraction=0.3,
-#                     coherence=5.0,
-#                     period=TimeDelta(21, format="jd"),
-#                 ),
-#                 QPOModelLorentzian(
-#                     variance_fraction=0.1,
-#                     coherence=5.0,
-#                     period=TimeDelta(21, format="jd"),
-#                 ),
-#             ]
-#         ),
-#         QPOModelComposite(
-#             name="Composite 50:50 BPL:Lorentzian",
-#             qpo_model_children=[
-#                 QPOModelBPL(
-#                     variance_fraction=0.2,
-#                     coherence=5.0,
-#                     period=TimeDelta(21, format="jd"),
-#                 ),
-#                 QPOModelLorentzian(
-#                     variance_fraction=0.2,
-#                     coherence=5.0,
-#                     period=TimeDelta(21, format="jd"),
-#                 ),
-#             ]
-#         ),
-#         QPOModelComposite(
-#             name="Composite mostly Lorentzian",
-#             qpo_model_children=[
-#                 QPOModelBPL(
-#                     variance_fraction=0.1,
-#                     coherence=5.0,
-#                     period=TimeDelta(21, format="jd"),
-#                 ),
-#                 QPOModelLorentzian(
-#                     variance_fraction=0.3,
-#                     coherence=5.0,
-#                     period=TimeDelta(21, format="jd"),
-#                 ),
-#             ]
-#         ),
-#         QPOModelLorentzian(
-#             name="Basic Lorentzian",
-#             variance_fraction=0.4,
-#             coherence=5.0,
-#             period=TimeDelta(21, format="jd"),
-#         ),
-#     ],
-# # }
+standard_parameters: Dict[str, Any] = {
+    "repeats": [0, 1, 2],
+    "rate_mean": 25 * u.s**-1,
+    "observation_cadence": TimeDelta(3, format="jd"),
+    "campaign_length": TimeDelta(360, format="jd"),  # ~17 periods
+    "model_definition": [
+        QPOModelBPL(
+            name="BPL",
+            variance_fraction=0.4,
+            coherence=5.0,
+            period=TimeDelta(21, format="jd"),
+        ),
+        QPOModelComposite(
+            name="Composite mostly BPL",
+            qpo_model_children=[
+                QPOModelBPL(
+                    variance_fraction=0.3,
+                    coherence=5.0,
+                    period=TimeDelta(21, format="jd"),
+                ),
+                QPOModelLorentzian(
+                    variance_fraction=0.1,
+                    coherence=5.0,
+                    period=TimeDelta(21, format="jd"),
+                ),
+            ]
+        ),
+        QPOModelComposite(
+            name="Composite 50:50 BPL:Lorentzian",
+            qpo_model_children=[
+                QPOModelBPL(
+                    variance_fraction=0.2,
+                    coherence=5.0,
+                    period=TimeDelta(21, format="jd"),
+                ),
+                QPOModelLorentzian(
+                    variance_fraction=0.2,
+                    coherence=5.0,
+                    period=TimeDelta(21, format="jd"),
+                ),
+            ]
+        ),
+        QPOModelComposite(
+            name="Composite mostly Lorentzian",
+            qpo_model_children=[
+                QPOModelBPL(
+                    variance_fraction=0.1,
+                    coherence=5.0,
+                    period=TimeDelta(21, format="jd"),
+                ),
+                QPOModelLorentzian(
+                    variance_fraction=0.3,
+                    coherence=5.0,
+                    period=TimeDelta(21, format="jd"),
+                ),
+            ]
+        ),
+        QPOModelLorentzian(
+            name="Basic Lorentzian",
+            variance_fraction=0.4,
+            coherence=5.0,
+            period=TimeDelta(21, format="jd"),
+        ),
+    ],
+# }

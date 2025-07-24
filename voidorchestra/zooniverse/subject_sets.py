@@ -6,15 +6,13 @@ The subject sets module contains functions which are used to manage subject
 sets on Zooniverse. It does not contain any functionality for the active
 learning "priority" subject sets.
 """
-from typing import List
-
 from panoptes_client import Project as PanoptesProject, SubjectSet as PanoptesSubjectSet
 
 
 # Private functions ------------------------------------------------------------
 def __create_new_panoptes_subject_set(
         panoptes_project: PanoptesProject,
-        subject_set_name: str
+        subject_set_name: str,
 ) -> PanoptesSubjectSet:
     """
     Create a new subject set on Zooniverse.
@@ -35,10 +33,13 @@ def __create_new_panoptes_subject_set(
         The new subject set, with the given name and linked to the given
         project.
     """
-    panoptes_subject_set = PanoptesSubjectSet()
-    panoptes_subject_set.links.project = panoptes_project
+    panoptes_subject_set: PanoptesSubjectSet = PanoptesSubjectSet()
     panoptes_subject_set.display_name = subject_set_name
+    panoptes_subject_set.links.project = panoptes_project
     panoptes_subject_set.save()
+
+    panoptes_project.add_subject_sets(panoptes_subject_set)
+    panoptes_project.save()
 
     return panoptes_subject_set
 
@@ -46,7 +47,7 @@ def __create_new_panoptes_subject_set(
 # Public functions -------------------------------------------------------------
 def get_named_panoptes_subject_set_in_panoptes_project(
         panoptes_project: PanoptesProject,
-        proposed_subject_set_name: str
+        proposed_subject_set_name: str,
 ) -> PanoptesSubjectSet:
     """
     Retrieve or create a named subject set in a project.
@@ -69,17 +70,14 @@ def get_named_panoptes_subject_set_in_panoptes_project(
         The subject set of the given name. This is either a new subject set
         or one which already existed and was linked to the project.
     """
-    panoptes_project_subject_sets: List[PanoptesSubjectSet] = list(panoptes_project.links.subject_sets)
-    # no subject sets exist, start from scratch
-    if len(panoptes_project_subject_sets) == 0:
-        return __create_new_panoptes_subject_set(panoptes_project, proposed_subject_set_name)
+    panoptes_subject_set: PanoptesSubjectSet|None = None
+    for panoptes_subject_set_iter in panoptes_project.links.subject_sets:
+        if panoptes_subject_set_iter.display_name == proposed_subject_set_name:
+            panoptes_subject_set = panoptes_subject_set_iter
 
-    project_subject_set_names = [panoptes_subject_set.display_name for panoptes_subject_set in panoptes_project_subject_sets]
-    # new subject set for project, start from scratch
-    if proposed_subject_set_name not in project_subject_set_names:
-        return __create_new_panoptes_subject_set(panoptes_project, proposed_subject_set_name)
-
-    # since the subject set must exist, find the index in the name list and
-    # return the PanoptesSubjectSet object
-    idx: int = project_subject_set_names.index(proposed_subject_set_name)
-    return panoptes_project.links.subject_sets[idx]
+    if not panoptes_subject_set:
+        return __create_new_panoptes_subject_set(
+            panoptes_project, proposed_subject_set_name,
+        )
+    else:
+        return panoptes_subject_set

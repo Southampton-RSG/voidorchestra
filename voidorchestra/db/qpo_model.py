@@ -12,7 +12,7 @@ from astropy.time import TimeDelta
 from astropy.units import Quantity
 from mind_the_gaps.models.psd_models import SHO, BendingPowerlaw, Lorentzian
 from sqlalchemy import Double, Float, ForeignKey, String
-from sqlalchemy.orm import Mapped, backref, mapped_column, relationship
+from sqlalchemy.orm import Mapped, Session, backref, mapped_column, relationship
 
 from voidorchestra.db import Base, LightcurveSynthetic
 
@@ -51,8 +51,8 @@ class QPOModel(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     qpo_model_parent_id: Mapped[int] = mapped_column(ForeignKey("qpo_model.id"), nullable=True)
-    name: Mapped[str] = mapped_column(String(32))
-    polymorphic_type: Mapped[str] = mapped_column(String(32), unique=True, nullable=False)
+    name: Mapped[str] = mapped_column(String(32), nullable=True)
+    polymorphic_type: Mapped[str] = mapped_column(String(32), nullable=False, unique=False)
     model: Mapped[str] = mapped_column(String(32), nullable=True)
     coherence: Mapped[float] = mapped_column(Float(), nullable=True)
     variance_fraction: Mapped[float] = mapped_column(Float(), nullable=True)
@@ -108,6 +108,7 @@ class QPOModelComposite(QPOModel):
 
     def add_components(
             self,
+            session: Session,
             components: List[Dict[str, Any]]
     ) -> 'QPOModelComposite':
         """
@@ -115,6 +116,8 @@ class QPOModelComposite(QPOModel):
 
         Parameters
         ----------
+        session: Session
+            The database session to add the children in.
         components: List[Dict[str, Any]
             The children to add to the model.
 
@@ -124,11 +127,12 @@ class QPOModelComposite(QPOModel):
             Self, for chaining methods.
         """
         for idx, component in enumerate(components):
-            component['model'](
+            qpo_model: QPOModel = component['model'](
                 name=f"{self.name} component: {idx}",
                 qpo_model_parent=self,
                 **component['arguments'],
             )
+            session.add(qpo_model)
 
         return self
 

@@ -6,25 +6,33 @@ This module contains sub-commands for `voidorchestra sync`.
 The commands should be used to sync the Void Orchestra database with Zooniverse.
 """
 import click
+from click import Choice, Context
 from panoptes_client import Subject, SubjectSet
 from sqlalchemy.orm import Session
 
-import voidorchestra.db
-import voidorchestra.zooniverse.classifications
-import voidorchestra.zooniverse.subjects
-import voidorchestra.zooniverse.sync
-import voidorchestra.zooniverse.zooniverse
 from voidorchestra import config
+from voidorchestra.db import connect_to_database_engine
+from voidorchestra.zooniverse.classifications import update_classification_database
+from voidorchestra.zooniverse.sync import sync_local_subject_set_database_with_zooniverse, sync_subject_database_with_zooniverse
+from voidorchestra.zooniverse.zooniverse import connect_to_zooniverse
 
 
 @click.group()
 def sync():
-    """Sync Void Orchestra with Zooniverse"""
+    """
+    Sync Void Orchestra with Zooniverse
+    """
 
 
 @sync.command(name="subjects")
 @click.pass_context
-@click.argument("source", nargs=1, type=click.Choice(["project", "subject_set", "workflow"], case_sensitive=False))
+@click.argument(
+    "source", nargs=1,
+    type=Choice(
+        ["project", "subject_set", "workflow"],
+        case_sensitive=False
+    ),
+)
 @click.option(
     "-id",
     "--source_id",
@@ -33,7 +41,11 @@ def sync():
     default=None,
     help="An optional specified ID for the source if not using the default",
 )
-def update_subject_table(ctx: click.Context, source: str, source_id: int) -> None:
+def update_subject_table(
+        ctx: Context,  # noqa: undocumented-param
+        source: str,
+        source_id: int
+) -> None:
     """
     Sync the subject database with Zooniverse
 
@@ -47,7 +59,7 @@ def update_subject_table(ctx: click.Context, source: str, source_id: int) -> Non
         \b
         source     The source to get subjects from {project|subject_set|workflow}
     """
-    voidorchestra.zooniverse.zooniverse.connect_to_zooniverse()
+    connect_to_zooniverse()
 
     if source == "project":
         subjects_to_add = Subject.where(
@@ -69,9 +81,10 @@ def update_subject_table(ctx: click.Context, source: str, source_id: int) -> Non
         return
 
     with Session(
-        engine := voidorchestra.db.connect_to_database_engine(config["PATHS"]["database"]), info={"url": engine.url}
+            engine := connect_to_database_engine(config["PATHS"]["database"]),
+            info={"url": engine.url}
     ) as session:
-        voidorchestra.zooniverse.sync.sync_subject_database_with_zooniverse(
+        sync_subject_database_with_zooniverse(
             session,
             subjects_to_add,
             subjects_to_add.meta["count"],
@@ -90,7 +103,11 @@ def update_subject_table(ctx: click.Context, source: str, source_id: int) -> Non
     default=None,
     help="An optional specified ID for the source if not using the default",
 )
-def update_subject_set_table(ctx: click.Context, source: str, source_id: int) -> None:
+def update_subject_set_table(
+        ctx: Context,   # noqa: undocumented-param
+        source: str,
+        source_id: int
+) -> None:
     """
     Sync the subject set database with Zooniverse
 
@@ -106,7 +123,7 @@ def update_subject_set_table(ctx: click.Context, source: str, source_id: int) ->
         source     The source to get subjects from {project|workflow}
         source_id  The Zooniverse ID of the source
     """
-    voidorchestra.zooniverse.zooniverse.connect_to_zooniverse()
+    connect_to_zooniverse()
 
     if source == "project":
         subject_sets_to_add = SubjectSet.where(
@@ -126,11 +143,12 @@ def update_subject_set_table(ctx: click.Context, source: str, source_id: int) ->
         return
 
     with Session(
-        engine := voidorchestra.db.connect_to_database_engine(config["PATHS"]["database"]),
-        info={"url": engine.url}
+        engine := connect_to_database_engine(config["PATHS"]["database"]),
+        info={"url": engine.url},
     ) as session:
-        voidorchestra.zooniverse.sync.sync_local_subject_set_database_with_zooniverse(
-            session, subject_sets_to_add, subject_sets_to_add.meta["count"], ctx.obj["COMMIT_FREQUENCY"]
+        sync_local_subject_set_database_with_zooniverse(
+            session, subject_sets_to_add,
+            subject_sets_to_add.meta["count"], ctx.obj["COMMIT_FREQUENCY"]
         )
 
 
@@ -138,14 +156,15 @@ def update_subject_set_table(ctx: click.Context, source: str, source_id: int) ->
 @click.pass_context
 @click.option(
     "-id",
-    "--workflow_id",
+    "--zooniverse_workflow_id",
     nargs=1,
     type=int,
-    default=config["ZOONIVERSE"]["workflow_id"],
-    show_default=True,
     help="The ID of the Zooniverse workflow, if not the default",
 )
-def update_classification_table(ctx: click.Context, workflow_id: int) -> None:
+def update_classification_table(
+        ctx: Context,
+        zooniverse_workflow_id: int
+) -> None:
     """
     Add classifications to the MoleMarshal database
 
@@ -153,8 +172,8 @@ def update_classification_table(ctx: click.Context, workflow_id: int) -> None:
     workflow will be downloaded. Note that this sub-command assumes that Caesar
     extractors and reducers are in used to generate consensus classifications.
     """
-    voidorchestra.zooniverse.zooniverse.connect_to_zooniverse()
-    voidorchestra.zooniverse.classifications.update_classification_database(
-        workflow_id,
+    connect_to_zooniverse()
+    update_classification_database(
+        zooniverse_workflow_id,
         ctx.obj["COMMIT_FREQUENCY"],
     )

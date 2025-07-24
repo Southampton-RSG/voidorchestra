@@ -62,10 +62,12 @@ class SonificationProfile(Base):  # pylint: disable=too-few-public-methods
 
     sonifications: Mapped[List['Sonification']] = relationship(back_populates="sonification_profile")
     sonification_method: Mapped['SonificationMethod'] = relationship(back_populates="sonification_profiles")
-    subject_sets: Mapped[List['SubjectSet']] = relationship(back_populates="sonification_profile")
+    subject_sets: Mapped['SubjectSet'] = relationship(
+        back_populates="sonification_profile", uselist=True
+    )
 
     COLUMNS: List[str] = [
-        'id', 'sonification_method_id', 'tempo', 'key', 'name', 'description'
+        'id', 'sonification_method_id', 'tempo', 'key', 'name', 'description',
     ]
 
     __table_args__ = (
@@ -74,13 +76,13 @@ class SonificationProfile(Base):  # pylint: disable=too-few-public-methods
     )
 
     def __repr__(self) -> str:
-        return f"SonificationProfile(id={self.id}, name={self.sonification_method.name}: {self.name})"
+        return f"SonificationProfile(id={self.id}, name={self.name})"
 
     @staticmethod
     def load_fixtures(
             session: Session,
             fixtures_path: Path = None,
-    ) -> None:
+    ) -> List['SonificationProfile']:
         """
         Loads the fixtures from disk (if they aren't loaded already)
 
@@ -112,12 +114,16 @@ class SonificationProfile(Base):  # pylint: disable=too-few-public-methods
                     f"Difference: {set(expected_columns).difference(set(fixtures.fieldnames))}."
                 )
 
+            sonification_profiles: List[SonificationProfile] = []
             for fixture in fixtures:
-                session.add(
-                    SonificationProfile(**fixture)
-                )
+                if not session.query(SonificationProfile).filter(SonificationProfile.id == fixture['id']).first():
+                   sonification_profiles.append(
+                       SonificationProfile(**fixture)
+                   )
 
+        session.add_all(sonification_profiles)
         session.commit()
+        return sonification_profiles
 
     def get_key(self) -> List[str]:
         """

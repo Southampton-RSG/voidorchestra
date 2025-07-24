@@ -397,7 +397,7 @@ def bin_subjects_into_priority_panoptes_subject_sets(
                     panoptes_subject: PanoptesSubject = PanoptesSubject.find(local_subject.zooniverse_subject_id)
                     old_panoptes_subject_set.remove(panoptes_subject)
 
-                priority_panoptes_subject_sets[priority].add(panoptes_subject)
+                priority_panoptes_subject_sets[priority].input(panoptes_subject)
                 local_subject.zooniverse_subject_set_id = priority_panoptes_subject_sets[priority].id
                 local_subject.zooniverse_workflow_id = panoptes_workflow_id
 

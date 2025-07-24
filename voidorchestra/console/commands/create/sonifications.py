@@ -4,7 +4,7 @@ Create sonification files for yet-to-be-processed sonifications
 from typing import List
 
 import click
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Query, Session
 
 from voidorchestra import config_paths
 from voidorchestra.db import Sonification, commit_database, connect_to_database_engine

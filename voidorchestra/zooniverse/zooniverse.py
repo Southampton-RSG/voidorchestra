@@ -42,7 +42,7 @@ def connect_to_zooniverse() -> None:
 
 
 def open_zooniverse_project(
-        zooniverse_project_id: str | int
+        panoptes_project_id: str | int | None = None,
 ) -> PanoptesProject:
     """
     Retrieve a Zooniverse project with the given ID.
@@ -53,18 +53,22 @@ def open_zooniverse_project(
 
     Parameters
     ----------
-    zooniverse_project_id: str | str
+    panoptes_project_id: str | int | None
         The ID for the Zooniverse project.
+        Defaults to the value from the project config files.
 
     Returns
     -------
     panoptes_project: PanoptesProject
         The project requested.
     """
+    if not panoptes_project_id:
+        panoptes_project_id = config["ZOONIVERSE"]["project_id"]
+
     try:
-        panoptes_project = PanoptesProject.find(zooniverse_project_id)
+        panoptes_project: PanoptesProject = PanoptesProject.find(panoptes_project_id)
     except PanoptesAPIException as exception:
-        raise ValueError(f"Unable to find a project with ID {zooniverse_project_id}") from exception
+        raise ValueError(f"Unable to find a project with ID {panoptes_project_id}") from exception
 
     logger.debug("Opened project %s", panoptes_project.title)
 
