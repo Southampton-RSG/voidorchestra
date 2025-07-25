@@ -6,15 +6,13 @@ This module contains sub-commands for `voidorchestra upload`.
 The commands should be used to upload new things, such as subjects or subject
 sets, to the Zooniverse project.
 """
+
 import click
 from click import Context
-from panoptes_client import Project as PanoptesProject, Workflow as PanoptesWorkflow
-from sqlalchemy.orm import Session
 
-from voidorchestra import config, config_paths
-from voidorchestra.db import SonificationProfile, connect_to_database_engine
+from voidorchestra import config
 from voidorchestra.zooniverse.subjects import upload_sonifications_to_zooniverse
-from voidorchestra.zooniverse.zooniverse import connect_to_zooniverse, open_zooniverse_project
+from voidorchestra.zooniverse.zooniverse import connect_to_zooniverse
 
 
 @click.group()

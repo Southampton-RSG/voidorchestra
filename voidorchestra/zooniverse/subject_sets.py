@@ -6,13 +6,14 @@ The subject sets module contains functions which are used to manage subject
 sets on Zooniverse. It does not contain any functionality for the active
 learning "priority" subject sets.
 """
+
 from panoptes_client import Project as PanoptesProject, SubjectSet as PanoptesSubjectSet
 
 
 # Private functions ------------------------------------------------------------
 def __create_new_panoptes_subject_set(
-        panoptes_project: PanoptesProject,
-        subject_set_name: str,
+    panoptes_project: PanoptesProject,
+    subject_set_name: str,
 ) -> PanoptesSubjectSet:
     """
     Create a new subject set on Zooniverse.
@@ -46,8 +47,8 @@ def __create_new_panoptes_subject_set(
 
 # Public functions -------------------------------------------------------------
 def get_named_panoptes_subject_set_in_panoptes_project(
-        panoptes_project: PanoptesProject,
-        proposed_subject_set_name: str,
+    panoptes_project: PanoptesProject,
+    proposed_subject_set_name: str,
 ) -> PanoptesSubjectSet:
     """
     Retrieve or create a named subject set in a project.
@@ -70,14 +71,15 @@ def get_named_panoptes_subject_set_in_panoptes_project(
         The subject set of the given name. This is either a new subject set
         or one which already existed and was linked to the project.
     """
-    panoptes_subject_set: PanoptesSubjectSet|None = None
+    panoptes_subject_set: PanoptesSubjectSet | None = None
     for panoptes_subject_set_iter in panoptes_project.links.subject_sets:
         if panoptes_subject_set_iter.display_name == proposed_subject_set_name:
             panoptes_subject_set = panoptes_subject_set_iter
 
     if not panoptes_subject_set:
         return __create_new_panoptes_subject_set(
-            panoptes_project, proposed_subject_set_name,
+            panoptes_project,
+            proposed_subject_set_name,
         )
     else:
         return panoptes_subject_set

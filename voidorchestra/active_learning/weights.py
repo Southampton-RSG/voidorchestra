@@ -5,6 +5,7 @@ The weight module handles assigning weights to subjects and to subject sets.
 The weights are used to alter the probability of a subject or subject from a
 subject set being shown to a user.
 """
+
 import ast
 import copy
 import logging
@@ -12,7 +13,12 @@ import math
 from logging import Logger
 from typing import Iterable, List, Set
 
-from panoptes_client import Project as PanoptesProject, Subject as PanoptesSubject, SubjectSet as PanoptesSubjectSet, Workflow as PanoptesWorkflow
+from panoptes_client import (
+    Project as PanoptesProject,
+    Subject as PanoptesSubject,
+    SubjectSet as PanoptesSubjectSet,
+    Workflow as PanoptesWorkflow,
+)
 from sqlalchemy import or_
 from sqlalchemy.orm import Query, Session
 from tqdm import tqdm
@@ -28,11 +34,11 @@ logger: Logger = get_logger(__name__.replace(".", "-"))
 
 # Private functions ------------------------------------------------------------
 def __create_new_panoptes_subject_set(
-        panoptes_project: PanoptesProject,
-        panoptes_workflow: PanoptesWorkflow,
-        display_name: str,
-        priority: int,
-        session: Session
+    panoptes_project: PanoptesProject,
+    panoptes_workflow: PanoptesWorkflow,
+    display_name: str,
+    priority: int,
+    session: Session,
 ) -> PanoptesSubjectSet:
     """
     Create a new subject set on Zooniverse.
@@ -77,10 +83,7 @@ def __create_new_panoptes_subject_set(
     return panoptes_subject_set
 
 
-def __binning_checkpoint(
-        panoptes_subject_sets_to_update: List[PanoptesSubjectSet],
-        session: Session
-) -> None:
+def __binning_checkpoint(panoptes_subject_sets_to_update: List[PanoptesSubjectSet], session: Session) -> None:
     """
     Save changes to subject sets and the database session.
 
@@ -100,11 +103,11 @@ def __binning_checkpoint(
 
 
 def __create_missing_priority_local_subject_sets(
-        session: Session,
-        project_id: str | int,
-        panoptes_workflow_id: str | int,
-        num_sets: int,
-        priorities: List[int] | None = None
+    session: Session,
+    project_id: str | int,
+    panoptes_workflow_id: str | int,
+    num_sets: int,
+    priorities: List[int] | None = None,
 ) -> List[LocalSubjectSet]:
     """
     Create new or find a subject set for the given priorities in the DB.
@@ -140,7 +143,7 @@ def __create_missing_priority_local_subject_sets(
     # subject sets. If it is provided, then we need to figure out which
     # priorities are missing using set().difference() on range(1, num_sets+1)
     if priorities:
-        new_priorities_to_create: List[int]|Set[int] = set(range(1, num_sets + 1)).difference(priorities)
+        new_priorities_to_create: List[int] | Set[int] = set(range(1, num_sets + 1)).difference(priorities)
     else:
         new_priorities_to_create: List[int] = range(1, num_sets + 1)
 
@@ -154,18 +157,21 @@ def __create_missing_priority_local_subject_sets(
             .filter(LocalSubjectSet.priority == int(priority))
             .filter(
                 # pylint: disable=singleton-comparison
-                or_(LocalSubjectSet.zooniverse_workflow_id == int(panoptes_workflow.id), LocalSubjectSet.zooniverse_workflow_id is None)
+                or_(
+                    LocalSubjectSet.zooniverse_workflow_id == int(panoptes_workflow.id),
+                    LocalSubjectSet.zooniverse_workflow_id is None,
+                )
             )
         )
         num_existing_local_subject_sets: int = existing_local_subject_sets.count()
 
         if num_existing_local_subject_sets:
-            logger.debug(
-                f"A subject set already exists with priority {priority} for workflow {panoptes_workflow.id}"
-            )
+            logger.debug(f"A subject set already exists with priority {priority} for workflow {panoptes_workflow.id}")
             for _iter in existing_local_subject_sets:
                 if _iter.workflow_id is None:  # pylint: disable=singleton-comparison
-                    index: int = [subject_set.display_name for subject_set in panoptes_project.links.subject_sets].index(display_name)
+                    index: int = [
+                        subject_set.display_name for subject_set in panoptes_project.links.subject_sets
+                    ].index(display_name)
                     panoptes_subject_set: PanoptesSubjectSet = panoptes_project.links.subject_sets[index]
                     _iter.workflow_id = int(panoptes_workflow.id)
             # this is purely a safety mechanism in-case the subject set is
@@ -175,7 +181,9 @@ def __create_missing_priority_local_subject_sets(
                     panoptes_project, panoptes_workflow, display_name, priority, session
                 )
         else:
-            panoptes_subject_set: PanoptesSubjectSet = __create_new_panoptes_subject_set(panoptes_project, panoptes_workflow, display_name, priority, session)
+            panoptes_subject_set: PanoptesSubjectSet = __create_new_panoptes_subject_set(
+                panoptes_project, panoptes_workflow, display_name, priority, session
+            )
 
         assign_panoptes_workflow_to_panoptes_subject_set(panoptes_workflow, panoptes_subject_set)
 
@@ -190,9 +198,7 @@ def __create_missing_priority_local_subject_sets(
 
 # Public functions -------------------------------------------------------------
 def get_priority_panoptes_subject_sets(
-        panoptes_project_id: str | int,
-        panoptes_workflow_id: str | int,
-        num_priority_subject_sets: int
+    panoptes_project_id: str | int, panoptes_workflow_id: str | int, num_priority_subject_sets: int
 ) -> List[PanoptesSubjectSet]:
     """
     Return a list of Panoptes SubjectSets which are used for priority/confidence
@@ -227,7 +233,9 @@ def get_priority_panoptes_subject_sets(
         SubjectSet objects.
     """
     requested_priorities: List[int] = list(range(1, num_priority_subject_sets + 1))
-    panoptes_subject_sets: List[PanoptesSubjectSet] = PanoptesSubjectSet.where(project_id=config["ZOONIVERSE"]["project_id"])
+    panoptes_subject_sets: List[PanoptesSubjectSet] = PanoptesSubjectSet.where(
+        project_id=config["ZOONIVERSE"]["project_id"]
+    )
 
     with Session(
         engine := connect_to_database_engine(config_paths["database"]),
@@ -248,18 +256,26 @@ def get_priority_panoptes_subject_sets(
         # We need to ensure there are no missing digits, e.g. if priorities =
         # [1, 3, 4], is_sequential will be False. But will be true if
         # priorities = [1, 3, 2] or some combination like that
-        priorities_in_database: List[int] = [subject_set.priority for subject_set in local_subject_sets_already_in_workflow]
+        priorities_in_database: List[int] = [
+            subject_set.priority for subject_set in local_subject_sets_already_in_workflow
+        ]
 
         if priorities_in_database:
-            sequential_priorities: List[int]|None = sorted(priorities_in_database) == list(
+            sequential_priorities: List[int] | None = sorted(priorities_in_database) == list(
                 range(min(priorities_in_database), max(priorities_in_database) + 1)
             )
         else:
-            sequential_priorities: List[int]|None = False
+            sequential_priorities: List[int] | None = False
 
         if len(priorities_in_database) != num_priority_subject_sets or sequential_priorities is False:
-            local_subject_sets_already_in_workflow: List[LocalSubjectSet] = __create_missing_priority_local_subject_sets(
-                session, panoptes_project_id, panoptes_workflow_id, num_priority_subject_sets, priorities_in_database
+            local_subject_sets_already_in_workflow: List[LocalSubjectSet] = (
+                __create_missing_priority_local_subject_sets(
+                    session,
+                    panoptes_project_id,
+                    panoptes_workflow_id,
+                    num_priority_subject_sets,
+                    priorities_in_database,
+                )
             )
 
     # return a list of SubjectSets sorted by priority
@@ -272,7 +288,7 @@ def get_priority_panoptes_subject_sets(
 def set_priority_subject_set_weights_for_workflow(
     panoptes_subject_set_ids: Iterable[str | int],
     weights_to_assign: Iterable[float],
-    panoptes_workflow: PanoptesWorkflow
+    panoptes_workflow: PanoptesWorkflow,
 ) -> None:
     """
     Set the priority weights for subject sets in a workflow.
@@ -379,15 +395,22 @@ def bin_subjects_into_priority_panoptes_subject_sets(
             # when the machine confidence changes into a different priority bin,
             # the subject has to be removed from the old subject set and moved
             # into the new one
-            if local_subject.zooniverse_subject_set_id and local_subject.zooniverse_subject_set_id != priority_panoptes_subject_sets[priority].id:
+            if (
+                local_subject.zooniverse_subject_set_id
+                and local_subject.zooniverse_subject_set_id != priority_panoptes_subject_sets[priority].id
+            ):
                 try:
                     # disabling the following warning, because the code works as expected
                     # pylint: disable=cell-var-from-loop
                     old_panoptes_subject_set: PanoptesSubjectSet = next(
-                        filter(lambda x: x.id == local_subject.zooniverse_subject_set_id, priority_panoptes_subject_sets)
+                        filter(
+                            lambda x: x.id == local_subject.zooniverse_subject_set_id, priority_panoptes_subject_sets
+                        )
                     )
                 except StopIteration:
-                    old_panoptes_subject_set: PanoptesSubjectSet = PanoptesSubjectSet.find(local_subject.zooniverse_subject_set_id)
+                    old_panoptes_subject_set: PanoptesSubjectSet = PanoptesSubjectSet.find(
+                        local_subject.zooniverse_subject_set_id
+                    )
                     priority_panoptes_subject_sets.append(old_panoptes_subject_set)
 
                 # if the subject is new (i.e. never been in a subject set
@@ -404,16 +427,13 @@ def bin_subjects_into_priority_panoptes_subject_sets(
             if (i + 1) % commit_frequency == 0:
                 __binning_checkpoint(priority_panoptes_subject_sets, session)
                 logger.debug(
-                    f"Processed {i+1}/{num_local_subjects} ({100 * (i+1) / num_local_subjects:.0f}) subjects",
+                    f"Processed {i + 1}/{num_local_subjects} ({100 * (i + 1) / num_local_subjects:.0f}) subjects",
                 )
         __binning_checkpoint(priority_panoptes_subject_sets, session)
         logger.debug(f"Processed {num_local_subjects}/{num_local_subjects} (100%%) subjects")
 
 
-def unlink_unused_subject_sets_from_workflow(
-        panoptes_workflow: PanoptesWorkflow,
-        num_priority_sets: int
-) -> None:
+def unlink_unused_subject_sets_from_workflow(panoptes_workflow: PanoptesWorkflow, num_priority_sets: int) -> None:
     """
     Unlink priority subject sets which are not used in a workflow.
 
@@ -432,8 +452,8 @@ def unlink_unused_subject_sets_from_workflow(
     """
     panoptes_workflow.reload()
     with Session(
-            engine := connect_to_database_engine(config["PATHS"]["database"]),
-            info={"url": engine.url},
+        engine := connect_to_database_engine(config["PATHS"]["database"]),
+        info={"url": engine.url},
     ) as session:
         local_subject_sets_to_remove: Query[LocalSubjectSet] = (
             session.query(LocalSubjectSet)

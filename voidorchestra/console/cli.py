@@ -3,42 +3,34 @@
 """
 Entry point for the `void-orchestra` command.
 """
+
 from logging import DEBUG, INFO
 
 import click
 from click import Context
 
 from voidorchestra import log
-from voidorchestra.console.commands.input import input
 from voidorchestra.console.commands.admin import admin
 from voidorchestra.console.commands.check import check
 from voidorchestra.console.commands.create import create
-from voidorchestra.console.commands.init import init
 from voidorchestra.console.commands.delete import delete
+from voidorchestra.console.commands.init import init
+from voidorchestra.console.commands.input import input
 from voidorchestra.console.commands.sync import sync
 from voidorchestra.console.commands.upload import upload
 from voidorchestra.console.commands.watch import watch
 
 
 @click.group()
-@click.option(
-    "-cm", "--commit_freq", 
-    nargs=1, type=int, default=500, help="The frequency to commit changes"
-)
-@click.option(
-    "-v", "--verbose", 
-    flag_value=True, type=bool, help="Enable verbose output"
-)
-@click.option(
-    "-vv", "--debug", 
-    flag_value=True, type=bool, help="Enable debug output"
-)
+@click.option("-cm", "--commit_freq", nargs=1, type=int, default=500, help="The frequency to commit changes")
+@click.option("-v", "--verbose", flag_value=True, type=bool, help="Enable verbose output")
+@click.option("-vv", "--debug", flag_value=True, type=bool, help="Enable debug output")
 @click.pass_context
 def cli(
-        ctx: Context,  # noqa: undocumented-param
-        verbose: bool,
-        commit_freq: int,
-        debug: bool
+    ctx: Context,  # noqa: D417
+    verbose: bool,
+    commit_freq: int,
+    debug: bool,
 ) -> None:
     """
     Void Orchestra Conductor.

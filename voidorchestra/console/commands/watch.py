@@ -5,6 +5,7 @@ This module contains sub-commands for `molegazer watch`.
 
 The commands should watch directories for changes.
 """
+
 import time
 from typing import Optional
 
@@ -21,8 +22,7 @@ def watch():
 
 
 @watch.command(
-    name="images",
-    help="Inputs the files in the config file's PATHS:images_new directory into the database."
+    name="images", help="Inputs the files in the config file's PATHS:images_new directory into the database."
 )
 @click.pass_context
 @click.option(
@@ -31,7 +31,7 @@ def watch():
     nargs=1,
     type=click.Path(dir_okay=True, exists=True),
     default=None,
-    help="An optional path to the directory to watch."
+    help="An optional path to the directory to watch.",
 )
 def watch_images(ctx: dict, directory: Optional[str] = None) -> None:
     """
@@ -45,16 +45,15 @@ def watch_images(ctx: dict, directory: Optional[str] = None) -> None:
         If provided, a directory to watch for new files in (that is not the default one)
     """
     if not directory:
-        directory = config['PATHS']['images_new']
-    elif directory == config['PATHS']['images_new']:
-        click.echo(
-            "Warning: Directory passed with `-d` is the same as the default directory!"
-        )
+        directory = config["PATHS"]["images_new"]
+    elif directory == config["PATHS"]["images_new"]:
+        click.echo("Warning: Directory passed with `-d` is the same as the default directory!")
 
     class OnCreatedEvent(watchdog.events.LoggingEventHandler):
         """
         Class that provides functions that are triggered when specific events occur.
         """
+
         def on_created(self, event: watchdog.events.FileSystemEvent):
             """
             Triggered when a file is created, prompts an upload of the images.
@@ -64,7 +63,7 @@ def watch_images(ctx: dict, directory: Optional[str] = None) -> None:
             event: FileSystemEvent
                 The event that has happened, including details on file path etc.
             """
-            upload_images(directory)
+            # upload_images(directory)
 
     event_handler: OnCreatedEvent = OnCreatedEvent()
     observer = watchdog.observers.Observer()

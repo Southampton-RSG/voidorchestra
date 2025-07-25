@@ -5,6 +5,7 @@ This module contains sub-commands for `molegazer remove`.
 
 These are (mostly) development commands designed to remove the DB
 """
+
 from logging import Logger
 from pathlib import Path
 from typing import List
@@ -15,7 +16,13 @@ from sqlalchemy.orm import Session
 
 import voidorchestra.log
 from voidorchestra import config_paths
-from voidorchestra.db import LightcurveCollection, Sonification, SonificationMethodSoundfont, SonificationProfile, Subject, connect_to_database_engine
+from voidorchestra.db import (
+    LightcurveCollection,
+    Sonification,
+    SonificationMethodSoundfont,
+    SonificationProfile,
+    connect_to_database_engine,
+)
 
 logger: Logger = voidorchestra.log.get_logger(__name__.replace(".", "-"))
 
@@ -27,13 +34,10 @@ def delete():
     """
 
 
-@delete.command(
-    name="database",
-    help="Deletes the database."
-)
+@delete.command(name="database", help="Deletes the database.")
 @click.pass_context
 def delete_database(
-        ctx: Context  # noqa: undocumented-param
+    ctx: Context,  # noqa: D417
 ) -> None:
     """
     Deletes the databasefilter(
@@ -43,30 +47,23 @@ def delete_database(
     if database_path.exists():
         database_path.unlink()
 
-        click.echo(
-            f"Deleted database at {database_path}"
-        )
+        click.echo(f"Deleted database at {database_path}")
     else:
-        click.echo(
-            f"No database to delete at {database_path}"
-        )
+        click.echo(f"No database to delete at {database_path}")
 
 
-@delete.command(
-    name="sonifications",
-    help="Clears generated sonifications from the database, and deletes the files."
-)
+@delete.command(name="sonifications", help="Clears generated sonifications from the database, and deletes the files.")
 @click.pass_context
 @click.option(
     "-h",
     "--hard",
     is_flag=True,
     default=False,
-    help="Whether to fully clear the output directory, even if there is no DB"
+    help="Whether to fully clear the output directory, even if there is no DB",
 )
 def delete_sonifications(
-        ctx: Context,  # noqa: undocumented-param
-        hard: bool = False
+    ctx: Context,  # noqa: D417
+    hard: bool = False,
 ) -> None:
     """
     Clear image files that have been uploaded.
@@ -85,22 +82,21 @@ def delete_sonifications(
             engine := connect_to_database_engine(config_paths["database"]),
             info={"url": engine.url},
         ) as session:
-
-            sonifications: List[Sonification] = session.query(Sonification).all()  # This bit is only here to type-hint for the IDE
+            sonifications: List[Sonification] = session.query(
+                Sonification
+            ).all()  # This bit is only here to type-hint for the IDE
             num_sonifications_deleted: int = 0
 
             for sonification in sonifications:
-                if sonification.path_audio and (path_audio := directory_output/sonification.path_audio).is_file():
+                if sonification.path_audio and (path_audio := directory_output / sonification.path_audio).is_file():
                     path_audio.unlink()
-                if sonification.path_video and (path_video := directory_output/sonification.path_video).is_file():
+                if sonification.path_video and (path_video := directory_output / sonification.path_video).is_file():
                     path_video.unlink()
-                if sonification.path_image and (path_image := directory_output/sonification.path_image).is_file():
+                if sonification.path_image and (path_image := directory_output / sonification.path_image).is_file():
                     path_image.unlink()
 
                 num_sonifications_deleted += 1
-                logger.debug(
-                    f"Deleting sonification {sonification}\n"
-                )
+                logger.debug(f"Deleting sonification {sonification}\n")
                 session.delete(sonification)
                 session.commit()
 
@@ -112,23 +108,18 @@ def delete_sonifications(
 
     if hard:
         num_sonifications_deleted: int = 0
-        for path_sonification in directory_output.rglob('*.mp*'):
+        for path_sonification in directory_output.rglob("*.mp*"):
             path_sonification.unlink()
 
             num_sonifications_deleted += 1
 
-        click.echo(
-            f"Deleted {num_sonifications_deleted} sonification files not in database"
-        )
+        click.echo(f"Deleted {num_sonifications_deleted} sonification files not in database")
 
 
-@delete.command(
-    name="soundfonts",
-    help="Clears added soundfonts from the database."
-)
+@delete.command(name="soundfonts", help="Clears added soundfonts from the database.")
 @click.pass_context
 def delete_soundfonts(
-        ctx: Context  # noqa: undocumented-param
+    ctx: Context,  # noqa: D417
 ) -> None:
     """
     Remove soundfonts that have been imported from the database.
@@ -150,13 +141,10 @@ def delete_soundfonts(
         click.echo(f"Could not connect to database: {e}")
 
 
-@delete.command(
-    name="profiles",
-    help="Clears added sonification profiles from the database."
-)
+@delete.command(name="profiles", help="Clears added sonification profiles from the database.")
 @click.pass_context
 def delete_sonification_profiles(
-        ctx: Context  # noqa: undocumented-param
+    ctx: Context,  # noqa: D417
 ) -> None:
     """
     Remove imported sonification profiles from the database.
@@ -179,17 +167,15 @@ def delete_sonification_profiles(
 
 
 @delete.command(
-    name="collection",
-    help="Clears sonifications and lightcurves associated with a collection from the database."
+    name="collection", help="Clears sonifications and lightcurves associated with a collection from the database."
 )
 @click.pass_context
 @click.argument(
     "lightcurve_collection",
 )
-
 def delete_lightcurve_collection(
-        ctx: Context,  # noqa: undocumented-param
-        lightcurve_collection: str
+    ctx: Context,  # noqa: D417
+    lightcurve_collection: str,
 ) -> None:
     """
     Remove imported sonification profiles from the database.
@@ -203,14 +189,18 @@ def delete_lightcurve_collection(
             info={"url": engine.url},
         ) as session:
             try:
-                lightcurve_collection: LightcurveCollection = session.query(LightcurveCollection).filter(
-                    LightcurveCollection.id == int(lightcurve_collection)
-                ).all()[0]
+                lightcurve_collection: LightcurveCollection = (
+                    session.query(LightcurveCollection)
+                    .filter(LightcurveCollection.id == int(lightcurve_collection))
+                    .all()[0]
+                )
             except Exception:
                 try:
-                    lightcurve_collection = session.query(LightcurveCollection).filter(
-                        LightcurveCollection.name == lightcurve_collection
-                    ).all()[0]
+                    lightcurve_collection = (
+                        session.query(LightcurveCollection)
+                        .filter(LightcurveCollection.name == lightcurve_collection)
+                        .all()[0]
+                    )
                 except Exception:
                     click.echo(f"Could not find collection '{lightcurve_collection}' in database")
                     return
@@ -233,7 +223,9 @@ def delete_lightcurve_collection(
             session.delete(lightcurve_collection)
             session.commit()
 
-            click.echo(f"Deleted lightcurve collection {lightcurve_collection}, including {lightcurves_deleted} lightcurves and {sonifications_deleted} sonifications from database")
+            click.echo(
+                f"Deleted lightcurve collection {lightcurve_collection}, including {lightcurves_deleted} lightcurves and {sonifications_deleted} sonifications from database"
+            )
 
     except Exception as e:
         click.echo(f"Could not connect to database: {e}")

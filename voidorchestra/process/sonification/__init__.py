@@ -40,23 +40,19 @@ def write_sonification_files(
         strauss_sonification: StraussSonification = sonification.sonification_profile.create_sonification(lightcurve)
         strauss_sonification.render()
 
-        path_wav: Path = (directory_output/sonification.path_audio).with_suffix(".wav")
+        path_wav: Path = (directory_output / sonification.path_audio).with_suffix(".wav")
         strauss_sonification.save(path_wav, embed_caption=False)
         audio: AudioFileClip = AudioFileClip(path_wav)
-        audio.write_audiofile(directory_output/sonification.path_audio, codec="mp3", logger=None)
+        audio.write_audiofile(directory_output / sonification.path_audio, codec="mp3", logger=None)
 
         figure: Figure = plot_lightcurve(lightcurve)
-        figure.write_image(
-            directory_output/sonification.path_image
-        )
+        figure.write_image(directory_output / sonification.path_image)
 
-        video: ImageClip = ImageClip(
-            directory_output/sonification.path_image
-        )
+        video: ImageClip = ImageClip(directory_output / sonification.path_image)
         video.duration = audio.duration
         video.audio = audio
         video.write_videofile(
-            filename=directory_output/sonification.path_video,
+            filename=directory_output / sonification.path_video,
             fps=video_fps,
             logger=None,
         )

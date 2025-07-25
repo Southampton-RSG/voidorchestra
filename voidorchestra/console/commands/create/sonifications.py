@@ -1,10 +1,11 @@
 """
 Create sonification files for yet-to-be-processed sonifications
 """
+
 from typing import List
 
 import click
-from sqlalchemy.orm import Query, Session
+from sqlalchemy.orm import Session
 
 from voidorchestra import config_paths
 from voidorchestra.db import Sonification, commit_database, connect_to_database_engine
@@ -12,15 +13,14 @@ from voidorchestra.process.sonification import write_sonification_files
 
 
 @click.command(
-    name="sonifications",
-    help="Create sonifications for sonification descriptors that have not yet been produced."
+    name="sonifications", help="Create sonifications for sonification descriptors that have not yet been produced."
 )
 @click.option(
     "-r",
     "--regenerate",
     is_flag=True,
     default=False,
-    help="Whether to do a full re-generation, including re-making sonification files."
+    help="Whether to do a full re-generation, including re-making sonification files.",
 )
 @click.pass_context
 def create_sonifications(ctx: dict, regenerate: bool = False) -> None:

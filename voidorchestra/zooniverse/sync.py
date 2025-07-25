@@ -3,6 +3,7 @@
 """
 This module contains operations to sync with the Zooniverse database.
 """
+
 import logging
 from logging import Logger
 from typing import List, Tuple
@@ -49,21 +50,23 @@ def __check_panoptes_subject_valid(panoptes_subject: PanoptesSubject) -> Tuple[i
     # check subject set config is valid
     panoptes_subject_set_ids = panoptes_subject.raw["links"].get("subject_sets", [])
     if len(panoptes_subject_set_ids) == 0:
-        panoptes_subject_set_id: int|None = NO_SUBJECT_SET_ASSIGNED
+        panoptes_subject_set_id: int | None = NO_SUBJECT_SET_ASSIGNED
     elif len(panoptes_subject_set_ids) > 1:
         raise ValueError(f"Subject {panoptes_subject.id} is bad")
     else:
-        panoptes_subject_set_id: int|None = int(panoptes_subject_set_ids[0])
+        panoptes_subject_set_id: int | None = int(panoptes_subject_set_ids[0])
 
     # check workflow config is valid
     if panoptes_subject_set_id is NO_SUBJECT_SET_ASSIGNED:
         panoptes_subject_set_workflows: List[PanoptesWorkflow] = []
     else:
-        panoptes_subject_set_workflows = PanoptesSubjectSet.find(panoptes_subject_set_id).raw["links"].get("workflows", [])
+        panoptes_subject_set_workflows = (
+            PanoptesSubjectSet.find(panoptes_subject_set_id).raw["links"].get("workflows", [])
+        )
     if len(panoptes_subject_set_workflows) == 0:
-        panoptes_workflow_id: int|None = NO_WORKFLOW_ASSIGNED
+        panoptes_workflow_id: int | None = NO_WORKFLOW_ASSIGNED
     else:
-        panoptes_workflow_id: int|None = int(panoptes_subject_set_workflows[0])
+        panoptes_workflow_id: int | None = int(panoptes_subject_set_workflows[0])
 
     sonification_uuid: str = panoptes_subject.metadata.get("uuid", None)
 
@@ -71,9 +74,7 @@ def __check_panoptes_subject_valid(panoptes_subject: PanoptesSubject) -> Tuple[i
 
 
 def __add_subject_set(
-        session: Session,
-        panoptes_subject_set: PanoptesSubjectSet,
-        panoptes_workflow_id: int | None
+    session: Session, panoptes_subject_set: PanoptesSubjectSet, panoptes_workflow_id: int | None
 ) -> None:
     """
     Add a subject set to a database session.
@@ -116,11 +117,7 @@ def __add_subject_set(
     )
 
 
-def __clean_up_old_linked_subject_sets(
-        session: Session,
-        panoptes_subject_set:
-        PanoptesSubjectSet
-) -> None:
+def __clean_up_old_linked_subject_sets(session: Session, panoptes_subject_set: PanoptesSubjectSet) -> None:
     """
     Remove entries which have a non-NULL workflow ID.
 
@@ -141,14 +138,14 @@ def __clean_up_old_linked_subject_sets(
         workflow_count += 1
 
     if workflow_count == 0:
-        logger.debug(
-            f"Subject set {panoptes_subject_set.id} is not assigned to any workflows"
-        )
+        logger.debug(f"Subject set {panoptes_subject_set.id} is not assigned to any workflows")
         return
     if workflow_count > 0:
         raise ValueError("This function does not support subject sets which are linked to multiple workflows")
 
-    subject_set_query = session.query(LocalSubjectSet).filter(LocalSubjectSet.zooniverse_subject_set_id == int(panoptes_subject_set.id))
+    subject_set_query = session.query(LocalSubjectSet).filter(
+        LocalSubjectSet.zooniverse_subject_set_id == int(panoptes_subject_set.id)
+    )
     if subject_set_query.count() > 1:
         # pylint: disable=singleton-comparison
         non_null_workflow_query = subject_set_query.filter(LocalSubjectSet.zooniverse_workflow_id is not None)
@@ -190,7 +187,9 @@ def sync_subject_database_with_zooniverse(
     commit_frequency: int
         The frequency of which to commit to the database.
     """
-    logger.debug(f"Processed 0/{num_panoptes_subjects} (0%) Zooniverse subjects", )
+    logger.debug(
+        f"Processed 0/{num_panoptes_subjects} (0%) Zooniverse subjects",
+    )
     for i, panoptes_subject in enumerate(
         tqdm(
             panoptes_subjects_from_zooniverse,
@@ -201,16 +200,22 @@ def sync_subject_database_with_zooniverse(
             disable=logger.level > logging.INFO,
         )
     ):
-        panoptes_subject_set_id, panoptes_workflow_id, sonification_uuid = __check_panoptes_subject_valid(panoptes_subject)
+        panoptes_subject_set_id, panoptes_workflow_id, sonification_uuid = __check_panoptes_subject_valid(
+            panoptes_subject
+        )
         if sonification_uuid is None:  # don't know what to do with stamps with no names
             continue
 
-        sonification_query: Query[Sonification] = session.query(Sonification.filter(Sonification.uuid == sonification_uuid))
+        sonification_query: Query[Sonification] = session.query(
+            Sonification.filter(Sonification.uuid == sonification_uuid)
+        )
         if sonification_query.count() != 1:
             continue
 
         try:
-            retired_status: bool = bool(panoptes_subject.subject_workflow_status(panoptes_workflow_id).raw["retired_at"])
+            retired_status: bool = bool(
+                panoptes_subject.subject_workflow_status(panoptes_workflow_id).raw["retired_at"]
+            )
         except StopIteration:  # stop iteration raised when subject is not in the workflow
             retired_status: bool = False
 
@@ -221,7 +226,9 @@ def sync_subject_database_with_zooniverse(
             retired=retired_status,
         )
 
-        local_subject_query: Query[LocalSubject] = session.query(LocalSubject).filter(LocalSubject.zooniverse_subject_id == panoptes_subject.id)
+        local_subject_query: Query[LocalSubject] = session.query(LocalSubject).filter(
+            LocalSubject.zooniverse_subject_id == panoptes_subject.id
+        )
         num_local_subjects_existing: int = local_subject_query.count()
 
         if num_local_subjects_existing > 1:
@@ -246,9 +253,7 @@ def sync_subject_database_with_zooniverse(
     logger.debug(f"Processed {num_panoptes_subjects}/{num_panoptes_subjects} (100%) Zooniverse subjects")
 
 
-def remove_broken_local_subject_sets_from_database(
-        session: Session
-) -> None:
+def remove_broken_local_subject_sets_from_database(session: Session) -> None:
     """
     Removes subject sets with no Zooniverse counterpart from the local DB.
 
@@ -285,10 +290,10 @@ def remove_broken_local_subject_sets_from_database(
 
 
 def sync_local_subject_set_database_with_zooniverse(
-        session: Session,
-        panoptes_subject_sets_to_add: List[PanoptesSubjectSet],
-        num_panoptes_subject_sets_to_add: int,
-        _commit_frequency: int = 250
+    session: Session,
+    panoptes_subject_sets_to_add: List[PanoptesSubjectSet],
+    num_panoptes_subject_sets_to_add: int,
+    _commit_frequency: int = 250,
 ) -> None:
     """
     Add subject sets to the database which have been uploaded to Zooniverse.

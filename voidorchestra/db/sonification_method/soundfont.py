@@ -3,6 +3,7 @@
 """
 Defines the database object for sonification methods using soundfonts.
 """
+
 from json import loads
 from logging import Logger
 from pathlib import Path
@@ -44,30 +45,29 @@ class SonificationMethodSoundfont(SonificationMethod):
     continuous:
         aaa
     """
+
     preset: Mapped[int] = mapped_column(Integer(), nullable=True)
     preset_modification: Mapped[str] = mapped_column(Text(), nullable=True)
     path: Mapped[str] = mapped_column(String(256), nullable=False)
     continuous: Mapped[bool] = mapped_column(Boolean(), nullable=False)
 
-    sonification_profiles: Mapped[List['SonificationProfile']] = relationship(back_populates='sonification_method')
+    sonification_profiles: Mapped[List["SonificationProfile"]] = relationship(back_populates="sonification_method")
 
-    SYSTEM: str = 'mono'
+    SYSTEM: str = "mono"
 
-    COLUMNS: List[str] = [
-        'preset_modification', 'path', 'continuous', 'preset'
-    ]
+    COLUMNS: List[str] = ["preset_modification", "path", "continuous", "preset"]
 
     __mapper_args__: Dict[str, str] = {
-        'polymorphic_identity': 'sonification_method_soundfont',
+        "polymorphic_identity": "sonification_method_soundfont",
     }
 
     def __repr__(self) -> str:
         return f"SonificationMethodSoundfont(id={self.id!r})"
 
     def sonify_lightcurve(
-            self,
-            score: Score,
-            lightcurve: TimeSeries,
+        self,
+        score: Score,
+        lightcurve: TimeSeries,
     ) -> StraussSonification:
         """
         Gets the generator used to sonify the data by this method.
@@ -84,19 +84,12 @@ class SonificationMethodSoundfont(SonificationMethod):
         StraussSonification:
             The sonified sound.
         """
-        sampler: Sampler = Sampler(
-            config_paths['soundfonts'] / self.path,
-            sf_preset=self.preset
-        )
+        sampler: Sampler = Sampler(config_paths["soundfonts"] / self.path, sf_preset=self.preset)
         if self.preset_modification:
             try:
-                sampler.modify_preset(
-                    loads(self.preset_modification)
-                )
+                sampler.modify_preset(loads(self.preset_modification))
             except Exception as e:
-                logger.error(
-                    f"Error in JSON: {self.preset_modification}: {e}"
-                )
+                logger.error(f"Error in JSON: {self.preset_modification}: {e}")
 
         maps: Dict[str, NDArray[floating]] = {
             "time": lightcurve["time"].mjd,
@@ -108,10 +101,7 @@ class SonificationMethodSoundfont(SonificationMethod):
         # the time needed to trigger each note - by making this more than 100%
         # we give all the notes time to ring out (setting this at 100% means
         # the final note is triggered at the moment the sonification ends)
-        lims: Dict[str, Tuple[str, str]] = {
-            "time": ("0%", "105%"),
-            "pitch": ("0%", "100%")
-        }
+        lims: Dict[str, Tuple[str, str]] = {"time": ("0%", "105%"), "pitch": ("0%", "100%")}
 
         # set up source
         sources: Events = Events(maps.keys())
@@ -122,8 +112,8 @@ class SonificationMethodSoundfont(SonificationMethod):
 
     @staticmethod
     def load_fixtures(
-            session: Session,
-            fixtures_path: Path = None,
+        session: Session,
+        fixtures_path: Path = None,
     ) -> None:
         """
         Loads the fixtures from disk (if they aren't loaded already)
@@ -152,20 +142,19 @@ class SonificationMethodSoundfont(SonificationMethod):
             # Using raise on a warning stops execution, unlike warnings.warn
             raise Warning("Soundfont Sonification Methods have already been imported")
 
-        fixtures_df: DataFrame =read_csv(
-            fixtures_path, skipinitialspace=True,
+        fixtures_df: DataFrame = read_csv(
+            fixtures_path,
+            skipinitialspace=True,
         )
         expected_columns: List[str] = SonificationMethod.COLUMNS + SonificationMethodSoundfont.COLUMNS
         if set(fixtures_df.columns) != set(expected_columns):
             raise ValueError(
                 f"Expecting columns: {', '.join(expected_columns)}.\nGot: {', '.join(fixtures_df.columns)}.\n"
                 f"Missing: {set(expected_columns) - set(fixtures_df.columns)}.\n"
-                f"Extra: {set(fixtures_df.columns)- set(expected_columns)}."
+                f"Extra: {set(fixtures_df.columns) - set(expected_columns)}."
             )
 
         for idx, row in fixtures_df.iterrows():
-            session.add(
-                SonificationMethodSoundfont(**row)
-            )
+            session.add(SonificationMethodSoundfont(**row))
 
         session.commit()

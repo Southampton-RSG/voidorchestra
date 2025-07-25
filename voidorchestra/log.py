@@ -5,12 +5,14 @@ The logger module contains the functions required to initialise a new or
 retrieve an already existing logger, and to set the loggers across the entire
 Void Orchestra package.
 """
+
 from logging import INFO, WARNING, Formatter, Logger, StreamHandler, getLogger
 from pkgutil import iter_modules
 from types import ModuleType
 from typing import List
 
 import voidorchestra
+
 
 # Classes ----------------------------------------------------------------------
 class __VariableFormatter(Formatter):
@@ -20,6 +22,7 @@ class __VariableFormatter(Formatter):
     For INFO logs, only the message is printed. For any other level of logging,
     more verbose log output is used.
     """
+
     def format(self, record):
         if record.levelno == INFO:
             formatter: Formatter = Formatter("%(message)s")
@@ -32,9 +35,7 @@ class __VariableFormatter(Formatter):
 
 
 # Private functions ------------------------------------------------------------
-def __list_module_names_in_packages(
-        packages: List[ModuleType]
-) -> List[str]:
+def __list_module_names_in_packages(packages: List[ModuleType]) -> List[str]:
     """
     Get the names of the submodules in a module.
 
@@ -60,9 +61,7 @@ def __list_module_names_in_packages(
 
 
 # Public functions -------------------------------------------------------------
-def get_logger(
-        logger_name: str
-) -> Logger:
+def get_logger(logger_name: str) -> Logger:
     """
     Initialize logging.
 

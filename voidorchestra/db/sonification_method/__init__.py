@@ -5,6 +5,7 @@ Defines the database object for sonification methods.
 
 Uses single-table inheritance to contain multiple types of sonification method.
 """
+
 from typing import Dict, List
 
 from astropy.timeseries import TimeSeries
@@ -36,6 +37,7 @@ class SonificationMethod(Base):  # pylint: disable=too-few-public-methods
     sonification_profiles: relationship
         The sonification profiles using this method.
     """
+
     __tablename__: str = "sonification_method"
     __mapper_args__: Dict[str, str] = {
         "polymorphic_on": "polymorphic_type",
@@ -49,9 +51,7 @@ class SonificationMethod(Base):  # pylint: disable=too-few-public-methods
 
     sonification_profiles = relationship("SonificationProfile", back_populates="sonification_method")
 
-    COLUMNS: List[str] = [
-        'id', 'name', 'description', 'preset'
-    ]
+    COLUMNS: List[str] = ["id", "name", "description", "preset"]
 
     def __repr__(self) -> str:
         """
@@ -65,9 +65,9 @@ class SonificationMethod(Base):  # pylint: disable=too-few-public-methods
         raise NotImplementedError("This is an abstract class")
 
     def sonify_lightcurve(
-            self,
-            score: Score,
-            lightcurve: TimeSeries,
+        self,
+        score: Score,
+        lightcurve: TimeSeries,
     ) -> StraussSonification:
         """
         Gets the generator used to sonify the data by this method.

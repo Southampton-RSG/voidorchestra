@@ -1,0 +1,26 @@
+services:
+  voidorchestra_nginx:
+    container_name: voidorchestra-nginx
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - type: bind
+        source: "./nginx/app.conf"
+        target: "/etc/nginx/conf.d/default.conf"
+      - type: bind
+        source: "./nginx/"
+        target: "/var/www/voidorchestra/nginx/"
+      - type: bind
+        source: "./staticfiles/"
+        target: "/var/www/voidorchestra/data/output/"
+      - type: bind
+        source: "/etc/tls/certs/"
+        target: "/etc/tls/certs/"
+      - type: bind
+        source: "/etc/tls/private/"
+        target: "/etc/tls/private/"
+      - type: bind
+        source: "${PROJECT_PATH}/logs/"
+        target: "/var/www/voidorchestra/logs/"

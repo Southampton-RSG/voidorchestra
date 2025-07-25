@@ -11,7 +11,7 @@ logger: Logger = get_logger(__name__.replace(".", "-"))
 
 
 def generate_parameter_grid(
-        parameter_grid: Dict[str, Any],
+    parameter_grid: Dict[str, Any],
 ) -> Generator[Dict, Dict, None]:
     """
     Turns a dictionary into a generator that yields a parameter grid.
@@ -35,15 +35,17 @@ def generate_parameter_grid(
     }
 
     for value_combinations in product(*varying_parameters.values()):
-        parameter_combination: Dict[str, Any] = fixed_parameters | dict(zip(varying_parameters.keys(), value_combinations))
+        parameter_combination: Dict[str, Any] = fixed_parameters | dict(
+            zip(varying_parameters.keys(), value_combinations)
+        )
         yield parameter_combination
 
 
 def create_synthetic_regular_lightcurves(
-        lightcurve_collection: LightcurveCollection,
-        parameter_grid: Dict[str, Any],
-        session: Session,
-        repeats: int = 1,
+    lightcurve_collection: LightcurveCollection,
+    parameter_grid: Dict[str, Any],
+    session: Session,
+    repeats: int = 1,
 ):
     """
     Creates synthetic lightcurves covering the specified parameter grid.
@@ -66,13 +68,13 @@ def create_synthetic_regular_lightcurves(
 
     for parameters in generate_parameter_grid(parameter_grid):
         lightcurve: LightcurveSyntheticRegular = LightcurveSyntheticRegular(
-            start_time=parameters['start_time'],
-            observation_count=parameters['observation_count'],
-            cadence_value=parameters['cadence_value'],
-            cadence_format=parameters['cadence_format'],
-            rate_mean_value=parameters['rate_mean_value'],
-            rate_mean_units=parameters['rate_mean_units'],
-            qpo_model=parameters['qpo_model'],
+            start_time=parameters["start_time"],
+            observation_count=parameters["observation_count"],
+            cadence_value=parameters["cadence_value"],
+            cadence_format=parameters["cadence_format"],
+            rate_mean_value=parameters["rate_mean_value"],
+            rate_mean_units=parameters["rate_mean_units"],
+            qpo_model=parameters["qpo_model"],
             lightcurve_collection=lightcurve_collection,
         )
         synthetic_lightcurves.append(lightcurve)

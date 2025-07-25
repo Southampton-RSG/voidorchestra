@@ -5,6 +5,7 @@ This module contains sub-commands for `void-orchestra add`.
 
 The commands should add new entries to the DB from a fixture file.
 """
+
 from pathlib import Path
 
 import click
@@ -22,6 +23,7 @@ def lightcurve():
     Add new lightcurves from fixture files.
     """
 
+
 @lightcurve.command(name="synthetic")
 @click.pass_context
 @click.option(
@@ -32,10 +34,7 @@ def lightcurve():
     show_default=True,
     help="A filepath to the synthetic lightcurve fixtures to add.",
 )
-def add_lightcurve(
-        ctx: click.Context,
-        filepath: Path
-) -> None:
+def add_lightcurve(ctx: click.Context, filepath: Path) -> None:
     """
     Add new synthetic lightcurves with regular frequencies into Void Orchestra.
 

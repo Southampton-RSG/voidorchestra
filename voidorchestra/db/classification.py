@@ -3,6 +3,7 @@
 """
 Defines the database object for Zooniverse subject classifications.
 """
+
 from sqlalchemy import Column, ForeignKey, Integer
 from sqlalchemy.orm import relationship
 
@@ -25,6 +26,7 @@ class Classification(Base):  # pylint: disable=too-few-public-methods
     subject:  relationship
         A relationship link to the subject
     """
+
     __tablename__ = "classification"
 
     id = Column("id", Integer, primary_key=True, autoincrement=True)

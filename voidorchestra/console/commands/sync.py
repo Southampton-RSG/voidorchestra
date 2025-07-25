@@ -5,6 +5,7 @@ This module contains sub-commands for `voidorchestra sync`.
 
 The commands should be used to sync the Void Orchestra database with Zooniverse.
 """
+
 import click
 from click import Choice, Context
 from panoptes_client import Subject, SubjectSet
@@ -13,7 +14,10 @@ from sqlalchemy.orm import Session
 from voidorchestra import config
 from voidorchestra.db import connect_to_database_engine
 from voidorchestra.zooniverse.classifications import update_classification_database
-from voidorchestra.zooniverse.sync import sync_local_subject_set_database_with_zooniverse, sync_subject_database_with_zooniverse
+from voidorchestra.zooniverse.sync import (
+    sync_local_subject_set_database_with_zooniverse,
+    sync_subject_database_with_zooniverse,
+)
 from voidorchestra.zooniverse.zooniverse import connect_to_zooniverse
 
 
@@ -27,11 +31,9 @@ def sync():
 @sync.command(name="subjects")
 @click.pass_context
 @click.argument(
-    "source", nargs=1,
-    type=Choice(
-        ["project", "subject_set", "workflow"],
-        case_sensitive=False
-    ),
+    "source",
+    nargs=1,
+    type=Choice(["project", "subject_set", "workflow"], case_sensitive=False),
 )
 @click.option(
     "-id",
@@ -42,9 +44,9 @@ def sync():
     help="An optional specified ID for the source if not using the default",
 )
 def update_subject_table(
-        ctx: Context,  # noqa: undocumented-param
-        source: str,
-        source_id: int
+    ctx: Context,  # noqa: D417
+    source: str,
+    source_id: int,
 ) -> None:
     """
     Sync the subject database with Zooniverse
@@ -81,8 +83,7 @@ def update_subject_table(
         return
 
     with Session(
-            engine := connect_to_database_engine(config["PATHS"]["database"]),
-            info={"url": engine.url}
+        engine := connect_to_database_engine(config["PATHS"]["database"]), info={"url": engine.url}
     ) as session:
         sync_subject_database_with_zooniverse(
             session,
@@ -104,9 +105,9 @@ def update_subject_table(
     help="An optional specified ID for the source if not using the default",
 )
 def update_subject_set_table(
-        ctx: Context,   # noqa: undocumented-param
-        source: str,
-        source_id: int
+    ctx: Context,  # noqa: D417
+    source: str,
+    source_id: int,
 ) -> None:
     """
     Sync the subject set database with Zooniverse
@@ -147,8 +148,7 @@ def update_subject_set_table(
         info={"url": engine.url},
     ) as session:
         sync_local_subject_set_database_with_zooniverse(
-            session, subject_sets_to_add,
-            subject_sets_to_add.meta["count"], ctx.obj["COMMIT_FREQUENCY"]
+            session, subject_sets_to_add, subject_sets_to_add.meta["count"], ctx.obj["COMMIT_FREQUENCY"]
         )
 
 
@@ -162,8 +162,8 @@ def update_subject_set_table(
     help="The ID of the Zooniverse workflow, if not the default",
 )
 def update_classification_table(
-        ctx: Context,
-        zooniverse_workflow_id: int
+    ctx: Context,  # noqa: D417
+    zooniverse_workflow_id: int,
 ) -> None:
     """
     Add classifications to the MoleMarshal database

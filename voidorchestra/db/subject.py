@@ -7,16 +7,16 @@ These are used to query the subjects which have been uploaded to the Zooniverse.
 Can be used to filter subjects which are part of a certain subject set, workflow
 or project.
 """
+
 from typing import TYPE_CHECKING, List
 
-from IPython.core.tbtools import nullrepr
-from sqlalchemy import Boolean, Column, ForeignKey, Integer
-from sqlalchemy.orm import Mapped, relationship, mapped_column, backref
+from sqlalchemy import Boolean, ForeignKey, Integer
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from voidorchestra.db import Base
 
 if TYPE_CHECKING:
-    from voidorchestra.db import SubjectSet, Sonification, Classification
+    from voidorchestra.db import Classification, Sonification, SubjectSet
 
 
 class Subject(Base):  # pylint: disable=too-few-public-methods
@@ -50,17 +50,18 @@ class Subject(Base):  # pylint: disable=too-few-public-methods
     sonification: relationship
         A relationship link to the sonification.
     """
+
     __tablename__: str = "subject"
 
     id: Mapped[int] = mapped_column(primary_key=True)
 
     sonification_id: Mapped[int] = mapped_column(ForeignKey("sonification.id"), nullable=False)
-    sonification: Mapped['Sonification'] = relationship(back_populates="subject", uselist=False)
+    sonification: Mapped["Sonification"] = relationship(back_populates="subject", uselist=False)
 
     subject_set_id: Mapped[int] = mapped_column(ForeignKey("subject_set.id"), nullable=True)
-    subject_set: Mapped['SubjectSet'] = relationship("SubjectSet", back_populates="subjects", uselist=False)
+    subject_set: Mapped["SubjectSet"] = relationship("SubjectSet", back_populates="subjects", uselist=False)
 
-    classifications: Mapped[List['Classification']] = relationship(
+    classifications: Mapped[List["Classification"]] = relationship(
         "Classification", back_populates="subject", uselist=True
     )
 

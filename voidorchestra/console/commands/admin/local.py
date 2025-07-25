@@ -19,6 +19,7 @@ def local():
     are generally helpful during development of a new workflow or project.
     """
 
+
 @local.command(name="clean-subject-sets")
 @click.pass_context
 def remove_local_subject_sets(ctx: Context):
@@ -31,8 +32,8 @@ def remove_local_subject_sets(ctx: Context):
     """
     connect_to_zooniverse()
     with Session(
-            engine := connect_to_database_engine(config_paths["database"]),
-            info={'url': engine.url},
+        engine := connect_to_database_engine(config_paths["database"]),
+        info={"url": engine.url},
     ) as session:
         local_subject_sets: Query[LocalSubjectSet] = session.query(LocalSubjectSet)
 
@@ -67,8 +68,8 @@ def remove_local_subjects(ctx: Context) -> None:
     """
     connect_to_zooniverse()
     with Session(
-            engine := connect_to_database_engine(config_paths["database"]),
-            info={'url': engine.url},
+        engine := connect_to_database_engine(config_paths["database"]),
+        info={"url": engine.url},
     ) as session:
         local_subjects: Query[LocalSubject] = session.query(LocalSubject)
 

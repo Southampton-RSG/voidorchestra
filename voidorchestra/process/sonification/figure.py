@@ -1,6 +1,7 @@
 """
 Creates figures for the sonification plots.
 """
+
 from logging import Logger
 
 from astropy.timeseries import TimeSeries
@@ -15,49 +16,49 @@ from voidorchestra.log import get_logger
 logger: Logger = get_logger(__name__.replace(".", "-"))
 
 
-templates['zooniverse']: Template = Template(
+templates["zooniverse"]: Template = Template(
     layout={
-        'paper_bgcolor': '#333333',
-        'plot_bgcolor': '#272727',
-        'font': {
-            'family': 'Karla, Arial, sans-serif',
-            'color': 'rgb(226, 229, 233)',
-            'size': 13,
+        "paper_bgcolor": "#333333",
+        "plot_bgcolor": "#272727",
+        "font": {
+            "family": "Karla, Arial, sans-serif",
+            "color": "rgb(226, 229, 233)",
+            "size": 13,
         },
-        'xaxis': {
-            'showticklabels': False,
-            'gridcolor': '#204d4f',
-            'linecolor': '#0097d9',
-            'title_font': {
-                'weight': 400,
-                'size': 18,
+        "xaxis": {
+            "showticklabels": False,
+            "gridcolor": "#204d4f",
+            "linecolor": "#0097d9",
+            "title_font": {
+                "weight": 400,
+                "size": 18,
             },
         },
-        'yaxis': {
-            'showticklabels': False,
-            'gridcolor': '#204d4f',
-            'linecolor': '#0097d9',
-            'title_font': {
-                'weight': 400,
-                'size': 18,
+        "yaxis": {
+            "showticklabels": False,
+            "gridcolor": "#204d4f",
+            "linecolor": "#0097d9",
+            "title_font": {
+                "weight": 400,
+                "size": 18,
             },
         },
-        'margin': {
-            'l': 60,
-            'r': 40,
-            't': 40,
-            'b': 50,
+        "margin": {
+            "l": 60,
+            "r": 40,
+            "t": 40,
+            "b": 50,
             # 'pad': 15,
         },
-        'width': 800,
-        'height': 450,
+        "width": 800,
+        "height": 450,
     }
 )
-templates.default = 'plotly_dark+zooniverse'
+templates.default = "plotly_dark+zooniverse"
 
 
 def plot_lightcurve(
-        lightcurve: TimeSeries,
+    lightcurve: TimeSeries,
 ) -> Figure:
     """
     Given a lightcurve, plots it (with uncertainty regions).
@@ -109,7 +110,7 @@ def plot_lightcurve(
             "yaxis_title": "X-RAY EMISSION",
             # "xaxis_title": f"Time ({time_units})",
             # "yaxis_title": f"Count rate ({rate_units})"
-        }
+        },
     )
 
     return figure

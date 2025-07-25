@@ -3,6 +3,7 @@
 """
 Defines the sonification profiles - a modification of a particular instrument.
 """
+
 from csv import DictReader
 from json import loads
 from pathlib import Path
@@ -48,6 +49,7 @@ class SonificationProfile(Base):  # pylint: disable=too-few-public-methods
     sonifications: relationship
         The sonifications generated using this profile.
     """
+
     __tablename__: str = "sonification_profile"
 
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -60,29 +62,29 @@ class SonificationProfile(Base):  # pylint: disable=too-few-public-methods
     tempo: Mapped[float] = mapped_column(Float())
     key: Mapped[str] = mapped_column(Text())
 
-    sonifications: Mapped[List['Sonification']] = relationship(back_populates="sonification_profile")
-    sonification_method: Mapped['SonificationMethod'] = relationship(back_populates="sonification_profiles")
-    subject_sets: Mapped['SubjectSet'] = relationship(
-        back_populates="sonification_profile", uselist=True
-    )
+    sonifications: Mapped[List["Sonification"]] = relationship(back_populates="sonification_profile")
+    sonification_method: Mapped["SonificationMethod"] = relationship(back_populates="sonification_profiles")
+    subject_sets: Mapped["SubjectSet"] = relationship(back_populates="sonification_profile", uselist=True)
 
     COLUMNS: List[str] = [
-        'id', 'sonification_method_id', 'tempo', 'key', 'name', 'description',
+        "id",
+        "sonification_method_id",
+        "tempo",
+        "key",
+        "name",
+        "description",
     ]
 
-    __table_args__ = (
-        UniqueConstraint(
-            "sonification_method_id", "name", name="_sonification_profile_unique_modifier"),
-    )
+    __table_args__ = (UniqueConstraint("sonification_method_id", "name", name="_sonification_profile_unique_modifier"),)
 
     def __repr__(self) -> str:
         return f"SonificationProfile(id={self.id}, name={self.name})"
 
     @staticmethod
     def load_fixtures(
-            session: Session,
-            fixtures_path: Path = None,
-    ) -> List['SonificationProfile']:
+        session: Session,
+        fixtures_path: Path = None,
+    ) -> List["SonificationProfile"]:
         """
         Loads the fixtures from disk (if they aren't loaded already)
 
@@ -110,16 +112,14 @@ class SonificationProfile(Base):  # pylint: disable=too-few-public-methods
             expected_columns: List[str] = SonificationProfile.COLUMNS
             if fixtures.fieldnames != expected_columns:
                 raise ValueError(
-                    f"Expecting columns '{", ".join(expected_columns)}'.\n Got '{", ".join(fixtures.fieldnames)}'.\n"
+                    f"Expecting columns '{', '.join(expected_columns)}'.\n Got '{', '.join(fixtures.fieldnames)}'.\n"
                     f"Difference: {set(expected_columns).difference(set(fixtures.fieldnames))}."
                 )
 
             sonification_profiles: List[SonificationProfile] = []
             for fixture in fixtures:
-                if not session.query(SonificationProfile).filter(SonificationProfile.id == fixture['id']).first():
-                   sonification_profiles.append(
-                       SonificationProfile(**fixture)
-                   )
+                if not session.query(SonificationProfile).filter(SonificationProfile.id == fixture["id"]).first():
+                    sonification_profiles.append(SonificationProfile(**fixture))
 
         session.add_all(sonification_profiles)
         session.commit()
@@ -134,9 +134,7 @@ class SonificationProfile(Base):  # pylint: disable=too-few-public-methods
         """
         return loads(self.key)
 
-    def create_sonification(
-            self, lightcurve: TimeSeries
-    ) -> StraussSonification:
+    def create_sonification(self, lightcurve: TimeSeries) -> StraussSonification:
         """
 
         Parameters
@@ -153,6 +151,4 @@ class SonificationProfile(Base):  # pylint: disable=too-few-public-methods
             self.get_key(),
             len(lightcurve) / self.tempo,
         )
-        return self.sonification_method.sonify_lightcurve(
-            score, lightcurve
-        )
+        return self.sonification_method.sonify_lightcurve(score, lightcurve)

@@ -3,13 +3,13 @@
 """
 Defines the sonifications used.
 """
+
 from pathlib import Path
 from uuid import uuid4
 
 from sqlalchemy import Boolean, Float, ForeignKey, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from voidorchestra import config_paths
 from voidorchestra.db import Base
 from voidorchestra.db.lightcurve import Lightcurve  # noqa: F401
 from voidorchestra.db.sonification_profile import SonificationProfile  # noqa: F401
@@ -36,15 +36,18 @@ class Sonification(Base):  # pylint: disable=too-few-public-methods
     subject: relationship
         The corresponding subject on Zooniverse.
     """
+
     __tablename__: str = "sonification"
 
     id: Mapped[int] = mapped_column(primary_key=True)
     sonification_profile_id: Mapped[int] = mapped_column(
-        ForeignKey("sonification_profile.id"), nullable=False,
+        ForeignKey("sonification_profile.id"),
+        nullable=False,
     )
 
     lightcurve_id: Mapped[int] = mapped_column(
-        ForeignKey("lightcurve.id"), nullable=False,
+        ForeignKey("lightcurve.id"),
+        nullable=False,
     )
 
     uuid: Mapped[str] = mapped_column(String(32), unique=True)
@@ -65,8 +68,8 @@ class Sonification(Base):  # pylint: disable=too-few-public-methods
 
 
 def create_sonification(
-        lightcurve: Lightcurve,
-        sonification_profile: SonificationProfile,
+    lightcurve: Lightcurve,
+    sonification_profile: SonificationProfile,
 ) -> Sonification:
     """
     Creates a new sonification, including setting the UUID and paths.
@@ -93,7 +96,7 @@ def create_sonification(
         sonification_profile=sonification_profile,
         uuid=sonification_uuid,
         path_audio=str(path_root.with_suffix(".mp3")),
-        path_video = str(path_root.with_suffix(".mp4")),
-        path_image = str(path_root.with_suffix(".png")),
+        path_video=str(path_root.with_suffix(".mp4")),
+        path_image=str(path_root.with_suffix(".png")),
     )
     return sonification

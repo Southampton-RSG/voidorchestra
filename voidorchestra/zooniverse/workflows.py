@@ -5,6 +5,7 @@
 This module handles assigning workflows to subject sets, as well as getting
 and modifying workflows.
 """
+
 from logging import Logger
 
 from panoptes_client import SubjectSet as PanoptesSubjectSet, Workflow as PanoptesWorkflow
@@ -15,9 +16,7 @@ from voidorchestra.log import get_logger
 logger: Logger = get_logger(__name__.replace(".", "-"))
 
 
-def get_panoptes_workflow(
-        panoptes_workflow_id: str | int
-) -> PanoptesWorkflow:
+def get_panoptes_workflow(panoptes_workflow_id: str | int) -> PanoptesWorkflow:
     """
     Retrieve a workflow for a given workflow ID.
 
@@ -39,8 +38,7 @@ def get_panoptes_workflow(
 
 
 def assign_panoptes_workflow_to_panoptes_subject_set(
-        panoptes_workflow: PanoptesWorkflow,
-        panoptes_subject_set: PanoptesSubjectSet
+    panoptes_workflow: PanoptesWorkflow, panoptes_subject_set: PanoptesSubjectSet
 ) -> None:
     """
     Assign a given workflow to a subject set.

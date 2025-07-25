@@ -3,6 +3,7 @@
 """
 For lightcurves generated from synthetic data
 """
+
 from pathlib import Path
 from typing import Dict, List
 
@@ -38,24 +39,23 @@ class LightcurveSynthetic(Lightcurve):
     random_state: int
         The random seed for the simulation.
     """
+
     rate_mean_value = Column("rate_mean_value", Float(), nullable=False)
     rate_mean_units = Column("rate_mean_units", String(32), nullable=False)
-    qpo_model_id = Column(
-        "qpo_model_id", Integer(),
-        ForeignKey("qpo_model.id")
-    )
+    qpo_model_id = Column("qpo_model_id", Integer(), ForeignKey("qpo_model.id"))
     qpo_model = relationship(
         "QPOModel",
         back_populates="lightcurves",
     )
     random_state = Column(
-        "random_state", Integer(),
-        Sequence('unique_random_state', start=1, increment=1),
+        "random_state",
+        Integer(),
+        Sequence("unique_random_state", start=1, increment=1),
     )
-    COLUMNS: List[str] = [ 'rate_mean', 'qpo_model_id' ]
+    COLUMNS: List[str] = ["rate_mean", "qpo_model_id"]
 
     __mapper_args__: Dict[str, str] = {
-        'polymorphic_identity': 'lightcurve_synthetic',
+        "polymorphic_identity": "lightcurve_synthetic",
     }
 
     def get_rate_mean(self) -> Quantity:
@@ -95,8 +95,9 @@ class LightcurveSyntheticRegular(LightcurveSynthetic):
     qpo_model: relationship
         The QPO model used to generate the synthetic lightcurve.
     """
+
     __mapper_args__: Dict[str, str] = {
-        'polymorphic_identity': 'lightcurve_synthetic_regular',
+        "polymorphic_identity": "lightcurve_synthetic_regular",
     }
 
     start_time = Column("start_time", DateTime(), nullable=False)
@@ -106,7 +107,9 @@ class LightcurveSyntheticRegular(LightcurveSynthetic):
 
     EXTENSION_FACTOR: int = 2
     COLUMNS: List[str] = [
-        'start_time', 'observation_count', 'cadence',
+        "start_time",
+        "observation_count",
+        "cadence",
     ]
 
     def __repr__(self) -> str:
@@ -157,10 +160,7 @@ class LightcurveSyntheticRegular(LightcurveSynthetic):
         return lightcurve
 
     @staticmethod
-    def load_fixtures(
-            session: Session,
-            fixtures_path: Path = None
-    ) -> None:
+    def load_fixtures(session: Session, fixtures_path: Path = None) -> None:
         """
         Loads the fixtures from disk (if they aren't loaded already)
 
@@ -184,18 +184,16 @@ class LightcurveSyntheticRegular(LightcurveSynthetic):
                 raise FileNotFoundError(f"The fixtures file '{fixtures_path}' does not exist.")
 
         fixtures_df: DataFrame = read_csv(fixtures_path, skipinitialspace=True)
-        expected_columns: List[str] = Lightcurve.COLUMNS + LightcurveSynthetic.COLUMNS + LightcurveSyntheticRegular.COLUMNS
+        expected_columns: List[str] = (
+            Lightcurve.COLUMNS + LightcurveSynthetic.COLUMNS + LightcurveSyntheticRegular.COLUMNS
+        )
         if fixtures_df.columns != expected_columns:
             raise ValueError(
-                f"Expecting columns '{", ".join(expected_columns)}'.\n Got '{", ".join(fixtures_df.columns)}'.\n"
+                f"Expecting columns '{', '.join(expected_columns)}'.\n Got '{', '.join(fixtures_df.columns)}'.\n"
                 f"Difference: {set(expected_columns).difference(set(fixtures_df.columns))}."
             )
 
         for idx, row in fixtures_df.iterrows():
-            session.add(
-                LightcurveSyntheticRegular(
-                    **row
-                )
-            )
+            session.add(LightcurveSyntheticRegular(**row))
 
         session.commit()

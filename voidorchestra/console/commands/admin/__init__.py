@@ -5,6 +5,7 @@ This module contains sub-commands for `void-orchestra admin`.
 
 The commands should be used for admin and development purposes.
 """
+
 from typing import Dict
 
 import click
@@ -30,17 +31,17 @@ def admin():
     are generally helpful during development of a new workflow or project.
     """
 
+
 admin.add_command(local)
 admin.add_command(zooniverse)
+
 
 @admin.command("move-to-subject-set")
 @click.pass_context
 @click.argument("old_panoptes_subject_set_id")
 @click.argument("new_panoptes_subject_set_id")
 def transfer_between_subject_sets(
-        ctx: Context,
-        old_panoptes_subject_set_id: str | int,
-        new_panoptes_subject_set_id: str | int
+    ctx: Context, old_panoptes_subject_set_id: str | int, new_panoptes_subject_set_id: str | int
 ) -> None:
     """
     Move subjects from one subject set to another.
@@ -73,8 +74,8 @@ def transfer_between_subject_sets(
         return
 
     with Session(
-            engine := connect_to_database_engine(config_paths["database"]),
-            info={'url': engine.url},
+        engine := connect_to_database_engine(config_paths["database"]),
+        info={"url": engine.url},
     ) as session:
         local_subjects: Query[LocalSubject] = session.query(LocalSubject).filter(
             LocalSubject.zooniverse_subject_set_id == int(old_panoptes_subject_set_id)
@@ -105,8 +106,8 @@ def transfer_between_subject_sets(
     "new_panoptes_subject_set_id",
 )
 def transfer_all_subjects_to_one_subject_set(
-        ctx: Context,  # noqa: undocumented-param
-        new_panoptes_subject_set_id: int
+    ctx: Context,  # noqa: D417
+    new_panoptes_subject_set_id: int,
 ) -> None:
     """
     Move all the subjects in a project to one subject set.
@@ -137,8 +138,8 @@ def transfer_all_subjects_to_one_subject_set(
     local_subject_set_cache: Dict[int, LocalSubjectSet] = {}
 
     with Session(
-            engine := connect_to_database_engine(config_paths["database"]),
-            info={'url': engine.url},
+        engine := connect_to_database_engine(config_paths["database"]),
+        info={"url": engine.url},
     ) as session:
         local_subjects: Query[LocalSubject] = session.query(LocalSubject).filter(
             LocalSubject.zooniverse_project_id == int(panoptes_project.id)
@@ -157,7 +158,9 @@ def transfer_all_subjects_to_one_subject_set(
                 old_panoptes_subject_set: PanoptesSubjectSet = PanoptesSubjectSet.find(local_subject.subject_set_id)
                 local_subject_set_cache[local_subject.zooniverse_subject_set_id] = old_panoptes_subject_set
             else:
-                old_panoptes_subject_set: PanoptesSubjectSet = local_subject_set_cache[local_subject.zooniverse_subject_set_id]
+                old_panoptes_subject_set: PanoptesSubjectSet = local_subject_set_cache[
+                    local_subject.zooniverse_subject_set_id
+                ]
 
             new_panoptes_subject_set.add(panoptes_subject)
             old_panoptes_subject_set.remove(panoptes_subject)

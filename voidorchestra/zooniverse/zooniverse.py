@@ -5,6 +5,7 @@
 The Zooniverse module contains functions to connect to Zooniverse and modify
 the very top level objects, such as projects.
 """
+
 from logging import Logger
 
 from panoptes_client import Panoptes, Project as PanoptesProject
@@ -42,7 +43,7 @@ def connect_to_zooniverse() -> None:
 
 
 def open_zooniverse_project(
-        panoptes_project_id: str | int | None = None,
+    panoptes_project_id: str | int | None = None,
 ) -> PanoptesProject:
     """
     Retrieve a Zooniverse project with the given ID.

@@ -3,6 +3,7 @@
 """
 Defines the database object for sonification using synthesizers.
 """
+
 from csv import DictReader
 from json import loads
 from pathlib import Path
@@ -30,16 +31,15 @@ class SonificationMethodSynthesizer(SonificationMethod):
     length: float
         Duration of the sonification, in seconds.
     """
+
     pitch = Column("pitch", Float())
     pitch_shift_power = Column("pitch_shift_power", Float())
     length = Column("length", Float())
 
-    COLUMNS: List[str] = [
-        'pitch', 'pitch_shift_power', 'length'
-    ]
+    COLUMNS: List[str] = ["pitch", "pitch_shift_power", "length"]
 
     __mapper_args__: Dict[str, str] = {
-        'polymorphic_identity': 'sonification_method_synthesizer',
+        "polymorphic_identity": "sonification_method_synthesizer",
     }
 
     def __repr__(self) -> str:
@@ -55,16 +55,13 @@ class SonificationMethodSynthesizer(SonificationMethod):
             The sound generator.
         """
         synthesizer: Synthesizer = Synthesizer()
-        preset: str|Dict = loads(self.preset)
+        preset: str | Dict = loads(self.preset)
         synthesizer.load_preset(preset)
         synthesizer.preset_details(preset)
         return synthesizer
 
     @staticmethod
-    def load_fixtures(
-            session: Session,
-            fixtures_path: Path = None
-    ) -> None:
+    def load_fixtures(session: Session, fixtures_path: Path = None) -> None:
         """
         Loads the fixtures from disk (if they aren't loaded already)
 
@@ -99,13 +96,11 @@ class SonificationMethodSynthesizer(SonificationMethod):
                 raise ValueError(
                     f"Expecting columns: {', '.join(expected_columns)}.\nGot: {', '.join(fixtures.fieldnames)}.\n"
                     f"Missing: {set(expected_columns) - set(fixtures.fieldnames)}.\n"
-                    f"Extra: {set(fixtures.fieldnames)- set(expected_columns)}."
+                    f"Extra: {set(fixtures.fieldnames) - set(expected_columns)}."
                 )
 
             for fixture in fixtures:
-                session.add(
-                    SonificationMethodSynthesizer(**fixture)
-                )
+                session.add(SonificationMethodSynthesizer(**fixture))
 
         session.commit()
 

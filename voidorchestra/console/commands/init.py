@@ -3,6 +3,7 @@
 """
 Entry point for the `voidorchestra` command.
 """
+
 from pathlib import Path
 
 import click
@@ -32,8 +33,8 @@ def init() -> None:
     help="The location to write a new database to.",
 )
 def init_database(
-        ctx: Context,  # noqa: undocumented-param
-        db: Path,
+    ctx: Context,  # noqa: D417
+    db: Path,
 ) -> None:
     """
     Initialize the Void Orchestra database.

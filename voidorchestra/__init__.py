@@ -2,6 +2,7 @@
 Root of the Voidorchestra module.
 Holds module-level things, like the config settings.
 """
+
 from configparser import ConfigParser
 from os import getenv
 from pathlib import Path

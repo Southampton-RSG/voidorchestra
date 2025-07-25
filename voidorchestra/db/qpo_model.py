@@ -3,7 +3,8 @@
 """
 Defines the QPO models, made up of components, used in synthetic lightcurve generation.
 """
-from typing import TYPE_CHECKING, Any, Dict, List
+
+from typing import Any, Dict, List
 
 import astropy.units as u
 import numpy as np
@@ -44,6 +45,7 @@ class QPOModel(Base):
         The format of the period.
     variance_fraction: float
     """
+
     __tablename__: str = "qpo_model"
     __mapper_args__: Dict[str, str] = {
         "polymorphic_on": "polymorphic_type",
@@ -59,19 +61,17 @@ class QPOModel(Base):
     period_value: Mapped[float] = mapped_column(Double(), nullable=True)
     period_format: Mapped[str] = mapped_column(String(16), nullable=True)
 
-    qpo_model_parent: Mapped['QPOModel'] = relationship(
-        remote_side=qpo_model_parent_id, uselist=False,
-        backref=backref("qpo_model_children", remote_side=id, uselist=True)
+    qpo_model_parent: Mapped["QPOModel"] = relationship(
+        remote_side=qpo_model_parent_id,
+        uselist=False,
+        backref=backref("qpo_model_children", remote_side=id, uselist=True),
     )
     lightcurves: Mapped[List[LightcurveSynthetic]] = relationship(back_populates="qpo_model")
 
     def __repr__(self) -> str:
         return f"{type(self).__name__}(id={self.id!r})"
 
-    def get_model_for_mean_rate(
-            self,
-            rate_mean: Quantity[u.s**-1]
-    ) -> Model:
+    def get_model_for_mean_rate(self, rate_mean: Quantity[u.s**-1]) -> Model:
         """
         For a mean lightcurve count rate, generate a model that can be passed to MindTheGaps.
 
@@ -86,7 +86,7 @@ class QPOModel(Base):
         """
         raise NotImplementedError("This is an abstract model.")
 
-    def get_period(self) ->  TimeDelta:
+    def get_period(self) -> TimeDelta:
         """
         Gets the period, in whatever unit it was saved in.
 
@@ -102,15 +102,12 @@ class QPOModelComposite(QPOModel):
     """
     Wrapper for the SHO model from Mind the Gaps.
     """
+
     __mapper_args__: Dict[str, str] = {
         "polymorphic_identity": "composite",
     }
 
-    def add_components(
-            self,
-            session: Session,
-            components: List[Dict[str, Any]]
-    ) -> 'QPOModelComposite':
+    def add_components(self, session: Session, components: List[Dict[str, Any]]) -> "QPOModelComposite":
         """
         Adds sub-components to this composite model.
 
@@ -127,10 +124,10 @@ class QPOModelComposite(QPOModel):
             Self, for chaining methods.
         """
         for idx, component in enumerate(components):
-            qpo_model: QPOModel = component['model'](
+            qpo_model: QPOModel = component["model"](
                 name=f"{self.name} component: {idx}",
                 qpo_model_parent=self,
-                **component['arguments'],
+                **component["arguments"],
             )
             session.add(qpo_model)
 
@@ -162,8 +159,9 @@ class QPOModelSHO(QPOModel):
     """
     Wrapper for the SHO model from Mind the Gaps.
     """
+
     __mapper_args__: Dict[str, str] = {
-        'polymorphic_identity': 'mind_the_gaps_sho',
+        "polymorphic_identity": "mind_the_gaps_sho",
     }
 
     def get_model_for_mean_rate(self, rate_mean: Quantity[u.s**-1]) -> Model:
@@ -190,8 +188,9 @@ class QPOModelLorentzian(QPOModel):
     """
     Wrapper for the Lorentzian model from Mind the Gaps.
     """
+
     __mapper_args__: Dict[str, str] = {
-        'polymorphic_identity': 'mind_the_gaps_lorentzian',
+        "polymorphic_identity": "mind_the_gaps_lorentzian",
     }
 
     def get_model_for_mean_rate(self, rate_mean: Quantity[u.s**-1]) -> Model:
@@ -218,8 +217,9 @@ class QPOModelBPL(QPOModel):
     """
     Wrapper for the Bending Powerlaw model from Mind the Gaps.
     """
+
     __mapper_args__: Dict[str, str] = {
-        'polymorphic_identity': 'mind_the_gaps_bpl',
+        "polymorphic_identity": "mind_the_gaps_bpl",
     }
 
     def get_model_for_mean_rate(self, rate_mean: Quantity[u.s**-1]) -> Model:

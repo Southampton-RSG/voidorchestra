@@ -4,6 +4,7 @@
 The Void Orchestra package contains ORM items based off of those in MoleGazer,
 which allow creating sonifications of synthetic data and synchronising them to Zooniverse.
 """
+
 from pathlib import Path
 from typing import Optional
 
@@ -13,14 +14,20 @@ from sqlalchemy.orm import DeclarativeBase, Session, declarative_base
 
 Base: DeclarativeBase = declarative_base()
 
-ENGINE: Engine|None = None
+ENGINE: Engine | None = None
 
 # Public functions -------------------------------------------------------------
 from voidorchestra.db.classification import Classification  # noqa: E402
 from voidorchestra.db.lightcurve import Lightcurve  # noqa: E402
 from voidorchestra.db.lightcurve.synthetic import LightcurveSynthetic, LightcurveSyntheticRegular  # noqa: E402
 from voidorchestra.db.lightcurve_collection import LightcurveCollection  # noqa: E402
-from voidorchestra.db.qpo_model import QPOModel, QPOModelBPL, QPOModelComposite, QPOModelLorentzian, QPOModelSHO  # noqa: E402
+from voidorchestra.db.qpo_model import (  # noqa: E402
+    QPOModel,
+    QPOModelBPL,
+    QPOModelComposite,
+    QPOModelLorentzian,
+    QPOModelSHO,
+)
 from voidorchestra.db.sonification import Sonification  # noqa: E402
 from voidorchestra.db.sonification_method import SonificationMethod  # noqa: E402
 from voidorchestra.db.sonification_method.soundfont import SonificationMethodSoundfont  # noqa: E402
@@ -94,7 +101,7 @@ def connect_to_database_engine(location: str) -> Engine:
     if ENGINE:
         return ENGINE
 
-    path: Path  = Path(location)
+    path: Path = Path(location)
 
     if not path.exists():
         raise OSError(f"Unable to open {location} as it doesn't exist")

@@ -6,6 +6,7 @@ This module contains sub-commands for `voidorchestra check`.
 The commands should check properties or statistics for various parts of the
 Voidorchestra package or for the Zooniverse project and its components.
 """
+
 import click
 from panoptes_client import Project as PanoptesProject, Workflow as PanoptesWorkflow
 from panoptes_client.panoptes import PanoptesAPIException
@@ -40,9 +41,7 @@ def print_version() -> None:
     show_default=True,
     help="The ID of the workflow to check statistics for",
 )
-def workflow_stats(
-        panoptes_workflow_id: int
-) -> None:
+def workflow_stats(panoptes_workflow_id: int) -> None:
     """
     Print workflow statistics
 
@@ -80,9 +79,7 @@ def workflow_stats(
     show_default=True,
     help="The ID of the project to check statistics for",
 )
-def project_stats(
-        panoptes_project_id: int
-) -> None:
+def project_stats(panoptes_project_id: int) -> None:
     """
     Print project information
 
@@ -93,7 +90,7 @@ def project_stats(
     """
     connect_to_zooniverse()
     if not panoptes_project_id:
-        panoptes_project_id: int = config['ZOONIVERSE'].getint('project_id')
+        panoptes_project_id: int = config["ZOONIVERSE"].getint("project_id")
 
     try:
         panoptes_project: PanoptesProject = PanoptesProject.find(panoptes_project_id)

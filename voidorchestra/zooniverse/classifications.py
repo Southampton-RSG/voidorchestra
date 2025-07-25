@@ -12,6 +12,7 @@ this module
 which handle downloading classifications and matching those classifications to
 subjects and therefore stamps, respectively.
 """
+
 import logging
 from logging import Logger
 from typing import Any, List
@@ -421,7 +422,8 @@ def update_classification_database(workflow_id: str | int = None, commit_frequen
         ).with_traceback(exc.__traceback__)
 
     with Session(
-        engine := voidorchestra.db.connect_to_database_engine(voidorchestra.config["PATHS"]["database"]), info={"url": engine.url}
+        engine := voidorchestra.db.connect_to_database_engine(voidorchestra.config["PATHS"]["database"]),
+        info={"url": engine.url},
     ) as session:
         workflow_classifications = get_workflow_classifications(session, workflow_id)
         num_classifications = len(workflow_classifications)

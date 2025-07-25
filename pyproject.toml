@@ -130,7 +130,7 @@ packages = ["voidorchestra"]
 addopts = ["-vvv", "--junitxml=junit.xml"]
 testpaths = "voidorchestra/tests"
 [tool.ruff]
-line-length = 150
+line-length = 120
 
 [tool.ruff.lint]
 extend-select = ["I"]

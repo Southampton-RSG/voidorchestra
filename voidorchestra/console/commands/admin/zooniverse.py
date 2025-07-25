@@ -3,7 +3,6 @@ from typing import List
 import click
 from click import Context
 from panoptes_client import Subject as PanoptesSubject, SubjectSet as PanoptesSubjectSet
-from panoptes_client.panoptes import ResultPaginator
 
 from voidorchestra import config
 from voidorchestra.zooniverse.zooniverse import connect_to_zooniverse
@@ -22,7 +21,7 @@ def zooniverse():
 @zooniverse.command(name="clean-subjects")
 @click.pass_context
 def clean_loose_zooniverse_subjects(
-        ctx: Context,  # noqa: undocumented-param
+    ctx: Context,  # noqa: D417
 ) -> None:
     """
     Remove subjects without a subject set from the Zooniverse database.
@@ -34,11 +33,11 @@ def clean_loose_zooniverse_subjects(
 
     panoptes_subjects: List[PanoptesSubject] = list(
         PanoptesSubject.where(
-            project_id=config['ZOONIVERSE'].getint('project_id'),
+            project_id=config["ZOONIVERSE"].getint("project_id"),
         )
     )
     panoptes_subject_set: PanoptesSubjectSet = PanoptesSubjectSet.find(
-        config['ZOONIVERSE'].getint('subject_set_id'),
+        config["ZOONIVERSE"].getint("subject_set_id"),
     )
 
     print(f"Found up to {len(panoptes_subjects)} subjects for project")
