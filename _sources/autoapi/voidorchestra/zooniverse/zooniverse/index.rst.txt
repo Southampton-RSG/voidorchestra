@@ -1,0 +1,63 @@
+voidorchestra.zooniverse.zooniverse
+===================================
+
+.. py:module:: voidorchestra.zooniverse.zooniverse
+
+.. autoapi-nested-parse::
+
+   The Zooniverse module contains functions to connect to Zooniverse and modify
+   the very top level objects, such as projects.
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   voidorchestra.zooniverse.zooniverse.logger
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   voidorchestra.zooniverse.zooniverse.connect_to_zooniverse
+   voidorchestra.zooniverse.zooniverse.open_zooniverse_project
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+   :type:  logging.Logger
+
+.. py:function:: connect_to_zooniverse() -> None
+
+   Connect to Zooniverse using the Panoptes client.
+
+   Credentials are taken from the voidorchestra.ini configuration file.
+
+   If user credentials are incorrect, a PanoptesAPIException is raised because
+   the panoptes client cannot connect to the Zooniverse servers. This exception
+   is caught and a more descriptive error is printed to the logger and the
+   code will be exited.
+
+
+.. py:function:: open_zooniverse_project(panoptes_project_id: str | int | None = None) -> panoptes_client.Project
+
+   Retrieve a Zooniverse project with the given ID.
+
+   If the project cannot be found, a PanoptesAPIException will be raised. Since
+   this is not a very descriptive error, an error will be printed to the logger
+   and the program will exit.
+
+   :param panoptes_project_id: The ID for the Zooniverse project.
+                               Defaults to the value from the project config files.
+   :type panoptes_project_id: str | int | None
+
+   :returns: **panoptes_project** -- The project requested.
+   :rtype: PanoptesProject
+
+

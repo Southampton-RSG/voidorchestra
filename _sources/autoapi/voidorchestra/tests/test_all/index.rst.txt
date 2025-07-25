@@ -1,0 +1,19 @@
+voidorchestra.tests.test_all
+============================
+
+.. py:module:: voidorchestra.tests.test_all
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   voidorchestra.tests.test_all.test_all
+
+
+Module Contents
+---------------
+
+.. py:function:: test_all()
+

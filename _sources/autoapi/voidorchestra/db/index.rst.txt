@@ -1,0 +1,1496 @@
+voidorchestra.db
+================
+
+.. py:module:: voidorchestra.db
+
+.. autoapi-nested-parse::
+
+   The Void Orchestra package contains ORM items based off of those in MoleGazer,
+   which allow creating sonifications of synthetic data and synchronising them to Zooniverse.
+
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/voidorchestra/db/classification/index
+   /autoapi/voidorchestra/db/lightcurve/index
+   /autoapi/voidorchestra/db/lightcurve_collection/index
+   /autoapi/voidorchestra/db/qpo_model/index
+   /autoapi/voidorchestra/db/sonification/index
+   /autoapi/voidorchestra/db/sonification_method/index
+   /autoapi/voidorchestra/db/sonification_profile/index
+   /autoapi/voidorchestra/db/subject/index
+   /autoapi/voidorchestra/db/subject_set/index
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   voidorchestra.db.Base
+   voidorchestra.db.ENGINE
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   voidorchestra.db.Classification
+   voidorchestra.db.Lightcurve
+   voidorchestra.db.LightcurveSynthetic
+   voidorchestra.db.LightcurveSyntheticRegular
+   voidorchestra.db.LightcurveCollection
+   voidorchestra.db.QPOModel
+   voidorchestra.db.QPOModelBPL
+   voidorchestra.db.QPOModelComposite
+   voidorchestra.db.QPOModelLorentzian
+   voidorchestra.db.QPOModelSHO
+   voidorchestra.db.Sonification
+   voidorchestra.db.SonificationMethod
+   voidorchestra.db.SonificationMethodSoundfont
+   voidorchestra.db.SonificationMethodSynthesizer
+   voidorchestra.db.SonificationProfile
+   voidorchestra.db.Subject
+   voidorchestra.db.SubjectSet
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   voidorchestra.db.create_database_tables
+   voidorchestra.db.create_new_database
+   voidorchestra.db.connect_to_database_engine
+   voidorchestra.db.commit_database
+
+
+Package Contents
+----------------
+
+.. py:data:: Base
+   :type:  sqlalchemy.orm.DeclarativeBase
+
+.. py:data:: ENGINE
+   :type:  sqlalchemy.engine.Engine | None
+   :value: None
+
+
+.. py:class:: Classification
+
+   Bases: :py:obj:`voidorchestra.db.Base`
+
+
+   ORM class for image classifications.
+
+   This class is used to query classifications of sonifications.
+
+   .. attribute:: id
+
+      Caesar reduction/classification ID.
+
+      :type: Integer
+
+   .. attribute:: subject_id
+
+      Foreign key, the Zooniverse ID for the subject this
+      classification is for.
+
+      :type: Integer
+
+   .. attribute:: subject
+
+      A relationship link to the subject
+
+      :type: relationship
+
+
+   .. py:attribute:: __tablename__
+      :value: 'classification'
+
+
+
+   .. py:attribute:: id
+
+
+   .. py:attribute:: zooniverse_classification_id
+
+
+   .. py:attribute:: subject_id
+
+
+   .. py:attribute:: subject
+
+
+   .. py:method:: __repr__() -> str
+
+
+.. py:class:: Lightcurve
+
+   Bases: :py:obj:`voidorchestra.db.Base`
+
+
+   ORM class for a lightcurve.
+
+   This class defines a type of lightcurve.
+   Multiple versions exist, for synthetic, observed, or input.
+
+   .. attribute:: id
+
+      The lightcurve method id.
+
+      :type: integer
+
+   .. attribute:: polymorphic_type
+
+      The column used for single-table polymorphism.
+
+      :type: str
+
+   .. attribute:: sonifications
+
+      The sonifications generated using this lightcurve.
+
+      :type: relationship
+
+
+   .. py:attribute:: __tablename__
+      :type:  str
+      :value: 'lightcurve'
+
+
+
+   .. py:attribute:: __mapper_args__
+      :type:  Dict[str, str]
+
+
+   .. py:attribute:: id
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: polymorphic_type
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: name
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: lightcurve_collection_id
+      :type:  sqlalchemy.orm.Mapped[voidorchestra.db.lightcurve_collection.LightcurveCollection]
+
+
+   .. py:attribute:: lightcurve_collection
+      :type:  sqlalchemy.orm.Mapped[voidorchestra.db.lightcurve_collection.LightcurveCollection]
+
+
+   .. py:attribute:: sonifications
+      :type:  sqlalchemy.orm.Mapped[List[voidorchestra.db.sonification.Sonification]]
+
+
+   .. py:attribute:: COLUMNS
+      :type:  List[str]
+      :value: ['id', 'name']
+
+
+
+   .. py:method:: __repr__() -> str
+      :abstractmethod:
+
+
+      Gets the name of the lightcurve.
+
+      :returns: The string representation of the lightcurve.
+      :rtype: str
+
+
+
+   .. py:method:: get_data(**kwargs) -> astropy.timeseries.TimeSeries
+      :abstractmethod:
+
+
+      Gets a table containing the lightcurve.
+
+      :returns: The Astropy TimeSeries representing the lightcurve.
+                Must have time, rate and error columns.
+      :rtype: TimeSeries
+
+
+
+.. py:class:: LightcurveSynthetic
+
+   Bases: :py:obj:`voidorchestra.db.lightcurve.Lightcurve`
+
+
+   Synthetic lightcurve with any cadence.
+
+   .. attribute:: rate_mean_value
+
+      Mean rate of simulated observations, unit is 'per second'.
+
+      :type: float
+
+   .. attribute:: rate_mean_units
+
+      The units of the mean rate.
+
+      :type: str
+
+   .. attribute:: qpo_model_id
+
+      The ID of the QPO model this lightcurve uses.
+
+      :type: int
+
+   .. attribute:: qpo_model
+
+      The QPO model used to generate the synthetic lightcurve.
+
+      :type: relationship
+
+   .. attribute:: random_state
+
+      The random seed for the simulation.
+
+      :type: int
+
+
+   .. py:attribute:: rate_mean_value
+
+
+   .. py:attribute:: rate_mean_units
+
+
+   .. py:attribute:: qpo_model_id
+
+
+   .. py:attribute:: qpo_model
+
+
+   .. py:attribute:: random_state
+
+
+   .. py:attribute:: COLUMNS
+      :type:  List[str]
+      :value: ['rate_mean', 'qpo_model_id']
+
+
+
+   .. py:attribute:: __mapper_args__
+      :type:  Dict[str, str]
+
+
+   .. py:method:: get_rate_mean() -> astropy.units.Quantity
+
+      :returns: The mean rate, in counts per second.
+      :rtype: Quantity
+
+
+
+   .. py:method:: __repr__() -> str
+      :abstractmethod:
+
+
+      Gets the name of the lightcurve.
+
+      :returns: The string representation of the lightcurve.
+      :rtype: str
+
+
+
+.. py:class:: LightcurveSyntheticRegular
+
+   Bases: :py:obj:`LightcurveSynthetic`
+
+
+   Synthetic lightcurve with regular cadence.
+
+   .. attribute:: start_time
+
+      First date of the campaign.
+
+      :type: datetime
+
+   .. attribute:: observation_count
+
+      Number of observations.
+
+      :type: int
+
+   .. attribute:: cadence
+
+      Gap between observations, in days.
+
+      :type: float
+
+   .. attribute:: qpo_model
+
+      The QPO model used to generate the synthetic lightcurve.
+
+      :type: relationship
+
+
+   .. py:attribute:: __mapper_args__
+      :type:  Dict[str, str]
+
+
+   .. py:attribute:: start_time
+
+
+   .. py:attribute:: observation_count
+
+
+   .. py:attribute:: cadence_value
+
+
+   .. py:attribute:: cadence_format
+
+
+   .. py:attribute:: EXTENSION_FACTOR
+      :type:  int
+      :value: 2
+
+
+
+   .. py:attribute:: COLUMNS
+      :type:  List[str]
+      :value: ['start_time', 'observation_count', 'cadence']
+
+
+
+   .. py:method:: __repr__() -> str
+
+      Gets the name of the lightcurve.
+
+
+
+   .. py:method:: get_cadence() -> astropy.time.TimeDelta
+
+      Gets the cadence for these observations, as an Astropy TimeDelta
+
+
+
+   .. py:method:: get_data() -> astropy.timeseries.TimeSeries
+
+      Gets a lightcurve generated by the simulator for this method.
+
+      :returns: The lightcurve generated.
+      :rtype: TimeSeries
+
+
+
+   .. py:method:: load_fixtures(session: sqlalchemy.orm.Session, fixtures_path: pathlib.Path = None) -> None
+      :staticmethod:
+
+
+      Loads the fixtures from disk (if they aren't loaded already)
+
+      :param session: A database session to add the fixtures to
+      :type session: Session
+      :param fixtures_path: The fixtures JSON file to load the fixtures from
+      :type fixtures_path: Path
+
+      :raises FileNotFoundError: If the passed path (or the path in the config file) does not exist
+      :raises ValueError: If the file doesn't have the right columns.
+
+
+
+.. py:class:: LightcurveCollection
+
+   Bases: :py:obj:`voidorchestra.db.Base`
+
+
+   ORM class for a collection of lightcurves in a batch.
+
+   .. attribute:: id
+
+      A unique ID for the QPO model.
+
+      :type: integer
+
+   .. attribute:: name
+
+      A name describing the batch.
+
+      :type: string
+
+
+   .. py:attribute:: __tablename__
+      :type:  str
+      :value: 'lightcurve_collection'
+
+
+
+   .. py:attribute:: id
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: name
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: lightcurves
+      :type:  sqlalchemy.orm.Mapped[List[voidorchestra.db.lightcurve.Lightcurve]]
+
+
+   .. py:attribute:: subject_sets
+      :type:  sqlalchemy.orm.Mapped[voidorchestra.db.subject_set.SubjectSet]
+
+
+   .. py:method:: __repr__() -> str
+
+
+.. py:class:: QPOModel
+
+   Bases: :py:obj:`voidorchestra.db.Base`
+
+
+   ORM class for QPO models used for synthetic lightcurve generation.
+
+   These are models, either stand-alone or collections of other models.
+
+   .. attribute:: id
+
+      A unique ID for the QPO model.
+
+      :type: integer
+
+   .. attribute:: qpo_model_parent_id
+
+      The parent, if any, of this model component.
+
+      :type: integer
+
+   .. attribute:: name
+
+      A name describing the model.
+
+      :type: string
+
+   .. attribute:: polymorphic_type
+
+      The polymorphic name type.
+
+      :type: string
+
+   .. attribute:: lightcurves
+
+      The lightcurves generated using this model.
+
+      :type: relationship
+
+   .. attribute:: qpo_model_parent
+
+      The QPO model that is this model's parent, if any.
+
+      :type: relationship
+
+   .. attribute:: coherence
+
+
+
+      :type: float
+
+   .. attribute:: period_value
+
+      The value of the period.
+
+      :type: float
+
+   .. attribute:: period_format
+
+      The format of the period.
+
+      :type: string
+
+   .. attribute:: variance_fraction
+
+
+
+      :type: float
+
+
+   .. py:attribute:: __tablename__
+      :type:  str
+      :value: 'qpo_model'
+
+
+
+   .. py:attribute:: __mapper_args__
+      :type:  Dict[str, str]
+
+
+   .. py:attribute:: id
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: qpo_model_parent_id
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: name
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: polymorphic_type
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: model
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: coherence
+      :type:  sqlalchemy.orm.Mapped[float]
+
+
+   .. py:attribute:: variance_fraction
+      :type:  sqlalchemy.orm.Mapped[float]
+
+
+   .. py:attribute:: period_value
+      :type:  sqlalchemy.orm.Mapped[float]
+
+
+   .. py:attribute:: period_format
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: qpo_model_parent
+      :type:  sqlalchemy.orm.Mapped[QPOModel]
+
+
+   .. py:attribute:: lightcurves
+      :type:  sqlalchemy.orm.Mapped[List[voidorchestra.db.LightcurveSynthetic]]
+
+
+   .. py:method:: __repr__() -> str
+
+
+   .. py:method:: get_model_for_mean_rate(rate_mean: astropy.units.Quantity[u.s**(-1)]) -> astropy.modeling.Model
+      :abstractmethod:
+
+
+      For a mean lightcurve count rate, generate a model that can be passed to MindTheGaps.
+
+      :param rate_mean: Mean light curve count.
+      :type rate_mean: float
+
+      :rtype: A Mind the Gaps model.
+
+
+
+   .. py:method:: get_period() -> astropy.time.TimeDelta
+
+      Gets the period, in whatever unit it was saved in.
+
+      :returns: The period, as a quantity.
+      :rtype: Quantity
+
+
+
+.. py:class:: QPOModelBPL
+
+   Bases: :py:obj:`QPOModel`
+
+
+   Wrapper for the Bending Powerlaw model from Mind the Gaps.
+
+
+   .. py:attribute:: __mapper_args__
+      :type:  Dict[str, str]
+
+
+   .. py:method:: get_model_for_mean_rate(rate_mean: astropy.units.Quantity[u.s**(-1)]) -> astropy.modeling.Model
+
+      For a mean lightcurve count rate, generate a model that can be passed to MindTheGaps.
+
+      :param rate_mean: Mean light curve count.
+      :type rate_mean: float
+
+      :rtype: A Mind the Gaps model.
+
+
+
+.. py:class:: QPOModelComposite
+
+   Bases: :py:obj:`QPOModel`
+
+
+   Wrapper for the SHO model from Mind the Gaps.
+
+
+   .. py:attribute:: __mapper_args__
+      :type:  Dict[str, str]
+
+
+   .. py:method:: add_components(session: sqlalchemy.orm.Session, components: List[Dict[str, Any]]) -> QPOModelComposite
+
+      Adds sub-components to this composite model.
+
+      :param session: The database session to add the children in.
+      :type session: Session
+      :param components: The children to add to the model.
+      :type components: List[Dict[str, Any]
+
+      :returns: Self, for chaining methods.
+      :rtype: QPOModelComposite
+
+
+
+   .. py:method:: get_model_for_mean_rate(rate_mean: astropy.units.Quantity[u.s**(-1)]) -> astropy.modeling.Model
+
+      Sums the models defining this as their parent, and returns them.
+
+      :param rate_mean: Mean light curve count.
+      :type rate_mean: float
+
+      :returns: **model** -- A Mind the Gaps model.
+      :rtype: Model
+
+
+
+.. py:class:: QPOModelLorentzian
+
+   Bases: :py:obj:`QPOModel`
+
+
+   Wrapper for the Lorentzian model from Mind the Gaps.
+
+
+   .. py:attribute:: __mapper_args__
+      :type:  Dict[str, str]
+
+
+   .. py:method:: get_model_for_mean_rate(rate_mean: astropy.units.Quantity[u.s**(-1)]) -> astropy.modeling.Model
+
+      For a mean lightcurve count rate, generate a model that can be passed to MindTheGaps.
+
+      :param rate_mean: Mean light curve count.
+      :type rate_mean: float
+
+      :rtype: A Mind the Gaps model.
+
+
+
+.. py:class:: QPOModelSHO
+
+   Bases: :py:obj:`QPOModel`
+
+
+   Wrapper for the SHO model from Mind the Gaps.
+
+
+   .. py:attribute:: __mapper_args__
+      :type:  Dict[str, str]
+
+
+   .. py:method:: get_model_for_mean_rate(rate_mean: astropy.units.Quantity[u.s**(-1)]) -> astropy.modeling.Model
+
+      For a mean lightcurve count rate, generate a model that can be passed to MindTheGaps.
+
+      :param rate_mean: Mean light curve count.
+      :type rate_mean: float
+
+      :rtype: A Mind the Gaps model.
+
+
+
+.. py:class:: Sonification
+
+   Bases: :py:obj:`voidorchestra.db.Base`
+
+
+   ORM class for sonification files.
+
+   This class bundles together the locations of the audio, video and image files,
+   and links to the lightcurve and sonification profile used to generate them.
+
+   .. attribute:: id
+
+      A unique ID for the sonification.
+
+      :type: integer
+
+   .. attribute:: uuid
+
+      The UUID for the sonification files & URL.
+
+      :type: string
+
+   .. attribute:: lightcurve
+
+      The lightcurve this sonification was generated from.
+
+      :type: relationship
+
+   .. attribute:: sonification_profile
+
+      The sonification profile used to generate the lightcurve.
+
+      :type: relationship
+
+   .. attribute:: subject
+
+      The corresponding subject on Zooniverse.
+
+      :type: relationship
+
+
+   .. py:attribute:: __tablename__
+      :type:  str
+      :value: 'sonification'
+
+
+
+   .. py:attribute:: id
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: sonification_profile_id
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: lightcurve_id
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: uuid
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: path_audio
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: path_video
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: path_image
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: processed
+      :type:  sqlalchemy.orm.Mapped[bool]
+
+
+   .. py:attribute:: figure
+      :type:  sqlalchemy.orm.Mapped[bool]
+
+
+   .. py:attribute:: confidence
+      :type:  sqlalchemy.orm.Mapped[float]
+
+
+   .. py:attribute:: subject
+      :type:  sqlalchemy.orm.Mapped[voidorchestra.db.subject.Subject]
+
+
+   .. py:attribute:: lightcurve
+      :type:  sqlalchemy.orm.Mapped[voidorchestra.db.lightcurve.Lightcurve]
+
+
+   .. py:attribute:: sonification_profile
+      :type:  sqlalchemy.orm.Mapped[voidorchestra.db.sonification_profile.SonificationProfile]
+
+
+   .. py:method:: __repr__() -> str
+
+
+.. py:class:: SonificationMethod
+
+   Bases: :py:obj:`voidorchestra.db.Base`
+
+
+   ORM class for sonification methods.
+
+   This class defines a way that data is converted into sound files.
+   Multiple versions exist, for using sound samples or using a synthesiser.
+
+   .. attribute:: id
+
+      The sonification method id.
+
+      :type: integer
+
+   .. attribute:: name
+
+      The name of the method.
+
+      :type: str
+
+   .. attribute:: polymorphic_type
+
+      The column used for single-table polymorphism.
+
+      :type: str
+
+   .. attribute:: preset
+
+      A preset definition for the method.
+
+      :type: str
+
+   .. attribute:: sonification_profiles
+
+      The sonification profiles using this method.
+
+      :type: relationship
+
+
+   .. py:attribute:: __tablename__
+      :type:  str
+      :value: 'sonification_method'
+
+
+
+   .. py:attribute:: __mapper_args__
+      :type:  Dict[str, str]
+
+
+   .. py:attribute:: id
+
+
+   .. py:attribute:: name
+
+
+   .. py:attribute:: description
+
+
+   .. py:attribute:: polymorphic_type
+
+
+   .. py:attribute:: sonification_profiles
+
+
+   .. py:attribute:: COLUMNS
+      :type:  List[str]
+      :value: ['id', 'name', 'description', 'preset']
+
+
+
+   .. py:method:: __repr__() -> str
+      :abstractmethod:
+
+
+      Gets the name of the sonification method.
+      :returns: The string representation of the sonificaiton method..
+      :rtype: str
+
+
+
+   .. py:method:: sonify_lightcurve(score: strauss.score.Score, lightcurve: astropy.timeseries.TimeSeries) -> strauss.sonification.Sonification
+      :abstractmethod:
+
+
+      Gets the generator used to sonify the data by this method.
+
+      :param score: The key and tempo used (set by the sonification profile).
+      :type score: Score
+      :param lightcurve: The data to sonify.
+      :type lightcurve: TimeSeries
+
+      :returns: The sonified sound.
+      :rtype: StraussSonification
+
+
+
+.. py:class:: SonificationMethodSoundfont
+
+   Bases: :py:obj:`voidorchestra.db.sonification_method.SonificationMethod`
+
+
+   Shared-table inheritance subclass for Soundfont sonification methods.
+
+   .. attribute:: preset
+
+      aaa
+
+   .. attribute:: preset_modification
+
+      aaa
+
+   .. attribute:: path
+
+      aaae
+
+   .. attribute:: continuous
+
+      aaa
+
+
+   .. py:attribute:: preset
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: preset_modification
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: path
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: continuous
+      :type:  sqlalchemy.orm.Mapped[bool]
+
+
+   .. py:attribute:: sonification_profiles
+      :type:  sqlalchemy.orm.Mapped[List[voidorchestra.db.SonificationProfile]]
+
+
+   .. py:attribute:: SYSTEM
+      :type:  str
+      :value: 'mono'
+
+
+
+   .. py:attribute:: COLUMNS
+      :type:  List[str]
+      :value: ['preset_modification', 'path', 'continuous', 'preset']
+
+
+
+   .. py:attribute:: __mapper_args__
+      :type:  Dict[str, str]
+
+
+   .. py:method:: __repr__() -> str
+
+      Gets the name of the sonification method.
+      :returns: The string representation of the sonificaiton method..
+      :rtype: str
+
+
+
+   .. py:method:: sonify_lightcurve(score: strauss.score.Score, lightcurve: astropy.timeseries.TimeSeries) -> strauss.sonification.Sonification
+
+      Gets the generator used to sonify the data by this method.
+
+      :param score: The key and tempo used (set by the sonification profile).
+      :type score: Score
+      :param lightcurve: The data to sonify.
+      :type lightcurve: TimeSeries
+
+      :returns: The sonified sound.
+      :rtype: StraussSonification
+
+
+
+   .. py:method:: load_fixtures(session: sqlalchemy.orm.Session, fixtures_path: pathlib.Path = None) -> None
+      :staticmethod:
+
+
+      Loads the fixtures from disk (if they aren't loaded already)
+
+      :param session: A database session to add the fixtures to.
+      :type session: Session
+      :param fixtures_path: The fixtures JSON file to load the fixtures from.
+      :type fixtures_path: Path
+
+      :raises FileNotFoundError: If the passed path (or the path in the config file) does not exist.
+      :raises ValueError: If the file doesn't have the right columns.
+
+
+
+.. py:class:: SonificationMethodSynthesizer
+
+   Bases: :py:obj:`voidorchestra.db.sonification_method.SonificationMethod`
+
+
+   Shared-table inheritance subclass for Synthesizer sonification methods.
+
+   .. attribute:: pitch
+
+      aaa
+
+      :type: float
+
+   .. attribute:: pitch_shift_power
+
+      Power of the pitch shift.
+
+      :type: float
+
+   .. attribute:: length
+
+      Duration of the sonification, in seconds.
+
+      :type: float
+
+
+   .. py:attribute:: pitch
+
+
+   .. py:attribute:: pitch_shift_power
+
+
+   .. py:attribute:: length
+
+
+   .. py:attribute:: COLUMNS
+      :type:  List[str]
+      :value: ['pitch', 'pitch_shift_power', 'length']
+
+
+
+   .. py:attribute:: __mapper_args__
+      :type:  Dict[str, str]
+
+
+   .. py:method:: __repr__() -> str
+
+      Gets the name of the sonification method.
+      :returns: The string representation of the sonificaiton method..
+      :rtype: str
+
+
+
+   .. py:method:: get_generator() -> strauss.generator.Synthesizer
+
+      Gets the generator used to sonify the data by this method.
+
+      :returns: The sound generator.
+      :rtype: Synthesizer
+
+
+
+   .. py:method:: load_fixtures(session: sqlalchemy.orm.Session, fixtures_path: pathlib.Path = None) -> None
+      :staticmethod:
+
+
+      Loads the fixtures from disk (if they aren't loaded already)
+
+      :param session: A database session to add the fixtures to.
+      :type session: Session
+      :param fixtures_path: The fixtures JSON file to load the fixtures from.
+      :type fixtures_path: Path
+
+      :raises FileNotFoundError: If the passed path (or the path in the config file) does not exist.
+      :raises ValueError: If the file doesn't have the right columns.
+
+
+
+   .. py:method:: sonify_lightcurve(generator: strauss.generator.Synthesizer) -> strauss.sonification.Sonification
+
+      :param generator:
+
+      :returns: The sonified version of the lightcurve.
+      :rtype: Sonification
+
+
+
+.. py:class:: SonificationProfile
+
+   Bases: :py:obj:`voidorchestra.db.Base`
+
+
+   ORM class for sonification profiles.
+
+   These are the patterns of sonification that are used to generate sonifications for data.
+   They include an instrument, and how it is used.
+
+   .. attribute:: id
+
+      A unique ID for the sonification profile.
+
+      :type: integer
+
+   .. attribute:: sonification_method_id
+
+      The ID of the sonification method used by this profile.
+
+      :type: integer
+
+   .. attribute:: name
+
+      The name of the sonification profile.
+
+      :type: string
+
+   .. attribute:: description
+
+      A description of the sonification profile.
+
+      :type: string
+
+   .. attribute:: tempo
+
+      The speed of the sonification.
+
+      :type: float
+
+   .. attribute:: key
+
+      The note(s) to use for the sonification.
+
+      :type: text
+
+   .. attribute:: sonification_method
+
+      The method used to sonify data as part of this profile.
+      Can be synthesizer or instrument samples.
+
+      :type: relationship
+
+   .. attribute:: sonifications
+
+      The sonifications generated using this profile.
+
+      :type: relationship
+
+
+   .. py:attribute:: __tablename__
+      :type:  str
+      :value: 'sonification_profile'
+
+
+
+   .. py:attribute:: id
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: sonification_method_id
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: name
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: description
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: tempo
+      :type:  sqlalchemy.orm.Mapped[float]
+
+
+   .. py:attribute:: key
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: sonifications
+      :type:  sqlalchemy.orm.Mapped[List[voidorchestra.db.Sonification]]
+
+
+   .. py:attribute:: sonification_method
+      :type:  sqlalchemy.orm.Mapped[voidorchestra.db.SonificationMethod]
+
+
+   .. py:attribute:: subject_sets
+      :type:  sqlalchemy.orm.Mapped[voidorchestra.db.SubjectSet]
+
+
+   .. py:attribute:: COLUMNS
+      :type:  List[str]
+      :value: ['id', 'sonification_method_id', 'tempo', 'key', 'name', 'description']
+
+
+
+   .. py:attribute:: __table_args__
+
+
+   .. py:method:: __repr__() -> str
+
+
+   .. py:method:: load_fixtures(session: sqlalchemy.orm.Session, fixtures_path: pathlib.Path = None) -> List[SonificationProfile]
+      :staticmethod:
+
+
+      Loads the fixtures from disk (if they aren't loaded already)
+
+      :param session: A database session to add the fixtures to
+      :type session: Session
+      :param fixtures_path: The fixtures JSON file to load the fixtures from
+      :type fixtures_path: Path
+
+      :raises FileNotFoundError: If the passed path (or the path in the config file) does not exist
+      :raises ValueError: If the file doesn't have the right columns.
+
+
+
+   .. py:method:: get_key() -> List[str]
+
+
+   .. py:method:: create_sonification(lightcurve: astropy.timeseries.TimeSeries) -> strauss.sonification.Sonification
+
+      :param lightcurve: The lightcurve to sonify.
+      :type lightcurve: TimeSeries
+
+      :returns: The sonified lightcurve.
+      :rtype: StraussSonification
+
+
+
+.. py:class:: Subject
+
+   Bases: :py:obj:`voidorchestra.db.Base`
+
+
+   ORM class for subject sets.
+
+   This class is used to query the subjects which have been uploaded and
+   contains metadata about associations of the subject to projects, users
+   and other structures in Zooniverse.
+
+   .. attribute:: subject_id
+
+      The ID of the subject in the local DB
+
+      :type: integer
+
+   .. attribute:: zooniverse_subject_id
+
+      Foreign key, the ID of the subject this is
+
+      :type: integer
+
+   .. attribute:: retired
+
+      Boolean flag to indicate if the subject has been retired due to a
+      consensus being reached.
+
+      :type: boolean
+
+   .. attribute:: zooniverse_workflow_id
+
+      The Zooniverse ID of the workflow the subject is assigned to.
+
+      :type: integer
+
+   .. attribute:: subject_set_id
+
+      Foreign key, the ID of the subject set the subject is assigned to
+
+      :type: integer
+
+   .. attribute:: zooniverse_subject_set_id
+
+      The Zooniverse ID of the subject set this is a subject of.
+
+      :type: integer
+
+   .. attribute:: classifications
+
+      A relationship link to the classifications of this subject.
+
+      :type: relationship
+
+   .. attribute:: subject_set
+
+      A relationship link to the subject set.
+
+      :type: relationship
+
+   .. attribute:: sonification
+
+      A relationship link to the sonification.
+
+      :type: relationship
+
+
+   .. py:attribute:: __tablename__
+      :type:  str
+      :value: 'subject'
+
+
+
+   .. py:attribute:: id
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: sonification_id
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: sonification
+      :type:  sqlalchemy.orm.Mapped[voidorchestra.db.Sonification]
+
+
+   .. py:attribute:: subject_set_id
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: subject_set
+      :type:  sqlalchemy.orm.Mapped[voidorchestra.db.SubjectSet]
+
+
+   .. py:attribute:: classifications
+      :type:  sqlalchemy.orm.Mapped[List[voidorchestra.db.Classification]]
+
+
+   .. py:attribute:: zooniverse_project_id
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: zooniverse_subject_id
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: zooniverse_subject_set_id
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: zooniverse_workflow_id
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: retired
+      :type:  sqlalchemy.orm.Mapped[bool]
+
+
+   .. py:method:: __repr__() -> str
+
+
+.. py:class:: SubjectSet
+
+   Bases: :py:obj:`voidorchestra.db.Base`
+
+
+   ORM class for subject sets.
+
+   This class is used to query subject sets which have been created and are
+   in use by a project and workflow
+
+   .. attribute:: id
+
+      Primary key.
+
+      :type: integer
+
+   .. attribute:: zooniverse_subject_set_id
+
+      The Zooniverse ID for the subject set, indexed.
+
+      :type: integer
+
+   .. attribute:: zooniverse_workflow_id
+
+      The ID of the Zooniverse workflow the subject set is assigned to.
+
+      :type: int
+
+   .. attribute:: display_name
+
+      The display name of the subject set on the Zooniverse.
+
+      :type: string
+
+   .. attribute:: subjects
+
+      The subjects associated with the subject set.
+
+      :type: relationship
+
+   .. attribute:: sonification_profile_id
+
+      The foreign key for the sonification profile used to generate the subjects in this set.
+
+      :type: integer
+
+   .. attribute:: sonification_profile
+
+      The sonification profile used to generate the subjects in this set.
+
+      :type: relationship
+
+
+   .. py:attribute:: __tablename__
+      :type:  str
+      :value: 'subject_set'
+
+
+
+   .. py:attribute:: id
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: lightcurve_collection_id
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: sonification_profile_id
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: zooniverse_subject_set_id
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: priority
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: display_name
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: sonification_profile
+      :type:  sqlalchemy.orm.Mapped[voidorchestra.db.sonification_profile.SonificationProfile]
+
+
+   .. py:attribute:: lightcurve_collection
+      :type:  sqlalchemy.orm.Mapped[voidorchestra.db.LightcurveCollection]
+
+
+   .. py:attribute:: subjects
+      :type:  sqlalchemy.orm.Mapped[List[voidorchestra.db.subject.Subject]]
+
+
+.. py:function:: create_database_tables(engine: sqlalchemy.engine.Engine) -> None
+
+   Create the database tables.
+
+   Creates all the (or the missing) database tables. These tables are
+   defined in each ORM class in the :code:`__tablename__` variable.
+
+   :param engine: The engine to connection to the database.
+   :type engine: Engine
+
+
+.. py:function:: create_new_database(location: Optional[str]) -> sqlalchemy.engine.Engine
+
+   Create the MoleMarshal database.
+
+   :param location: The filepath to the database to create.
+   :type location: str
+
+   :returns: **engine** -- the database Engine object.
+   :rtype: sqlalchemy.Engine
+
+
+.. py:function:: connect_to_database_engine(location: str) -> sqlalchemy.engine.Engine
+
+   Create a connection to the database.
+
+   Return an SQLAlchemy Engine which creates a connection to the
+   database. If the database does not exist, a new database is created. In
+   the case of multiple calls of this function, a new engine will not be
+   created and an already existing engine will be returned.
+
+   :param location: The filepath to the database to open.
+   :type location: str
+
+   :returns: **engine** -- The engine object to connect to the database.
+   :rtype: sqlalchemy.engine
+
+
+.. py:function:: commit_database(session: sqlalchemy.orm.Session) -> None
+
+   Commit changes to the database.
+
+   Any changes queued up in the session will be committed, and appropriate
+   messages will be sent to the logger.
+
+   :param session: The database session.
+   :type session: Session
+
+

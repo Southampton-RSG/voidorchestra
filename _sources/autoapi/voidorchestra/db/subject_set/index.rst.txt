@@ -1,0 +1,119 @@
+voidorchestra.db.subject_set
+============================
+
+.. py:module:: voidorchestra.db.subject_set
+
+.. autoapi-nested-parse::
+
+   Defines the database object for Zooniverse subject sets.
+
+   These are used to store the active subject sets in a project and workflow.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   voidorchestra.db.subject_set.SubjectSet
+
+
+Module Contents
+---------------
+
+.. py:class:: SubjectSet
+
+   Bases: :py:obj:`voidorchestra.db.Base`
+
+
+   ORM class for subject sets.
+
+   This class is used to query subject sets which have been created and are
+   in use by a project and workflow
+
+   .. attribute:: id
+
+      Primary key.
+
+      :type: integer
+
+   .. attribute:: zooniverse_subject_set_id
+
+      The Zooniverse ID for the subject set, indexed.
+
+      :type: integer
+
+   .. attribute:: zooniverse_workflow_id
+
+      The ID of the Zooniverse workflow the subject set is assigned to.
+
+      :type: int
+
+   .. attribute:: display_name
+
+      The display name of the subject set on the Zooniverse.
+
+      :type: string
+
+   .. attribute:: subjects
+
+      The subjects associated with the subject set.
+
+      :type: relationship
+
+   .. attribute:: sonification_profile_id
+
+      The foreign key for the sonification profile used to generate the subjects in this set.
+
+      :type: integer
+
+   .. attribute:: sonification_profile
+
+      The sonification profile used to generate the subjects in this set.
+
+      :type: relationship
+
+
+   .. py:attribute:: __tablename__
+      :type:  str
+      :value: 'subject_set'
+
+
+
+   .. py:attribute:: id
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: lightcurve_collection_id
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: sonification_profile_id
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: zooniverse_subject_set_id
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: priority
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: display_name
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: sonification_profile
+      :type:  sqlalchemy.orm.Mapped[voidorchestra.db.sonification_profile.SonificationProfile]
+
+
+   .. py:attribute:: lightcurve_collection
+      :type:  sqlalchemy.orm.Mapped[voidorchestra.db.LightcurveCollection]
+
+
+   .. py:attribute:: subjects
+      :type:  sqlalchemy.orm.Mapped[List[voidorchestra.db.subject.Subject]]
+
+

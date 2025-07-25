@@ -1,0 +1,209 @@
+voidorchestra.active_learning.weights
+=====================================
+
+.. py:module:: voidorchestra.active_learning.weights
+
+.. autoapi-nested-parse::
+
+   The weight module handles assigning weights to subjects and to subject sets.
+   The weights are used to alter the probability of a subject or subject from a
+   subject set being shown to a user.
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   voidorchestra.active_learning.weights.logger
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   voidorchestra.active_learning.weights.__create_new_panoptes_subject_set
+   voidorchestra.active_learning.weights.__binning_checkpoint
+   voidorchestra.active_learning.weights.__create_missing_priority_local_subject_sets
+   voidorchestra.active_learning.weights.get_priority_panoptes_subject_sets
+   voidorchestra.active_learning.weights.set_priority_subject_set_weights_for_workflow
+   voidorchestra.active_learning.weights.bin_subjects_into_priority_panoptes_subject_sets
+   voidorchestra.active_learning.weights.unlink_unused_subject_sets_from_workflow
+   voidorchestra.active_learning.weights.update_weighted_sampling_scheme
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+   :type:  logging.Logger
+
+.. py:function:: __create_new_panoptes_subject_set(panoptes_project: panoptes_client.Project, panoptes_workflow: panoptes_client.Workflow, display_name: str, priority: int, session: sqlalchemy.orm.Session) -> panoptes_client.SubjectSet
+
+   Create a new subject set on Zooniverse.
+
+   Creates a new subject set with the given name on Zooniverse, and creates a
+   new entry in the Void Orchestra database. This is why there are some seemingly
+   redundant arguments.
+
+   :param panoptes_project: A Project class for the project the subject set will be linked to.
+   :type panoptes_project: PanoptesProject
+   :param panoptes_workflow: A Workflow class for the workflow the subject set will be part of, or
+                             linked to.
+   :type panoptes_workflow: PanoptesWorkflow
+   :param display_name: The name of the new subject set.
+   :type display_name: str
+   :param priority: The priority ranking of the subject set.
+   :type priority: int
+   :param session: The database session to add the new subject set to.
+   :type session: Session
+
+   :returns: **panoptes_subject_set** -- The created Panoptes-format subject set.
+   :rtype: PanoptesSubjectSet
+
+
+.. py:function:: __binning_checkpoint(panoptes_subject_sets_to_update: List[panoptes_client.SubjectSet], session: sqlalchemy.orm.Session) -> None
+
+   Save changes to subject sets and the database session.
+
+   For work going on in parallel on both local DB content and remote Zooniverse content.
+
+   :param panoptes_subject_sets_to_update: The subject sets to save changes to.
+   :type panoptes_subject_sets_to_update: List[PanoptesSubjectSet]
+   :param session: The session to commit changes to.
+   :type session: Session
+
+
+.. py:function:: __create_missing_priority_local_subject_sets(session: sqlalchemy.orm.Session, project_id: str | int, panoptes_workflow_id: str | int, num_sets: int, priorities: List[int] | None = None) -> List[voidorchestra.db.SubjectSet]
+
+   Create new or find a subject set for the given priorities in the DB.
+
+   Only the missing priority subject sets will be created or attempted to be
+   found. This is done by figuring out the priority rankings which are missing.
+   Newly created subject sets are added to the Void Orchestra database.
+
+   :param session: A ORM session to MoleDB.
+   :type session: Session
+   :param project_id: The Zooniverse ID of the project subject sets will belong to.
+   :type project_id: str | int
+   :param panoptes_workflow_id: The Zooniverse ID of the workflow the subject sets will be assigned to.
+   :type panoptes_workflow_id: str | int
+   :param num_sets: The number of subject sets which should exist.
+   :type num_sets: int
+   :param priorities: The requested priorities of the subject sets. The default value of None
+                      will create subject sets from range(1 num_sets + 1).
+   :type priorities: List[int] | None
+
+   :returns: A list of local SubjectSet objects corresponding to the created/retrieved subject
+             sets.
+   :rtype: List[LocalSubjectSet]
+
+
+.. py:function:: get_priority_panoptes_subject_sets(panoptes_project_id: str | int, panoptes_workflow_id: str | int, num_priority_subject_sets: int) -> List[panoptes_client.SubjectSet]
+
+   Return a list of Panoptes SubjectSets which are used for priority/confidence
+   binning.
+
+   This function queries the database for subject sets which have a priority which
+   fit into the `num_priority_sets` variable. `num_priority_sets` controls how many priority sets
+   to get, which will in turn affect the binning.
+
+   New subject sets will be created for any missing, e.g. if the number of sets
+   goes from 4 to 5 or if any subject sets are deleted on the online interface.
+   Subject sets are not deleted/removed from the workflow if the number of
+   subject set shrinks. This shouldn't matter as no subjects will be binned
+   into them anyway.
+
+   This function also updates the local subject set table.
+
+   :param panoptes_project_id: The Zooniverse ID of the project containing the subject sets.
+   :type panoptes_project_id: str | int
+   :param panoptes_workflow_id: The Zooniverse ID of the workflow the subject sets will be associated
+                                with.
+   :type panoptes_workflow_id: str | int
+   :param num_priority_subject_sets: The number of priority subject sets to get.
+   :type num_priority_subject_sets: int, optional
+
+   :returns: A priority sorted list of the priority subject sets, as Panoptes
+             SubjectSet objects.
+   :rtype: List[PanoptesSubjectSet]
+
+
+.. py:function:: set_priority_subject_set_weights_for_workflow(panoptes_subject_set_ids: Iterable[str | int], weights_to_assign: Iterable[float], panoptes_workflow: panoptes_client.Workflow) -> None
+
+   Set the priority weights for subject sets in a workflow.
+
+   The weights of the subject set modify the selection behaviour. If there are
+   3 subject sets with weights [0.9, 0.05, 0.05] then for 10 subjects we
+   should expect 9 subjects from the first subject set and 2 from the other.
+   The weights must sum up to 1.
+
+   :param panoptes_subject_set_ids: A list of Zooniverse subject set IDs to modify the selection weighting for.
+   :type panoptes_subject_set_ids: Iterable[str | int]
+   :param weights_to_assign: A list of selection weights, in the same order as the subject IDs.
+   :type weights_to_assign: Iterable[float]
+   :param panoptes_workflow: The workflow to assign the selection weighting to.
+   :type panoptes_workflow: PanoptesWorkflow
+
+
+.. py:function:: bin_subjects_into_priority_panoptes_subject_sets(priority_panoptes_subject_sets: List[panoptes_client.SubjectSet], panoptes_workflow_id: str | int, commit_frequency: int = 250) -> None
+
+   Arrange subjects into priority subject sets depending on machine
+   confidence.
+
+   Subjects are binned into "priority subject sets" by the machine confidence
+   of the stamps which they represent. The number of these subject sets can be
+   changed dynamically with the `num_priority_sets` variable. This will change
+   the binning, but will not modify the subjects sets which exist on
+   Zooniverse.
+
+   :param priority_panoptes_subject_sets: A list of subject sets which subjects will be binned into by confidence.
+   :type priority_panoptes_subject_sets: List[SubjectSet]
+   :param panoptes_workflow_id: The workflow where subjects are being binned into.
+   :type panoptes_workflow_id: int
+   :param commit_frequency: The frequency of which to save changes, by default 250 subjects.
+   :type commit_frequency: int, optional
+
+
+.. py:function:: unlink_unused_subject_sets_from_workflow(panoptes_workflow: panoptes_client.Workflow, num_priority_sets: int) -> None
+
+   Unlink priority subject sets which are not used in a workflow.
+
+   This function will remove priority subject sets which have been
+   "dynamically" removed from the workflow due to a shrinking number of
+   priority sets. The entry in MoleDB is also updated.
+
+   Changes seem to take a bit of time to become active in the online UI.
+
+   :param panoptes_workflow: A Workflow object for the workflow to be updated.
+   :type panoptes_workflow: PanoptesWorkflow
+   :param num_priority_sets: The number of priority subject sets in the workflow.
+   :type num_priority_sets: int
+
+
+.. py:function:: update_weighted_sampling_scheme(panoptes_project_id: str | int = config['ZOONIVERSE']['project_id'], panoptes_workflow_id: str | int = config['ZOONIVERSE']['workflow_id']) -> None
+
+   Update the subjects in the subject sets given the machine confidence
+   for sonifications.
+
+   This function will,
+
+       1) Create a number of "priority subject sets" which are subjects set
+          which contain subjects/stamps in a certain confidence interval
+       2) Bin subjects by their confidence into the priority subject sets.
+       3) Set the sampling weighting for the priority subject sets.
+       4) Unlinks any unused subject sets from the workflow
+
+   These features are controlled by parameters in the configuration file.
+   Subjects can will only exist in one subject set at once.
+
+   :param panoptes_project_id: The Zooniverse ID of the project containing the subject sets. By default
+                               this is the values in the configuration file.
+   :type panoptes_project_id: str | int
+   :param panoptes_workflow_id: The Zooniverse ID of the workflow containing the subject sets being
+                                updated. By default, this is the value in the configuration file.
+   :type panoptes_workflow_id: str | int
+
+

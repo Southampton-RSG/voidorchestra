@@ -1,0 +1,75 @@
+voidorchestra.console.commands.delete
+=====================================
+
+.. py:module:: voidorchestra.console.commands.delete
+
+.. autoapi-nested-parse::
+
+   This module contains sub-commands for `molegazer remove`.
+
+   These are (mostly) development commands designed to remove the DB
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   voidorchestra.console.commands.delete.logger
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   voidorchestra.console.commands.delete.delete
+   voidorchestra.console.commands.delete.delete_database
+   voidorchestra.console.commands.delete.delete_sonifications
+   voidorchestra.console.commands.delete.delete_soundfonts
+   voidorchestra.console.commands.delete.delete_sonification_profiles
+   voidorchestra.console.commands.delete.delete_lightcurve_collection
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+   :type:  logging.Logger
+
+.. py:function:: delete()
+
+   Remove files of a given type.
+
+
+.. py:function:: delete_database(ctx: click.Context) -> None
+
+   Deletes the databasefilter(
+
+
+.. py:function:: delete_sonifications(ctx: click.Context, hard: bool = False) -> None
+
+   Clear image files that have been uploaded.
+
+   Clears uploaded sonifications from the database, and deletes the files.
+
+   :param hard: Whether to process images that are not in the database (or if there is no database)
+   :type hard: bool
+
+
+.. py:function:: delete_soundfonts(ctx: click.Context) -> None
+
+   Remove soundfonts that have been imported from the database.
+
+
+.. py:function:: delete_sonification_profiles(ctx: click.Context) -> None
+
+   Remove imported sonification profiles from the database.
+
+
+.. py:function:: delete_lightcurve_collection(ctx: click.Context, lightcurve_collection: str) -> None
+
+   Remove imported sonification profiles from the database.
+
+

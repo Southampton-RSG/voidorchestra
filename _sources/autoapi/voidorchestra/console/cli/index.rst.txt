@@ -1,0 +1,30 @@
+voidorchestra.console.cli
+=========================
+
+.. py:module:: voidorchestra.console.cli
+
+.. autoapi-nested-parse::
+
+   Entry point for the `void-orchestra` command.
+
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   voidorchestra.console.cli.cli
+
+
+Module Contents
+---------------
+
+.. py:function:: cli(ctx: click.Context, verbose: bool, commit_freq: int, debug: bool) -> None
+
+   Void Orchestra Conductor.
+
+   The purpose of this program is to provide an easy to use set of commands
+   which allow you to create sonifications of QPO data, and link them to the Zooniverse.
+
+

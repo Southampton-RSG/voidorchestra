@@ -1,0 +1,32 @@
+voidorchestra.zooniverse
+========================
+
+.. py:module:: voidorchestra.zooniverse
+
+.. autoapi-nested-parse::
+
+   The MoleMarshal package is a collection of packages to automate
+   the creation, uploading and management of subject sets to the MoleMarshal
+   Zooniverse project.
+
+   The `zooniverse` sub-package is responsible for management of the
+   Zooniverse infrastructure including adding to the MoleMarshal database,
+   creating/uploading subjects and subject sets and matching classifications from
+   users to stamps.
+
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/voidorchestra/zooniverse/classifications/index
+   /autoapi/voidorchestra/zooniverse/subject_sets/index
+   /autoapi/voidorchestra/zooniverse/subjects/index
+   /autoapi/voidorchestra/zooniverse/sync/index
+   /autoapi/voidorchestra/zooniverse/workflows/index
+   /autoapi/voidorchestra/zooniverse/zooniverse/index
+
+

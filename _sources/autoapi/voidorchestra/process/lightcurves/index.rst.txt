@@ -1,0 +1,56 @@
+voidorchestra.process.lightcurves
+=================================
+
+.. py:module:: voidorchestra.process.lightcurves
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   voidorchestra.process.lightcurves.logger
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   voidorchestra.process.lightcurves.generate_parameter_grid
+   voidorchestra.process.lightcurves.create_synthetic_regular_lightcurves
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+   :type:  logging.Logger
+
+.. py:function:: generate_parameter_grid(parameter_grid: Dict[str, Any]) -> Generator[Dict, Dict, None]
+
+   Turns a dictionary into a generator that yields a parameter grid.
+
+   :url: https://stackoverflow.com/questions/65392737/python-how-to-create-a-parameter-grid-with-dynamic-number-of-parameters
+
+   :param parameter_grid:
+   :type parameter_grid: Dict[str, Any]
+
+   :Yields: **parameter_combination** (*Dict[str, Any]*) -- A point on the parameter grid.
+
+
+.. py:function:: create_synthetic_regular_lightcurves(lightcurve_collection: voidorchestra.db.LightcurveCollection, parameter_grid: Dict[str, Any], session: sqlalchemy.orm.Session, repeats: int = 1)
+
+   Creates synthetic lightcurves covering the specified parameter grid.
+
+   :param lightcurve_collection: The collection to create the lightcurves within.
+   :type lightcurve_collection: LightcurveCollection
+   :param parameter_grid: The grid of parameters to generate sets over.
+   :type parameter_grid: Dict[str, Any]
+   :param session: The database session.
+   :type session: Session
+
+   :returns: **synthetic_lightcurves** -- The created lightcurves.
+   :rtype: LightcurveSynthetic
+
+

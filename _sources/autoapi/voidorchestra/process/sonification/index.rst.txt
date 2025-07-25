@@ -1,0 +1,197 @@
+voidorchestra.process.sonification
+==================================
+
+.. py:module:: voidorchestra.process.sonification
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/voidorchestra/process/sonification/figure/index
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   voidorchestra.process.sonification.config
+   voidorchestra.process.sonification.config_paths
+   voidorchestra.process.sonification.logger
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   voidorchestra.process.sonification.Sonification
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   voidorchestra.process.sonification.commit_database
+   voidorchestra.process.sonification.get_logger
+   voidorchestra.process.sonification.plot_lightcurve
+   voidorchestra.process.sonification.write_sonification_files
+
+
+Package Contents
+----------------
+
+.. py:data:: config
+   :type:  configparser.ConfigParser
+
+.. py:data:: config_paths
+   :type:  Dict[str, pathlib.Path]
+
+.. py:class:: Sonification
+
+   Bases: :py:obj:`voidorchestra.db.Base`
+
+
+   ORM class for sonification files.
+
+   This class bundles together the locations of the audio, video and image files,
+   and links to the lightcurve and sonification profile used to generate them.
+
+   .. attribute:: id
+
+      A unique ID for the sonification.
+
+      :type: integer
+
+   .. attribute:: uuid
+
+      The UUID for the sonification files & URL.
+
+      :type: string
+
+   .. attribute:: lightcurve
+
+      The lightcurve this sonification was generated from.
+
+      :type: relationship
+
+   .. attribute:: sonification_profile
+
+      The sonification profile used to generate the lightcurve.
+
+      :type: relationship
+
+   .. attribute:: subject
+
+      The corresponding subject on Zooniverse.
+
+      :type: relationship
+
+
+   .. py:attribute:: __tablename__
+      :type:  str
+      :value: 'sonification'
+
+
+
+   .. py:attribute:: id
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: sonification_profile_id
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: lightcurve_id
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: uuid
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: path_audio
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: path_video
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: path_image
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: processed
+      :type:  sqlalchemy.orm.Mapped[bool]
+
+
+   .. py:attribute:: figure
+      :type:  sqlalchemy.orm.Mapped[bool]
+
+
+   .. py:attribute:: confidence
+      :type:  sqlalchemy.orm.Mapped[float]
+
+
+   .. py:attribute:: subject
+      :type:  sqlalchemy.orm.Mapped[voidorchestra.db.subject.Subject]
+
+
+   .. py:attribute:: lightcurve
+      :type:  sqlalchemy.orm.Mapped[voidorchestra.db.lightcurve.Lightcurve]
+
+
+   .. py:attribute:: sonification_profile
+      :type:  sqlalchemy.orm.Mapped[voidorchestra.db.sonification_profile.SonificationProfile]
+
+
+   .. py:method:: __repr__() -> str
+
+
+.. py:function:: commit_database(session: sqlalchemy.orm.Session) -> None
+
+   Commit changes to the database.
+
+   Any changes queued up in the session will be committed, and appropriate
+   messages will be sent to the logger.
+
+   :param session: The database session.
+   :type session: Session
+
+
+.. py:function:: get_logger(logger_name: str) -> logging.Logger
+
+   Initialize logging.
+
+   This sets the stream, formatting for the logger and the verbosity level.
+   The verbosity level is controlled by command line arguments, --verbose and
+   --debug respectively.
+
+   :param logger_name: The name of the logger instance.
+   :type logger_name: str
+
+   :returns: **new_logger** -- The new logging object, with the given name `logger_name`.
+   :rtype: logging.Logger
+
+
+.. py:function:: plot_lightcurve(lightcurve: astropy.timeseries.TimeSeries) -> plotly.graph_objs.Figure
+
+   Given a lightcurve, plots it (with uncertainty regions).
+
+   :param lightcurve: The lightcurve table to plot.
+   :type lightcurve: TimeSeries
+
+   :returns: The plotted figure.
+   :rtype: Figure
+
+
+.. py:data:: logger
+   :type:  logging.Logger
+
+.. py:function:: write_sonification_files(session: sqlalchemy.orm.Session, sonifications: List[voidorchestra.db.Sonification], commit_frequency: int = 1000) -> None
+

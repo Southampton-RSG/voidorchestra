@@ -1,0 +1,132 @@
+voidorchestra.db.sonification_method
+====================================
+
+.. py:module:: voidorchestra.db.sonification_method
+
+.. autoapi-nested-parse::
+
+   Defines the database object for sonification methods.
+
+   Uses single-table inheritance to contain multiple types of sonification method.
+
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/voidorchestra/db/sonification_method/soundfont/index
+   /autoapi/voidorchestra/db/sonification_method/synthesizer/index
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   voidorchestra.db.sonification_method.SonificationMethod
+
+
+Package Contents
+----------------
+
+.. py:class:: SonificationMethod
+
+   Bases: :py:obj:`voidorchestra.db.Base`
+
+
+   ORM class for sonification methods.
+
+   This class defines a way that data is converted into sound files.
+   Multiple versions exist, for using sound samples or using a synthesiser.
+
+   .. attribute:: id
+
+      The sonification method id.
+
+      :type: integer
+
+   .. attribute:: name
+
+      The name of the method.
+
+      :type: str
+
+   .. attribute:: polymorphic_type
+
+      The column used for single-table polymorphism.
+
+      :type: str
+
+   .. attribute:: preset
+
+      A preset definition for the method.
+
+      :type: str
+
+   .. attribute:: sonification_profiles
+
+      The sonification profiles using this method.
+
+      :type: relationship
+
+
+   .. py:attribute:: __tablename__
+      :type:  str
+      :value: 'sonification_method'
+
+
+
+   .. py:attribute:: __mapper_args__
+      :type:  Dict[str, str]
+
+
+   .. py:attribute:: id
+
+
+   .. py:attribute:: name
+
+
+   .. py:attribute:: description
+
+
+   .. py:attribute:: polymorphic_type
+
+
+   .. py:attribute:: sonification_profiles
+
+
+   .. py:attribute:: COLUMNS
+      :type:  List[str]
+      :value: ['id', 'name', 'description', 'preset']
+
+
+
+   .. py:method:: __repr__() -> str
+      :abstractmethod:
+
+
+      Gets the name of the sonification method.
+      :returns: The string representation of the sonificaiton method..
+      :rtype: str
+
+
+
+   .. py:method:: sonify_lightcurve(score: strauss.score.Score, lightcurve: astropy.timeseries.TimeSeries) -> strauss.sonification.Sonification
+      :abstractmethod:
+
+
+      Gets the generator used to sonify the data by this method.
+
+      :param score: The key and tempo used (set by the sonification profile).
+      :type score: Score
+      :param lightcurve: The data to sonify.
+      :type lightcurve: TimeSeries
+
+      :returns: The sonified sound.
+      :rtype: StraussSonification
+
+
+

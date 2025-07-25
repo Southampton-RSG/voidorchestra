@@ -1,0 +1,210 @@
+voidorchestra.zooniverse.classifications
+========================================
+
+.. py:module:: voidorchestra.zooniverse.classifications
+
+.. autoapi-nested-parse::
+
+   The classifications module deals with downloading and assigning workflow
+   classifications to subjects and stamp images. There are two main functions in
+   this module
+
+   - :meth:`get_workflow_classifications`,
+   - :meth:`update_classification_database`.
+
+   which handle downloading classifications and matching those classifications to
+   subjects and therefore stamps, respectively.
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   voidorchestra.zooniverse.classifications.logger
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   voidorchestra.zooniverse.classifications.__dump_classifications_to_file
+   voidorchestra.zooniverse.classifications.__convert_answer_to_bool
+   voidorchestra.zooniverse.classifications.convert_answer_index_to_value
+   voidorchestra.zooniverse.classifications.get_workflow_task_answers
+   voidorchestra.zooniverse.classifications.get_workflow_classifications
+   voidorchestra.zooniverse.classifications.process_workflow_classifications
+   voidorchestra.zooniverse.classifications.update_classification_database
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+   :type:  logging.Logger
+
+.. py:function:: __dump_classifications_to_file(classifications: list[dict[str, int]], workflow_name: str) -> None
+
+   Write a list of classifications to a CSV file.
+
+   This function is meant to  be used with the output from
+   :meth:`download_classifications_for_workflow_reducer`.
+
+   :param classifications: A list of dicts containing information about the classifications.
+                           Expects the keys "id", "subject_id" and "answer_index".
+   :type classifications: List[dict]
+   :param workflow_name: The name of the workflow where classifications are coming from.
+   :type workflow_name: str
+
+
+.. py:function:: __convert_answer_to_bool(answer: str) -> str | bool
+
+   Convert an answer to something appropriate for the database.
+
+   An answer of "yes" or "no" will be converted to True or False. If the answer
+   string is something other than "yes" or "no", then the answer string is
+   returned.
+
+   :param answer: The answer to potentially convert to a bool.
+   :type answer: str
+
+   :returns: **conversion** -- If the input answer is some combination of "yes" or "no", then True or
+             False is returned. Otherwise the input answer is returned.
+   :rtype: str | bool
+
+
+.. py:function:: convert_answer_index_to_value(reducer_key: str, answer_index: dict, task_answers: dict) -> Any | None
+
+   Get the classification value for a subject for a specific reducer.
+
+   The reducer output from Caesar only outputs the "answer_index" which is just
+   a number. In most cases we want to know what the answer actually is, and
+   then to convert that into the required data format for the database.
+   To do this we use the task answers dictionary/list to convert answer_index
+   into the actual value of the consensus answer/classification. The function
+   :meth:`__convert_reducer_key_to_task_number` is used to index into the
+   correct task answers in the `task_answers` dictionary given the
+   reducer key. Yes/No answers are also converted to True/False using
+   :meth:`__convert_answer_to_bool`.
+
+   :param reducer_key: The reducer key to get the classification from.
+   :type reducer_key: str
+   :param answer_index: The classification index, as from tha Caesar reducer or from the
+                        MoleMarshal database.
+   :type answer_index: int
+   :param task_answers: A dictionary of task answers to convert the "answer_index" into. This
+                        should be the dict returned from :meth:`get_workflow_task_answers`.
+   :type task_answers: dict
+
+   :returns: The classification in terms of the answers given. If there is no
+             reducer output then None is returned instead.
+   :rtype: Any | None
+
+
+.. py:function:: get_workflow_task_answers(workflow: panoptes_client.Workflow) -> dict
+
+   Return a dictionary of answer keys for a workflow task.
+
+   From the Caesar documentation, the extractor we use "retrieves the index of
+   the answer from the classification. Indices are C-style, i.e. the first
+   index is "0".". This basically means the extracted (and reduced) data is
+   going to be a number which relates to the position of the answers in the
+   list from workflow["tasks"]["TX"]["answers"]. The string representation of
+   that answer is then a key named "label".
+
+   The point of this function is to simply act as a convenience to get the task
+   answers easier.
+
+   :param workflow: The workflow to get the task answers from.
+   :type workflow: Workflow
+
+   :returns: A dictionary containing the answers in task workflows, looking like
+
+             .. code::
+
+                 {
+                     "T0": ["Yes", "No"],
+                     "T1": ["1", "2", "3", "4", "5"]
+                 }
+   :rtype: dict
+
+
+.. py:function:: get_workflow_classifications(session: sqlalchemy.orm.Session, workflow_id: str | int) -> List[dict]
+
+   Retrieve the classifications for all subjects in a workflow.
+
+   This will retrieve all the classifications for the subjects assigned to the
+   given workflow. This function is intended to get the data from a Caesar
+   reducer.
+
+   When debug logging is enabled, then classifications which have been
+   retrieved are dumped into a CSV file by
+   :meth:`__dump_classifications_to_file`.
+
+   :param session: A database session to query subjects from.
+   :type session: Session
+   :param caesar: A Caesar instance used to get data about the workflows Caesar reducers.
+   :type caesar: Caesar
+   :param workflow_id: The ID of the Zooniverse workflow to download classifications from.
+   :type workflow_id: str | int | None
+
+   :returns: **classifications** -- A list containing a dict with keys "classification_id", "subject_id",
+             "answer_index". Each dict is a classification for a subject.
+
+             .. code::
+
+                 classifications = [
+                     "classification_id": ...,
+                     "subject_id": ...,
+                     "answer_index": ...,
+                     "reducer_key": ...,
+                 ]
+   :rtype: List[dict]
+
+
+.. py:function:: process_workflow_classifications(session: sqlalchemy.orm.Session, reduced_data: List[dict], workflow_id: str | int, commit_frequency: int = 250) -> int
+
+   Process classifications for all subject classifications.
+
+   This function iterates over the provided reduced data and matches
+   classifications to subjects. If a subject is not in the database or not
+   assigned to a subject set, then the classification is not recorded.
+
+   :param session: The database session to write to.
+   :type session: Session
+   :param reduced_data: A list of consensus reductions for subjects.
+   :type reduced_data: List[dict]
+   :param commit_frequency: The frequency of which to commit to the database.
+   :type commit_frequency: int
+   :param workflow_id: The ID of the workflow the classifications are coming from, by default
+                       None.
+   :type workflow_id: str | int
+
+   :returns: The number of classifications successfully linked to a subject.
+   :rtype: int
+
+
+.. py:function:: update_classification_database(workflow_id: str | int = None, commit_frequency: int = 250) -> None
+
+   Update the classification database.
+
+   Updates the classification database with new classifications and merges
+   changes in consensus into already classified subjects. Each subject is
+   individually checked for a classification, therefore no classification data
+   is required to be downloaded from Caesar.
+
+   :param workflow_id: The ID for the workflow to get classifications from, by default None.
+                       With the value of None, the value of workflow_id in molemarshal.ini
+                       will be used.
+   :type workflow_id: str | int
+   :param commit_frequency: The frequency of which to make commits to the database, by default 250.
+                            This should be greater than 0.
+   :type commit_frequency: int, optional
+
+   :raises ValueError: Raised by the commit frequency is not a sensible number.
+   :raises Exception: Raised, with a traceback, when the workflow of the given ID cannot
+       be found.
+
+

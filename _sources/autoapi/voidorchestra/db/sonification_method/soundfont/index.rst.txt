@@ -1,0 +1,131 @@
+voidorchestra.db.sonification_method.soundfont
+==============================================
+
+.. py:module:: voidorchestra.db.sonification_method.soundfont
+
+.. autoapi-nested-parse::
+
+   Defines the database object for sonification methods using soundfonts.
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   voidorchestra.db.sonification_method.soundfont.logger
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   voidorchestra.db.sonification_method.soundfont.SonificationMethodSoundfont
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+   :type:  logging.Logger
+
+.. py:class:: SonificationMethodSoundfont
+
+   Bases: :py:obj:`voidorchestra.db.sonification_method.SonificationMethod`
+
+
+   Shared-table inheritance subclass for Soundfont sonification methods.
+
+   .. attribute:: preset
+
+      aaa
+
+   .. attribute:: preset_modification
+
+      aaa
+
+   .. attribute:: path
+
+      aaae
+
+   .. attribute:: continuous
+
+      aaa
+
+
+   .. py:attribute:: preset
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: preset_modification
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: path
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: continuous
+      :type:  sqlalchemy.orm.Mapped[bool]
+
+
+   .. py:attribute:: sonification_profiles
+      :type:  sqlalchemy.orm.Mapped[List[voidorchestra.db.SonificationProfile]]
+
+
+   .. py:attribute:: SYSTEM
+      :type:  str
+      :value: 'mono'
+
+
+
+   .. py:attribute:: COLUMNS
+      :type:  List[str]
+      :value: ['preset_modification', 'path', 'continuous', 'preset']
+
+
+
+   .. py:attribute:: __mapper_args__
+      :type:  Dict[str, str]
+
+
+   .. py:method:: __repr__() -> str
+
+      Gets the name of the sonification method.
+      :returns: The string representation of the sonificaiton method..
+      :rtype: str
+
+
+
+   .. py:method:: sonify_lightcurve(score: strauss.score.Score, lightcurve: astropy.timeseries.TimeSeries) -> strauss.sonification.Sonification
+
+      Gets the generator used to sonify the data by this method.
+
+      :param score: The key and tempo used (set by the sonification profile).
+      :type score: Score
+      :param lightcurve: The data to sonify.
+      :type lightcurve: TimeSeries
+
+      :returns: The sonified sound.
+      :rtype: StraussSonification
+
+
+
+   .. py:method:: load_fixtures(session: sqlalchemy.orm.Session, fixtures_path: pathlib.Path = None) -> None
+      :staticmethod:
+
+
+      Loads the fixtures from disk (if they aren't loaded already)
+
+      :param session: A database session to add the fixtures to.
+      :type session: Session
+      :param fixtures_path: The fixtures JSON file to load the fixtures from.
+      :type fixtures_path: Path
+
+      :raises FileNotFoundError: If the passed path (or the path in the config file) does not exist.
+      :raises ValueError: If the file doesn't have the right columns.
+
+
+

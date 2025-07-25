@@ -1,0 +1,119 @@
+voidorchestra.log
+=================
+
+.. py:module:: voidorchestra.log
+
+.. autoapi-nested-parse::
+
+   The logger module contains the functions required to initialise a new or
+   retrieve an already existing logger, and to set the loggers across the entire
+   Void Orchestra package.
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   voidorchestra.log.logger
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   voidorchestra.log.__VariableFormatter
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   voidorchestra.log.__list_module_names_in_packages
+   voidorchestra.log.get_logger
+   voidorchestra.log.set_logger_levels
+
+
+Module Contents
+---------------
+
+.. py:class:: __VariableFormatter(fmt=None, datefmt=None, style='%', validate=True, *, defaults=None)
+
+   Bases: :py:obj:`logging.Formatter`
+
+
+   Enable variable formatting depending on the logging level number.
+
+   For INFO logs, only the message is printed. For any other level of logging,
+   more verbose log output is used.
+
+   Initialize the formatter with specified format strings.
+
+   Initialize the formatter either with the specified format string, or a
+   default as described above. Allow for specialized date formatting with
+   the optional datefmt argument. If datefmt is omitted, you get an
+   ISO8601-like (or RFC 3339-like) format.
+
+   Use a style parameter of '%', '{' or '$' to specify that you want to
+   use one of %-formatting, :meth:`str.format` (``{}``) formatting or
+   :class:`string.Template` formatting in your format string.
+
+   .. versionchanged:: 3.2
+      Added the ``style`` parameter.
+
+
+   .. py:method:: format(record)
+
+      Format the specified record as text.
+
+      The record's attribute dictionary is used as the operand to a
+      string formatting operation which yields the returned string.
+      Before formatting the dictionary, a couple of preparatory steps
+      are carried out. The message attribute of the record is computed
+      using LogRecord.getMessage(). If the formatting string uses the
+      time (as determined by a call to usesTime(), formatTime() is
+      called to format the event time. If there is exception information,
+      it is formatted using formatException() and appended to the message.
+
+
+
+.. py:function:: __list_module_names_in_packages(packages: List[types.ModuleType]) -> List[str]
+
+   Get the names of the submodules in a module.
+
+   :param packages: The modules to find the submodules for.
+   :type packages: List[ModuleType]
+
+   :returns: **submodule_names** -- A list of the submodule name.
+   :rtype: List[str]
+
+
+.. py:function:: get_logger(logger_name: str) -> logging.Logger
+
+   Initialize logging.
+
+   This sets the stream, formatting for the logger and the verbosity level.
+   The verbosity level is controlled by command line arguments, --verbose and
+   --debug respectively.
+
+   :param logger_name: The name of the logger instance.
+   :type logger_name: str
+
+   :returns: **new_logger** -- The new logging object, with the given name `logger_name`.
+   :rtype: logging.Logger
+
+
+.. py:data:: logger
+   :type:  logging.Logger
+
+.. py:function:: set_logger_levels(level: int) -> None
+
+   Set the level for all the loggers in Zooniverse Orchestrator.
+
+   :param level: The logging level to set. Usually something like logging.WARNING, etc.
+   :type level: int
+
+

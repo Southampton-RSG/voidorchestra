@@ -1,0 +1,34 @@
+voidorchestra.console.commands.admin.zooniverse
+===============================================
+
+.. py:module:: voidorchestra.console.commands.admin.zooniverse
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   voidorchestra.console.commands.admin.zooniverse.zooniverse
+   voidorchestra.console.commands.admin.zooniverse.clean_loose_zooniverse_subjects
+
+
+Module Contents
+---------------
+
+.. py:function:: zooniverse()
+
+   Admin for the Zooniverse DB via Panoptes.
+
+   This set of commands can be used to carry out administrative tasks which
+   are generally helpful during development of a new workflow or project.
+
+
+.. py:function:: clean_loose_zooniverse_subjects(ctx: click.Context) -> None
+
+   Remove subjects without a subject set from the Zooniverse database.
+
+   It's possible to get out of sync and accidentally have loose subjects,
+   usually during development. This tidies them away.
+
+

@@ -1,0 +1,69 @@
+voidorchestra.console.commands.sync
+===================================
+
+.. py:module:: voidorchestra.console.commands.sync
+
+.. autoapi-nested-parse::
+
+   This module contains sub-commands for `voidorchestra sync`.
+
+   The commands should be used to sync the Void Orchestra database with Zooniverse.
+
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   voidorchestra.console.commands.sync.sync
+   voidorchestra.console.commands.sync.update_subject_table
+   voidorchestra.console.commands.sync.update_subject_set_table
+   voidorchestra.console.commands.sync.update_classification_table
+
+
+Module Contents
+---------------
+
+.. py:function:: sync()
+
+   Sync Void Orchestra with Zooniverse
+
+
+.. py:function:: update_subject_table(ctx: click.Context, source: str, source_id: int) -> None
+
+   Sync the subject database with Zooniverse
+
+   Using this sub-command, the subject database can be updated by providing
+   the ID to the Zooniverse project. Each subject which is attached to the
+   project will be added/updated in the MoleMarshal database.
+
+   
+   :param :
+   :param source     The source to get subjects from {project|subject_set|workflow}:
+
+
+.. py:function:: update_subject_set_table(ctx: click.Context, source: str, source_id: int) -> None
+
+   Sync the subject set database with Zooniverse
+
+   Using this sub-command, the subject set database can be updated by providing
+   the ID to a Zooniverse project or workflow. Each subject set that is
+   attached to the provided source will then be added/updated in the
+   MoleMarshal database.
+
+   
+   :param :
+   :param source     The source to get subjects from {project|workflow}:
+   :param source_id  The Zooniverse ID of the source:
+
+
+.. py:function:: update_classification_table(ctx: click.Context, zooniverse_workflow_id: int) -> None
+
+   Add classifications to the MoleMarshal database
+
+   Using this sub-command, the current classifications from a given Zooniverse
+   workflow will be downloaded. Note that this sub-command assumes that Caesar
+   extractors and reducers are in used to generate consensus classifications.
+
+

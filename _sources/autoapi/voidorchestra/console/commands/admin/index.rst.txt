@@ -1,0 +1,347 @@
+voidorchestra.console.commands.admin
+====================================
+
+.. py:module:: voidorchestra.console.commands.admin
+
+.. autoapi-nested-parse::
+
+   This module contains sub-commands for `void-orchestra admin`.
+
+   The commands should be used for admin and development purposes.
+
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/voidorchestra/console/commands/admin/local/index
+   /autoapi/voidorchestra/console/commands/admin/zooniverse/index
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   voidorchestra.console.commands.admin.config
+   voidorchestra.console.commands.admin.config_paths
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   voidorchestra.console.commands.admin.LocalSubject
+   voidorchestra.console.commands.admin.LocalSubjectSet
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   voidorchestra.console.commands.admin.local
+   voidorchestra.console.commands.admin.zooniverse
+   voidorchestra.console.commands.admin.connect_to_database_engine
+   voidorchestra.console.commands.admin.connect_to_zooniverse
+   voidorchestra.console.commands.admin.admin
+   voidorchestra.console.commands.admin.transfer_between_subject_sets
+   voidorchestra.console.commands.admin.transfer_all_subjects_to_one_subject_set
+
+
+Package Contents
+----------------
+
+.. py:data:: config
+   :type:  configparser.ConfigParser
+
+.. py:data:: config_paths
+   :type:  Dict[str, pathlib.Path]
+
+.. py:function:: local()
+
+   Admin for the local DB.
+
+   This set of commands can be used to carry out administrative tasks which
+   are generally helpful during development of a new workflow or project.
+
+
+.. py:function:: zooniverse()
+
+   Admin for the Zooniverse DB via Panoptes.
+
+   This set of commands can be used to carry out administrative tasks which
+   are generally helpful during development of a new workflow or project.
+
+
+.. py:class:: LocalSubject
+
+   Bases: :py:obj:`voidorchestra.db.Base`
+
+
+   ORM class for subject sets.
+
+   This class is used to query the subjects which have been uploaded and
+   contains metadata about associations of the subject to projects, users
+   and other structures in Zooniverse.
+
+   .. attribute:: subject_id
+
+      The ID of the subject in the local DB
+
+      :type: integer
+
+   .. attribute:: zooniverse_subject_id
+
+      Foreign key, the ID of the subject this is
+
+      :type: integer
+
+   .. attribute:: retired
+
+      Boolean flag to indicate if the subject has been retired due to a
+      consensus being reached.
+
+      :type: boolean
+
+   .. attribute:: zooniverse_workflow_id
+
+      The Zooniverse ID of the workflow the subject is assigned to.
+
+      :type: integer
+
+   .. attribute:: subject_set_id
+
+      Foreign key, the ID of the subject set the subject is assigned to
+
+      :type: integer
+
+   .. attribute:: zooniverse_subject_set_id
+
+      The Zooniverse ID of the subject set this is a subject of.
+
+      :type: integer
+
+   .. attribute:: classifications
+
+      A relationship link to the classifications of this subject.
+
+      :type: relationship
+
+   .. attribute:: subject_set
+
+      A relationship link to the subject set.
+
+      :type: relationship
+
+   .. attribute:: sonification
+
+      A relationship link to the sonification.
+
+      :type: relationship
+
+
+   .. py:attribute:: __tablename__
+      :type:  str
+      :value: 'subject'
+
+
+
+   .. py:attribute:: id
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: sonification_id
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: sonification
+      :type:  sqlalchemy.orm.Mapped[voidorchestra.db.Sonification]
+
+
+   .. py:attribute:: subject_set_id
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: subject_set
+      :type:  sqlalchemy.orm.Mapped[voidorchestra.db.SubjectSet]
+
+
+   .. py:attribute:: classifications
+      :type:  sqlalchemy.orm.Mapped[List[voidorchestra.db.Classification]]
+
+
+   .. py:attribute:: zooniverse_project_id
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: zooniverse_subject_id
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: zooniverse_subject_set_id
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: zooniverse_workflow_id
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: retired
+      :type:  sqlalchemy.orm.Mapped[bool]
+
+
+   .. py:method:: __repr__() -> str
+
+
+.. py:class:: LocalSubjectSet
+
+   Bases: :py:obj:`voidorchestra.db.Base`
+
+
+   ORM class for subject sets.
+
+   This class is used to query subject sets which have been created and are
+   in use by a project and workflow
+
+   .. attribute:: id
+
+      Primary key.
+
+      :type: integer
+
+   .. attribute:: zooniverse_subject_set_id
+
+      The Zooniverse ID for the subject set, indexed.
+
+      :type: integer
+
+   .. attribute:: zooniverse_workflow_id
+
+      The ID of the Zooniverse workflow the subject set is assigned to.
+
+      :type: int
+
+   .. attribute:: display_name
+
+      The display name of the subject set on the Zooniverse.
+
+      :type: string
+
+   .. attribute:: subjects
+
+      The subjects associated with the subject set.
+
+      :type: relationship
+
+   .. attribute:: sonification_profile_id
+
+      The foreign key for the sonification profile used to generate the subjects in this set.
+
+      :type: integer
+
+   .. attribute:: sonification_profile
+
+      The sonification profile used to generate the subjects in this set.
+
+      :type: relationship
+
+
+   .. py:attribute:: __tablename__
+      :type:  str
+      :value: 'subject_set'
+
+
+
+   .. py:attribute:: id
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: lightcurve_collection_id
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: sonification_profile_id
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: zooniverse_subject_set_id
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: priority
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: display_name
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: sonification_profile
+      :type:  sqlalchemy.orm.Mapped[voidorchestra.db.sonification_profile.SonificationProfile]
+
+
+   .. py:attribute:: lightcurve_collection
+      :type:  sqlalchemy.orm.Mapped[voidorchestra.db.LightcurveCollection]
+
+
+   .. py:attribute:: subjects
+      :type:  sqlalchemy.orm.Mapped[List[voidorchestra.db.subject.Subject]]
+
+
+.. py:function:: connect_to_database_engine(location: str) -> sqlalchemy.engine.Engine
+
+   Create a connection to the database.
+
+   Return an SQLAlchemy Engine which creates a connection to the
+   database. If the database does not exist, a new database is created. In
+   the case of multiple calls of this function, a new engine will not be
+   created and an already existing engine will be returned.
+
+   :param location: The filepath to the database to open.
+   :type location: str
+
+   :returns: **engine** -- The engine object to connect to the database.
+   :rtype: sqlalchemy.engine
+
+
+.. py:function:: connect_to_zooniverse() -> None
+
+   Connect to Zooniverse using the Panoptes client.
+
+   Credentials are taken from the voidorchestra.ini configuration file.
+
+   If user credentials are incorrect, a PanoptesAPIException is raised because
+   the panoptes client cannot connect to the Zooniverse servers. This exception
+   is caught and a more descriptive error is printed to the logger and the
+   code will be exited.
+
+
+.. py:function:: admin()
+
+   Admin and project development commands
+
+   This set of commands can be used to carry out administrative tasks which
+   are generally helpful during development of a new workflow or project.
+
+
+.. py:function:: transfer_between_subject_sets(ctx: click.Context, old_panoptes_subject_set_id: str | int, new_panoptes_subject_set_id: str | int) -> None
+
+   Move subjects from one subject set to another.
+
+   This is used to move all the subjects in one subject set to another subject
+   set, ideally in the same project and workflow.
+
+
+.. py:function:: transfer_all_subjects_to_one_subject_set(ctx: click.Context, new_panoptes_subject_set_id: int) -> None
+
+   Move all the subjects in a project to one subject set.
+
+   This is used to move all the subjects in a project to one subject set,
+   ideally in the same project and workflow.
+
+

@@ -1,0 +1,65 @@
+voidorchestra.zooniverse.workflows
+==================================
+
+.. py:module:: voidorchestra.zooniverse.workflows
+
+.. autoapi-nested-parse::
+
+   This module handles assigning workflows to subject sets, as well as getting
+   and modifying workflows.
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   voidorchestra.zooniverse.workflows.logger
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   voidorchestra.zooniverse.workflows.get_panoptes_workflow
+   voidorchestra.zooniverse.workflows.assign_panoptes_workflow_to_panoptes_subject_set
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+   :type:  logging.Logger
+
+.. py:function:: get_panoptes_workflow(panoptes_workflow_id: str | int) -> panoptes_client.Workflow
+
+   Retrieve a workflow for a given workflow ID.
+
+   This function relies in `panoptes_client.Workflow.find()` to find a workflow
+   of the given ID. If no workflow can be found, then a PanoptesAPIException
+   is raised.
+
+   :param panoptes_workflow_id: The ID of the workflow.
+   :type panoptes_workflow_id: str | int
+
+   :returns: **panoptes_workflow** -- The workflow associated with the ID.
+   :rtype: PanoptesWorkflow
+
+
+.. py:function:: assign_panoptes_workflow_to_panoptes_subject_set(panoptes_workflow: panoptes_client.Workflow, panoptes_subject_set: panoptes_client.SubjectSet) -> None
+
+   Assign a given workflow to a subject set.
+
+   This process is wrapped in this function as if you try to assign an already
+   assigned workflow to a subject set, a PanoptesAPIException is raised. This
+   wrapper stops Void Orchestra from crashing by sending debug output instead of
+   allowing the exception to be raised.
+
+   :param panoptes_workflow: The workflow object to add a subject set to.
+   :type panoptes_workflow: panoptes_client.Workflow
+   :param panoptes_subject_set: The subject set to add to the workflow.
+   :type panoptes_subject_set: panoptes_client.SubjectSet
+
+

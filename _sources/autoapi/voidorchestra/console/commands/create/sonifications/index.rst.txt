@@ -1,0 +1,27 @@
+voidorchestra.console.commands.create.sonifications
+===================================================
+
+.. py:module:: voidorchestra.console.commands.create.sonifications
+
+.. autoapi-nested-parse::
+
+   Create sonification files for yet-to-be-processed sonifications
+
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   voidorchestra.console.commands.create.sonifications.create_sonifications
+
+
+Module Contents
+---------------
+
+.. py:function:: create_sonifications(ctx: dict, regenerate: bool = False) -> None
+
+   Create sonifications for sonification descriptors that have not yet been produced.
+
+

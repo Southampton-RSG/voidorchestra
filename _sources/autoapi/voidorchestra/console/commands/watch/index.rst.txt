@@ -1,0 +1,40 @@
+voidorchestra.console.commands.watch
+====================================
+
+.. py:module:: voidorchestra.console.commands.watch
+
+.. autoapi-nested-parse::
+
+   This module contains sub-commands for `molegazer watch`.
+
+   The commands should watch directories for changes.
+
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   voidorchestra.console.commands.watch.watch
+   voidorchestra.console.commands.watch.watch_images
+
+
+Module Contents
+---------------
+
+.. py:function:: watch()
+
+   Watch directories for new input data
+
+
+.. py:function:: watch_images(ctx: dict, directory: Optional[str] = None) -> None
+
+   Watch for new files and upload them to the DB.
+
+   Inputs the files in the config file's PATHS:images_new directory into the database.
+
+   :param directory: If provided, a directory to watch for new files in (that is not the default one)
+   :type directory: Optional[str]
+
+

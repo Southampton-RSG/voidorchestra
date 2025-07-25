@@ -1,0 +1,45 @@
+voidorchestra.console.commands.admin.local
+==========================================
+
+.. py:module:: voidorchestra.console.commands.admin.local
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   voidorchestra.console.commands.admin.local.local
+   voidorchestra.console.commands.admin.local.remove_local_subject_sets
+   voidorchestra.console.commands.admin.local.remove_local_subjects
+
+
+Module Contents
+---------------
+
+.. py:function:: local()
+
+   Admin for the local DB.
+
+   This set of commands can be used to carry out administrative tasks which
+   are generally helpful during development of a new workflow or project.
+
+
+.. py:function:: remove_local_subject_sets(ctx: click.Context)
+
+   Remove old and/or broken subject sets from the local Void Orchestra database.
+
+   This should be used periodically when making changes to the Void Orchestra
+   project in the web interface, as otherwise the database will become
+   out of sync.
+
+
+.. py:function:: remove_local_subjects(ctx: click.Context) -> None
+
+   Remove old and/or broken subjects from the local Void Orchestra database.
+
+   This should be used periodically when making changes to the Void Orchestra
+   project in the web interface, as otherwise the database will become
+   out of sync.
+
+

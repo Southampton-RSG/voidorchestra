@@ -1,0 +1,40 @@
+voidorchestra.console.commands.input.lightcurve
+===============================================
+
+.. py:module:: voidorchestra.console.commands.input.lightcurve
+
+.. autoapi-nested-parse::
+
+   This module contains sub-commands for `void-orchestra add`.
+
+   The commands should add new entries to the DB from a fixture file.
+
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   voidorchestra.console.commands.input.lightcurve.lightcurve
+   voidorchestra.console.commands.input.lightcurve.add_lightcurve
+
+
+Module Contents
+---------------
+
+.. py:function:: lightcurve()
+
+   Add new lightcurves from fixture files.
+
+
+.. py:function:: add_lightcurve(ctx: click.Context, filepath: pathlib.Path) -> None
+
+   Add new synthetic lightcurves with regular frequencies into Void Orchestra.
+
+   :param ctx: Click context
+   :type ctx: click.Context
+   :param filepath: Path to the synthetic lightcurves to add
+   :type filepath: Path
+
+

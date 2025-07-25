@@ -1,0 +1,648 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
+
+    <!-- Generated with Sphinx 8.2.3 and Furo 2025.07.19 -->
+        <title>Subjects - voidorchestra v0.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=25af2a20" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/autodoc_pydantic.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/custom.css?v=98e9b53e" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #2b2b2b;
+  --color-code-foreground: #f8f8f2;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #2b2b2b;
+  --color-code-foreground: #f8f8f2;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../index.html"><div class="brand">voidorchestra <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.1.0</code></div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
+  
+  <span class="sidebar-brand-text">voidorchestra <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.1.0</code></span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../autoapi/index.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/index.html">voidorchestra</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of voidorchestra</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/active_learning/index.html">voidorchestra.active_learning</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of voidorchestra.active_learning</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/active_learning/weights/index.html">voidorchestra.active_learning.weights</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/console/index.html">voidorchestra.console</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of voidorchestra.console</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/console/cli/index.html">voidorchestra.console.cli</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/console/commands/index.html">voidorchestra.console.commands</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of voidorchestra.console.commands</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/console/commands/admin/index.html">voidorchestra.console.commands.admin</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of voidorchestra.console.commands.admin</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../../autoapi/voidorchestra/console/commands/admin/local/index.html">voidorchestra.console.commands.admin.local</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../../autoapi/voidorchestra/console/commands/admin/zooniverse/index.html">voidorchestra.console.commands.admin.zooniverse</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../../../autoapi/voidorchestra/console/commands/check/index.html">voidorchestra.console.commands.check</a></li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/console/commands/create/index.html">voidorchestra.console.commands.create</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of voidorchestra.console.commands.create</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../../autoapi/voidorchestra/console/commands/create/sonifications/index.html">voidorchestra.console.commands.create.sonifications</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../../../autoapi/voidorchestra/console/commands/delete/index.html">voidorchestra.console.commands.delete</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../autoapi/voidorchestra/console/commands/init/index.html">voidorchestra.console.commands.init</a></li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/console/commands/input/index.html">voidorchestra.console.commands.input</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of voidorchestra.console.commands.input</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../../autoapi/voidorchestra/console/commands/input/lightcurve/index.html">voidorchestra.console.commands.input.lightcurve</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../../../autoapi/voidorchestra/console/commands/sync/index.html">voidorchestra.console.commands.sync</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../autoapi/voidorchestra/console/commands/upload/index.html">voidorchestra.console.commands.upload</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../autoapi/voidorchestra/console/commands/upload_molegazer/index.html">voidorchestra.console.commands.upload_molegazer</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../autoapi/voidorchestra/console/commands/watch/index.html">voidorchestra.console.commands.watch</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/db/index.html">voidorchestra.db</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of voidorchestra.db</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/db/classification/index.html">voidorchestra.db.classification</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/db/lightcurve/index.html">voidorchestra.db.lightcurve</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of voidorchestra.db.lightcurve</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../../autoapi/voidorchestra/db/lightcurve/synthetic/index.html">voidorchestra.db.lightcurve.synthetic</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/db/lightcurve_collection/index.html">voidorchestra.db.lightcurve_collection</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/db/qpo_model/index.html">voidorchestra.db.qpo_model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/db/sonification/index.html">voidorchestra.db.sonification</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/db/sonification_method/index.html">voidorchestra.db.sonification_method</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of voidorchestra.db.sonification_method</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../../autoapi/voidorchestra/db/sonification_method/soundfont/index.html">voidorchestra.db.sonification_method.soundfont</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../autoapi/voidorchestra/db/sonification_method/synthesizer/index.html">voidorchestra.db.sonification_method.synthesizer</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/db/sonification_profile/index.html">voidorchestra.db.sonification_profile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/db/subject/index.html">voidorchestra.db.subject</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/db/subject_set/index.html">voidorchestra.db.subject_set</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/voidorchestra/log/index.html">voidorchestra.log</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/process/index.html">voidorchestra.process</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of voidorchestra.process</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/process/lightcurve_collection/index.html">voidorchestra.process.lightcurve_collection</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/process/lightcurves/index.html">voidorchestra.process.lightcurves</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/process/sonification/index.html">voidorchestra.process.sonification</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of voidorchestra.process.sonification</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../../autoapi/voidorchestra/process/sonification/figure/index.html">voidorchestra.process.sonification.figure</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/tests/index.html">voidorchestra.tests</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle navigation of voidorchestra.tests</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/tests/test_all/index.html">voidorchestra.tests.test_all</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/zooniverse/index.html">voidorchestra.zooniverse</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of voidorchestra.zooniverse</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/zooniverse/classifications/index.html">voidorchestra.zooniverse.classifications</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/zooniverse/subject_sets/index.html">voidorchestra.zooniverse.subject_sets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/zooniverse/subjects/index.html">voidorchestra.zooniverse.subjects</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/zooniverse/sync/index.html">voidorchestra.zooniverse.sync</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/zooniverse/workflows/index.html">voidorchestra.zooniverse.workflows</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/zooniverse/zooniverse/index.html">voidorchestra.zooniverse.zooniverse</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../../../_sources/docs/source/zooniverse/subjects.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="subjects">
+<h1>Subjects<a class="headerlink" href="#subjects" title="Link to this heading">¶</a></h1>
+<p>Subjects and subject sets are one of the core components of a Zooniverse project. A subject is a single item which
+users on Zooniverse will classify, so each subject is a mole stamp. A subject most importantly contains the medium to
+be classified, such as a URL to an image or the actual image itself. A subject will also contain metadata which will
+help identify the subject to be match to a stamp image. A subject set a collection of subjects, which are assigned to
+a workflow (a set of questions to answer about each subject in included subject sets). Subjects can be allocated and
+removed from a subject set dynamically, with fairly little processing time required for new subjects to become
+available.</p>
+<p>Once enough users have classified a subject, a consensus is reached and the subject is “retired” from the workflow
+where the consensus has been reached. When a subject has been retired, it is not removed from the subject set but it
+is also not shown again to be classified by users. The consensus classification and retirement process is all handled
+by the Zooniverse backend, but can be managed manually if desired.</p>
+<p>Uploading new subjects to a project or subject set counts towards a subject limit on Zooniverse. Each user in a project
+has a limit of 10,000 subjects. It is imperative that any subject uploaded is somehow accounted for, as it is easy to
+upload duplicate subjects or to accidentally remove a subject from a subject, which results in “dangling” subjects.
+The reason why this is so important is that it is <em>very hard</em> (if not impossible without a Zooniverse admin account)
+to remove any subjects once they have been uploaded. So it is very easy to fill up your quota. This is discussed in
+further detail later in <span class="xref std std-ref">Dealing with dangling subjects</span>.</p>
+<section id="uploading-subjects-to-zooniverse-the-easy-way">
+<h2>Uploading subjects to Zooniverse, the easy way<a class="headerlink" href="#uploading-subjects-to-zooniverse-the-easy-way" title="Link to this heading">¶</a></h2>
+<p>Turning stamps in the <em>MoleMarshal</em> database into subjects is handled by the <code class="docutils literal notranslate"><span class="pre">molemarshal</span></code> command, which does all of
+the heavy listing of uploading subjects and assigning subjects to subject sets and workflows. All the stamps in the
+stamp database will be uploaded by default. It is possible to upload a subset of stamps instead, though this is probably
+a feature that will not see much use.</p>
+<p>To upload subjects,</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>molemarshal<span class="w"> </span>upload<span class="w"> </span>subjects
+</pre></div>
+</div>
+<p>The workflow ID (in the configuration file) is used to link the subject set to the workflow. You therefore need an
+already created (and ideally, but not required) configured workflow before running the command. The best way to create a
+workflow is using the Zooniverse web interface for the project.</p>
+<p>You can additionally provide a subject set ID, using <code class="docutils literal notranslate"><span class="pre">-id</span> <span class="pre">SUBJECT_SET_ID</span></code>, to upload to a specific subject set. The
+default choice is to upload (and create if missing) to a subject set named “Mole Stamps”.</p>
+</section>
+<section id="current-limitations">
+<h2>Current limitations<a class="headerlink" href="#current-limitations" title="Link to this heading">¶</a></h2>
+<p>The <em>MoleMarshal</em> package has been written with the assumption that only <strong>one</strong> main subject set will exist for the
+lifetime of the project. When subjects are added to a subject set, it is checked if the stamp already exists as a
+subject. It <strong>is not</strong> checked if the subject has already been uploaded but may exist in a different subject set. It is
+therefore not possible to have duplicate subjects in the same project linked to different subject sets. This is not a
+limitation of the Zooniverse infrastructure, but a <em>forced</em> limitation of the database design to help avoid situations
+where a stamp may exists as multiple subjects.</p>
+<p>Future versions of <em>MoleMarshal</em> with active learning support will have support for multiple subject sets, but will
+still enforce that a subject may only exist in one subject set.</p>
+</section>
+<section id="keeping-the-subject-database-up-to-date">
+<h2>Keeping the subject database up-to-date<a class="headerlink" href="#keeping-the-subject-database-up-to-date" title="Link to this heading">¶</a></h2>
+<p>Sometimes the subject database can become out of sync with the subjects uploaded to Zooniverse. This can happen if you
+are re-building the database, creating a development database or if subjects have been uploaded from some other
+machine. The <code class="docutils literal notranslate"><span class="pre">molemarshal</span></code> command has an option to bring the subject database inline with all the subjects on
+Zooniverse.</p>
+<p>This can be done at the project, subject set or workflow level, e.g.,</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>molemarshal<span class="w"> </span>sync<span class="w"> </span>subjects<span class="w"> </span>project
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>molemarshal<span class="w"> </span>sync<span class="w"> </span>subjects<span class="w"> </span>subject-set
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>molemarshal<span class="w"> </span>sync<span class="w"> </span>subjects<span class="w"> </span>workflow
+</pre></div>
+</div>
+</section>
+<section id="uploading-subjects-to-zooniverse-the-hard-way">
+<h2>Uploading subjects to Zooniverse, the hard way<a class="headerlink" href="#uploading-subjects-to-zooniverse-the-hard-way" title="Link to this heading">¶</a></h2>
+<p>If you need finer control over the subject creation and uploading process, then you can do things manually using the
+functions in the <code class="xref py py-meth docutils literal notranslate"><span class="pre">molemarshal.zooniverse.subjects()</span></code> module.</p>
+<section id="creating-a-new-subject">
+<h3>Creating a new subject<a class="headerlink" href="#creating-a-new-subject" title="Link to this heading">¶</a></h3>
+<p>Creating a new subjects is done by using the <code class="docutils literal notranslate"><span class="pre">Subject</span></code> object from the <code class="docutils literal notranslate"><span class="pre">panotpes_client`</span></code> packages.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">panoptes_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">Subject</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">panoptes_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">Project</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">molemarshal.zooniverse.subjects</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_named_subject_set_in_project</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">molemarshal.zooniverse.zooniverse</span><span class="w"> </span><span class="kn">import</span> <span class="n">connect_to_zooniverse</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">molemarshal.zooniverse.zooniverse</span><span class="w"> </span><span class="kn">import</span> <span class="n">open_zooniverse_project</span>
+
+<span class="n">connect_to_zooniverse</span><span class="p">()</span>
+<span class="n">project</span> <span class="o">=</span> <span class="n">open_zooniverse_project</span><span class="p">(</span><span class="n">PROJECT_ID</span><span class="p">)</span>
+<span class="n">subject_set</span> <span class="o">=</span> <span class="n">get_named_subject_set_in_project</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">SUBJECT_SET_NAME</span><span class="p">)</span>
+
+<span class="c1"># using the async ability, iterate over all the stamps and create a Subject()</span>
+<span class="c1"># object for each subject with the following links, location and metadata</span>
+
+<span class="k">with</span> <span class="n">Subject</span><span class="o">.</span><span class="n">async_saves</span><span class="p">():</span>
+
+    <span class="n">all_stamps</span> <span class="o">=</span> <span class="n">your_function_to_get_stamps_to_upload</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">stamp</span> <span class="ow">in</span> <span class="n">all_stamps</span><span class="p">:</span>
+
+        <span class="n">subject</span> <span class="o">=</span> <span class="n">Subject</span><span class="p">()</span>
+
+        <span class="c1"># get the data of the stamp to turn into a subject</span>
+
+        <span class="n">url</span><span class="p">,</span> <span class="n">stamp_name</span><span class="p">,</span> <span class="n">image_type</span><span class="p">,</span> <span class="n">patient</span><span class="p">,</span> <span class="n">date</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">description</span> <span class="o">=</span> <span class="n">stamp</span>
+
+        <span class="c1"># at a minimum, you need to link the subject set to a project. You can</span>
+        <span class="c1"># also create other links here, to e.g. workflows.</span>
+
+        <span class="n">subject</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">project</span> <span class="o">=</span> <span class="n">project</span>
+
+        <span class="c1"># in the case of subjects which are URLs to images, the &quot;location&quot; of</span>
+        <span class="c1"># the image is a dictionary. The key takes the form of image/image_type,</span>
+        <span class="c1"># e.g. image/png, and the value is the URL to the image</span>
+
+        <span class="n">subject</span><span class="o">.</span><span class="n">add_location</span><span class="p">({</span><span class="sa">f</span><span class="s2">&quot;image/</span><span class="si">{</span><span class="n">image_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">url</span><span class="p">})</span>
+
+        <span class="c1"># the metadata is a dictionary. At a minimum the key name should be</span>
+        <span class="c1"># included as this is used to match classifications to stamp images.</span>
+        <span class="c1"># The other metadata keys are generally quite helpful, but not required.</span>
+
+        <span class="n">subject</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">stamp_name</span><span class="p">,</span>        <span class="c1"># bare minimum, include the name in the metadata</span>
+                <span class="s2">&quot;image_type&quot;</span><span class="p">:</span> <span class="n">image_type</span><span class="p">,</span>  <span class="c1"># the rest is optional</span>
+                <span class="s2">&quot;patient&quot;</span><span class="p">:</span> <span class="n">patient</span><span class="p">,</span>
+                <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">date</span><span class="p">),</span>
+                <span class="s2">&quot;filepath&quot;</span><span class="p">:</span> <span class="n">filepath</span><span class="p">,</span>
+                <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="n">description</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+        <span class="n">subject</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This will create subjects which are linked to the project, and could be considered “dangling” if you do not add
+them to a subject set or keep track of them somehow.</p>
+</section>
+<section id="creating-a-subject-set">
+<h3>Creating a subject set<a class="headerlink" href="#creating-a-subject-set" title="Link to this heading">¶</a></h3>
+<p>Subject sets can be created using the web interface, by using <code class="docutils literal notranslate"><span class="pre">panoptes_client</span></code> or by using
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">molemarshal.zooniverse.subjects.get_named_subject_set_in_project()</span></code>, which will either retrieve the named subject
+set or create a new one.</p>
+<p>A subject set can be assigned to a workflow using
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">molemarshal.zooniverse.workflows.assign_workflow_to_subject_set()</span></code>
+where the workflow can be retrieved using <code class="xref py py-meth docutils literal notranslate"><span class="pre">molemarshal.zooniverse.workflows.get_workflow()</span></code>. Note that
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">molemarshal.zooniverse.workflows.assign_workflow_to_subject_set()</span></code> does not check if the subject set is already
+assigned to the workflow and will raise an Exception if it is.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">molemarshal.zooniverse</span><span class="w"> </span><span class="kn">import</span> <span class="n">zooniverse</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">molemarshal.zooniverse</span><span class="w"> </span><span class="kn">import</span> <span class="n">subjects</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">molemarshal.zooniverse</span><span class="w"> </span><span class="kn">import</span> <span class="n">workflows</span>
+
+<span class="c1"># connect to Zooniverse and retrieve project and subject set</span>
+<span class="n">zooniverse</span><span class="o">.</span><span class="n">connect_to_zooniverse</span><span class="p">()</span>
+<span class="n">project</span> <span class="o">=</span> <span class="n">zooniverse</span><span class="o">.</span><span class="n">open_zooniverse_project</span><span class="p">(</span><span class="n">PROJECT_ID</span><span class="p">)</span>
+<span class="n">subject_set</span> <span class="o">=</span> <span class="n">subjects</span><span class="o">.</span><span class="n">get_named_subject_set_in_project</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">SUBJECT_SET_NAME</span><span class="p">)</span>
+
+<span class="c1"># Assign the subject set to a workflow</span>
+<span class="n">workflow</span> <span class="o">=</span> <span class="n">workflows</span><span class="o">.</span><span class="n">get_workflow</span><span class="p">(</span><span class="n">WORKFLOW_ID</span><span class="p">)</span>
+<span class="n">workflows</span><span class="o">.</span><span class="n">add_subject_set_to_workflow</span><span class="p">(</span><span class="n">workflow</span><span class="p">,</span> <span class="n">subject_set</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="adding-subjects-to-a-subject-set">
+<h3>Adding subjects to a subject set<a class="headerlink" href="#adding-subjects-to-a-subject-set" title="Link to this heading">¶</a></h3>
+<p>Subjects are easily added and remove from a subject set using <cite>panoptes_client</cite>. You can also manage this using the
+web interface on Zooniverse, but is very tedious to do so. Following from the previous code block, we can create a list
+of subjects as new subjects are created. With this list you can add these subjects,</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># subject.add will take a list of subjects or a single subject. We have to</span>
+<span class="c1"># remember to do subject_set.save or none of the changes we&#39;ve made will</span>
+<span class="c1"># apply</span>
+
+<span class="n">subject_set</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">subjects_to_add</span><span class="p">)</span>
+<span class="n">subject_set</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>  <span class="c1"># important!!</span>
+</pre></div>
+</div>
+<p>To remove subjects from the subject set, you will need a list of subjects again,</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">panoptes_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">Subject</span>
+
+<span class="c1"># the best way to get subjects to remove is by using Subject.find in a list</span>
+<span class="c1"># comprehension (or in a more traditional for loop) with a function evaluate</span>
+<span class="c1"># the eligibility for a subject to be removed</span>
+
+<span class="n">subjects_to_remove</span> <span class="o">=</span> <span class="p">[</span>
+   <span class="n">subject</span> <span class="k">for</span> <span class="n">subject</span> <span class="ow">in</span> <span class="n">Subject</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">project_id</span><span class="o">=</span><span class="n">PROJECT_ID</span><span class="p">)</span> <span class="k">if</span> <span class="n">subject_removal_criteria</span><span class="p">(</span><span class="n">subject</span><span class="p">)</span>
+<span class="p">]</span>
+
+<span class="c1"># subject.remove will, again, take a list of subjects or a single subject</span>
+
+<span class="n">subject_set</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">subjects_to_remove</span><span class="p">)</span>
+<span class="n">subject_set</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="dealing-with-dangling-subjects">
+<h2>Dealing with dangling subjects<a class="headerlink" href="#dealing-with-dangling-subjects" title="Link to this heading">¶</a></h2>
+<p>The Zooniverse API/backend does not check for duplicate subjects when creating a new subject or adding a new
+subject to a subject set. <em>MoleMarshal</em> will not allow you to create or add a duplicate subject to a subject set or to a
+project, but sometimes mistakes do happen. It’s not always easy to fix these mistakes, but there are a few things you
+can do to fix your mistake.</p>
+<section id="linking-dangling-subjects-to-a-subject-set">
+<h3>Linking dangling subjects to a subject set<a class="headerlink" href="#linking-dangling-subjects-to-a-subject-set" title="Link to this heading">¶</a></h3>
+<p>All the subjects related to a project can be found using,</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">panoptes_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">Subject</span>
+
+<span class="n">project_subjects</span> <span class="o">=</span> <span class="n">Subject</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">project_id</span><span class="o">=</span><span class="n">PROJECT_ID</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">project_subjects</span></code> is an iterable, but not a list! You can also find the subjects iin a subject set using,</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">panoptes_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">SubjectSet</span>
+
+<span class="n">subject_set</span> <span class="o">=</span> <span class="n">SubjectSet</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">SUBJECT_SET_ID</span><span class="p">)</span>
+<span class="n">subjects</span> <span class="o">=</span> <span class="n">subject_set</span><span class="o">.</span><span class="n">subjects</span>
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">subjects</span></code> is also an iterator as before.</p>
+<p>In any case, with either iterable you can iterate over the subjects to either use <code class="docutils literal notranslate"><span class="pre">SubjectSet.add()</span></code> or
+<code class="docutils literal notranslate"><span class="pre">SubjectSet.remove()</span></code> to link or remove subjects to/from a subject set. This is useful when there are dangling
+subjects which are not linked to a subject set, but belong to a project. An (old and outdated) example of trying to link
+dangling subjects to a subject set can be found in
+<a class="reference external" href="../_static/assign_dangling_subjects.py">assign_dangling_subjects.py</a>.</p>
+</section>
+<section id="updating-subject-metadata-and-location">
+<h3>Updating subject metadata and location<a class="headerlink" href="#updating-subject-metadata-and-location" title="Link to this heading">¶</a></h3>
+<p>If you want to re-use a subject or change some incorrect metadata, you can modify the <code class="docutils literal notranslate"><span class="pre">Subject</span></code> object directly,</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">panotpes_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">Subject</span>
+
+<span class="n">subject</span> <span class="o">=</span> <span class="n">Subject</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">SUBJECT_ID</span><span class="p">)</span>
+
+<span class="c1"># You can assign subject.locations with your own list of locations,</span>
+<span class="c1"># it&#39;s not clear what multiple locations does</span>
+
+<span class="n">subject</span><span class="o">.</span><span class="n">locations</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;image/png&quot;</span><span class="p">:</span> <span class="s2">&quot;https://new-url.net/&quot;</span><span class="p">}]</span>
+
+<span class="c1"># since the subject metadata is a standard python dictionary, you can use</span>
+<span class="c1"># subject.metadata.update to add new keys or replace any existing ones</span>
+
+<span class="n">subject</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+   <span class="p">{</span>
+      <span class="s2">&quot;key_1&quot;</span><span class="p">:</span> <span class="s2">&quot;value 1&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;key_2&quot;</span><span class="p">:</span> <span class="s2">&quot;value 2&quot;</span>
+   <span class="p">}</span>
+<span class="p">)</span>
+
+<span class="c1"># don&#39;t forget to save your changes</span>
+
+<span class="n">subject</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="asking-zooniverse-for-more-storage-space">
+<h3>Asking Zooniverse for more storage space<a class="headerlink" href="#asking-zooniverse-for-more-storage-space" title="Link to this heading">¶</a></h3>
+<p>As a last case scenario if you can’t fix everything by re-assigning subjects or changing their metadata, you can ask
+for a higher quota then the initial 10,000 limit by emailing <a class="reference external" href="mailto:contact&#37;&#52;&#48;zooniverse&#46;org">contact<span>&#64;</span>zooniverse<span>&#46;</span>org</a>
+and explaining the simulation.</p>
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; The voidorchestra authors
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Subjects</a><ul>
+<li><a class="reference internal" href="#uploading-subjects-to-zooniverse-the-easy-way">Uploading subjects to Zooniverse, the easy way</a></li>
+<li><a class="reference internal" href="#current-limitations">Current limitations</a></li>
+<li><a class="reference internal" href="#keeping-the-subject-database-up-to-date">Keeping the subject database up-to-date</a></li>
+<li><a class="reference internal" href="#uploading-subjects-to-zooniverse-the-hard-way">Uploading subjects to Zooniverse, the hard way</a><ul>
+<li><a class="reference internal" href="#creating-a-new-subject">Creating a new subject</a></li>
+<li><a class="reference internal" href="#creating-a-subject-set">Creating a subject set</a></li>
+<li><a class="reference internal" href="#adding-subjects-to-a-subject-set">Adding subjects to a subject set</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dealing-with-dangling-subjects">Dealing with dangling subjects</a><ul>
+<li><a class="reference internal" href="#linking-dangling-subjects-to-a-subject-set">Linking dangling subjects to a subject set</a></li>
+<li><a class="reference internal" href="#updating-subject-metadata-and-location">Updating subject metadata and location</a></li>
+<li><a class="reference internal" href="#asking-zooniverse-for-more-storage-space">Asking Zooniverse for more storage space</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../../../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script src="../../../_static/js/custom.js?v=956e5d78"></script>
+    </body>
+</html>

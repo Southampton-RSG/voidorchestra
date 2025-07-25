@@ -1,0 +1,67 @@
+voidorchestra.db.lightcurve_collection
+======================================
+
+.. py:module:: voidorchestra.db.lightcurve_collection
+
+.. autoapi-nested-parse::
+
+   Defines the QPO models, made up of components, used in synthetic lightcurve generation.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   voidorchestra.db.lightcurve_collection.LightcurveCollection
+
+
+Module Contents
+---------------
+
+.. py:class:: LightcurveCollection
+
+   Bases: :py:obj:`voidorchestra.db.Base`
+
+
+   ORM class for a collection of lightcurves in a batch.
+
+   .. attribute:: id
+
+      A unique ID for the QPO model.
+
+      :type: integer
+
+   .. attribute:: name
+
+      A name describing the batch.
+
+      :type: string
+
+
+   .. py:attribute:: __tablename__
+      :type:  str
+      :value: 'lightcurve_collection'
+
+
+
+   .. py:attribute:: id
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: name
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: lightcurves
+      :type:  sqlalchemy.orm.Mapped[List[voidorchestra.db.lightcurve.Lightcurve]]
+
+
+   .. py:attribute:: subject_sets
+      :type:  sqlalchemy.orm.Mapped[voidorchestra.db.subject_set.SubjectSet]
+
+
+   .. py:method:: __repr__() -> str
+
+

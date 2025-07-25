@@ -1,0 +1,39 @@
+voidorchestra.console.commands.init
+===================================
+
+.. py:module:: voidorchestra.console.commands.init
+
+.. autoapi-nested-parse::
+
+   Entry point for the `voidorchestra` command.
+
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   voidorchestra.console.commands.init.init
+   voidorchestra.console.commands.init.init_database
+
+
+Module Contents
+---------------
+
+.. py:function:: init() -> None
+
+   Initialization commands for the Zooniverse Orchestrator
+
+   This group contains commands for initialization of the Zooniverse Sonification DB,
+   and commands for initialising DB entities from fixture files.
+
+
+.. py:function:: init_database(ctx: click.Context, db: pathlib.Path) -> None
+
+   Initialize the Void Orchestra database.
+
+   :param db: Path to the database location
+   :type db: Path
+
+

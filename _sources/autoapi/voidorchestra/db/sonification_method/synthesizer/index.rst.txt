@@ -1,0 +1,109 @@
+voidorchestra.db.sonification_method.synthesizer
+================================================
+
+.. py:module:: voidorchestra.db.sonification_method.synthesizer
+
+.. autoapi-nested-parse::
+
+   Defines the database object for sonification using synthesizers.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   voidorchestra.db.sonification_method.synthesizer.SonificationMethodSynthesizer
+
+
+Module Contents
+---------------
+
+.. py:class:: SonificationMethodSynthesizer
+
+   Bases: :py:obj:`voidorchestra.db.sonification_method.SonificationMethod`
+
+
+   Shared-table inheritance subclass for Synthesizer sonification methods.
+
+   .. attribute:: pitch
+
+      aaa
+
+      :type: float
+
+   .. attribute:: pitch_shift_power
+
+      Power of the pitch shift.
+
+      :type: float
+
+   .. attribute:: length
+
+      Duration of the sonification, in seconds.
+
+      :type: float
+
+
+   .. py:attribute:: pitch
+
+
+   .. py:attribute:: pitch_shift_power
+
+
+   .. py:attribute:: length
+
+
+   .. py:attribute:: COLUMNS
+      :type:  List[str]
+      :value: ['pitch', 'pitch_shift_power', 'length']
+
+
+
+   .. py:attribute:: __mapper_args__
+      :type:  Dict[str, str]
+
+
+   .. py:method:: __repr__() -> str
+
+      Gets the name of the sonification method.
+      :returns: The string representation of the sonificaiton method..
+      :rtype: str
+
+
+
+   .. py:method:: get_generator() -> strauss.generator.Synthesizer
+
+      Gets the generator used to sonify the data by this method.
+
+      :returns: The sound generator.
+      :rtype: Synthesizer
+
+
+
+   .. py:method:: load_fixtures(session: sqlalchemy.orm.Session, fixtures_path: pathlib.Path = None) -> None
+      :staticmethod:
+
+
+      Loads the fixtures from disk (if they aren't loaded already)
+
+      :param session: A database session to add the fixtures to.
+      :type session: Session
+      :param fixtures_path: The fixtures JSON file to load the fixtures from.
+      :type fixtures_path: Path
+
+      :raises FileNotFoundError: If the passed path (or the path in the config file) does not exist.
+      :raises ValueError: If the file doesn't have the right columns.
+
+
+
+   .. py:method:: sonify_lightcurve(generator: strauss.generator.Synthesizer) -> strauss.sonification.Sonification
+
+      :param generator:
+
+      :returns: The sonified version of the lightcurve.
+      :rtype: Sonification
+
+
+

@@ -1,0 +1,30 @@
+voidorchestra.console.commands
+==============================
+
+.. py:module:: voidorchestra.console.commands
+
+.. autoapi-nested-parse::
+
+   console.commands is a module for sub-package which defines the
+   commands for the CLI.
+
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/voidorchestra/console/commands/admin/index
+   /autoapi/voidorchestra/console/commands/check/index
+   /autoapi/voidorchestra/console/commands/create/index
+   /autoapi/voidorchestra/console/commands/delete/index
+   /autoapi/voidorchestra/console/commands/init/index
+   /autoapi/voidorchestra/console/commands/input/index
+   /autoapi/voidorchestra/console/commands/sync/index
+   /autoapi/voidorchestra/console/commands/upload/index
+   /autoapi/voidorchestra/console/commands/upload_molegazer/index
+   /autoapi/voidorchestra/console/commands/watch/index
+
+

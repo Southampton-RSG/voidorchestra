@@ -1,0 +1,54 @@
+voidorchestra.console.commands.check
+====================================
+
+.. py:module:: voidorchestra.console.commands.check
+
+.. autoapi-nested-parse::
+
+   This module contains sub-commands for `voidorchestra check`.
+
+   The commands should check properties or statistics for various parts of the
+   Voidorchestra package or for the Zooniverse project and its components.
+
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   voidorchestra.console.commands.check.check
+   voidorchestra.console.commands.check.print_version
+   voidorchestra.console.commands.check.workflow_stats
+   voidorchestra.console.commands.check.project_stats
+
+
+Module Contents
+---------------
+
+.. py:function:: check()
+
+   Check info about Void Orchestra and Zooniverse
+
+
+.. py:function:: print_version() -> None
+
+   Print the Void Orchestra package version
+
+
+.. py:function:: workflow_stats(panoptes_workflow_id: int) -> None
+
+   Print workflow statistics
+
+   :param panoptes_workflow_id: The ID of the workflow to check statistics for.
+   :type panoptes_workflow_id: int
+
+
+.. py:function:: project_stats(panoptes_project_id: int) -> None
+
+   Print project information
+
+   :param panoptes_project_id: The ID of the project to check statistics for.
+   :type panoptes_project_id: int
+
+

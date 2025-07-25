@@ -1,0 +1,282 @@
+voidorchestra.db.qpo_model
+==========================
+
+.. py:module:: voidorchestra.db.qpo_model
+
+.. autoapi-nested-parse::
+
+   Defines the QPO models, made up of components, used in synthetic lightcurve generation.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   voidorchestra.db.qpo_model.QPOModel
+   voidorchestra.db.qpo_model.QPOModelComposite
+   voidorchestra.db.qpo_model.QPOModelSHO
+   voidorchestra.db.qpo_model.QPOModelLorentzian
+   voidorchestra.db.qpo_model.QPOModelBPL
+
+
+Module Contents
+---------------
+
+.. py:class:: QPOModel
+
+   Bases: :py:obj:`voidorchestra.db.Base`
+
+
+   ORM class for QPO models used for synthetic lightcurve generation.
+
+   These are models, either stand-alone or collections of other models.
+
+   .. attribute:: id
+
+      A unique ID for the QPO model.
+
+      :type: integer
+
+   .. attribute:: qpo_model_parent_id
+
+      The parent, if any, of this model component.
+
+      :type: integer
+
+   .. attribute:: name
+
+      A name describing the model.
+
+      :type: string
+
+   .. attribute:: polymorphic_type
+
+      The polymorphic name type.
+
+      :type: string
+
+   .. attribute:: lightcurves
+
+      The lightcurves generated using this model.
+
+      :type: relationship
+
+   .. attribute:: qpo_model_parent
+
+      The QPO model that is this model's parent, if any.
+
+      :type: relationship
+
+   .. attribute:: coherence
+
+
+
+      :type: float
+
+   .. attribute:: period_value
+
+      The value of the period.
+
+      :type: float
+
+   .. attribute:: period_format
+
+      The format of the period.
+
+      :type: string
+
+   .. attribute:: variance_fraction
+
+
+
+      :type: float
+
+
+   .. py:attribute:: __tablename__
+      :type:  str
+      :value: 'qpo_model'
+
+
+
+   .. py:attribute:: __mapper_args__
+      :type:  Dict[str, str]
+
+
+   .. py:attribute:: id
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: qpo_model_parent_id
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: name
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: polymorphic_type
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: model
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: coherence
+      :type:  sqlalchemy.orm.Mapped[float]
+
+
+   .. py:attribute:: variance_fraction
+      :type:  sqlalchemy.orm.Mapped[float]
+
+
+   .. py:attribute:: period_value
+      :type:  sqlalchemy.orm.Mapped[float]
+
+
+   .. py:attribute:: period_format
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: qpo_model_parent
+      :type:  sqlalchemy.orm.Mapped[QPOModel]
+
+
+   .. py:attribute:: lightcurves
+      :type:  sqlalchemy.orm.Mapped[List[voidorchestra.db.LightcurveSynthetic]]
+
+
+   .. py:method:: __repr__() -> str
+
+
+   .. py:method:: get_model_for_mean_rate(rate_mean: astropy.units.Quantity[u.s**(-1)]) -> astropy.modeling.Model
+      :abstractmethod:
+
+
+      For a mean lightcurve count rate, generate a model that can be passed to MindTheGaps.
+
+      :param rate_mean: Mean light curve count.
+      :type rate_mean: float
+
+      :rtype: A Mind the Gaps model.
+
+
+
+   .. py:method:: get_period() -> astropy.time.TimeDelta
+
+      Gets the period, in whatever unit it was saved in.
+
+      :returns: The period, as a quantity.
+      :rtype: Quantity
+
+
+
+.. py:class:: QPOModelComposite
+
+   Bases: :py:obj:`QPOModel`
+
+
+   Wrapper for the SHO model from Mind the Gaps.
+
+
+   .. py:attribute:: __mapper_args__
+      :type:  Dict[str, str]
+
+
+   .. py:method:: add_components(session: sqlalchemy.orm.Session, components: List[Dict[str, Any]]) -> QPOModelComposite
+
+      Adds sub-components to this composite model.
+
+      :param session: The database session to add the children in.
+      :type session: Session
+      :param components: The children to add to the model.
+      :type components: List[Dict[str, Any]
+
+      :returns: Self, for chaining methods.
+      :rtype: QPOModelComposite
+
+
+
+   .. py:method:: get_model_for_mean_rate(rate_mean: astropy.units.Quantity[u.s**(-1)]) -> astropy.modeling.Model
+
+      Sums the models defining this as their parent, and returns them.
+
+      :param rate_mean: Mean light curve count.
+      :type rate_mean: float
+
+      :returns: **model** -- A Mind the Gaps model.
+      :rtype: Model
+
+
+
+.. py:class:: QPOModelSHO
+
+   Bases: :py:obj:`QPOModel`
+
+
+   Wrapper for the SHO model from Mind the Gaps.
+
+
+   .. py:attribute:: __mapper_args__
+      :type:  Dict[str, str]
+
+
+   .. py:method:: get_model_for_mean_rate(rate_mean: astropy.units.Quantity[u.s**(-1)]) -> astropy.modeling.Model
+
+      For a mean lightcurve count rate, generate a model that can be passed to MindTheGaps.
+
+      :param rate_mean: Mean light curve count.
+      :type rate_mean: float
+
+      :rtype: A Mind the Gaps model.
+
+
+
+.. py:class:: QPOModelLorentzian
+
+   Bases: :py:obj:`QPOModel`
+
+
+   Wrapper for the Lorentzian model from Mind the Gaps.
+
+
+   .. py:attribute:: __mapper_args__
+      :type:  Dict[str, str]
+
+
+   .. py:method:: get_model_for_mean_rate(rate_mean: astropy.units.Quantity[u.s**(-1)]) -> astropy.modeling.Model
+
+      For a mean lightcurve count rate, generate a model that can be passed to MindTheGaps.
+
+      :param rate_mean: Mean light curve count.
+      :type rate_mean: float
+
+      :rtype: A Mind the Gaps model.
+
+
+
+.. py:class:: QPOModelBPL
+
+   Bases: :py:obj:`QPOModel`
+
+
+   Wrapper for the Bending Powerlaw model from Mind the Gaps.
+
+
+   .. py:attribute:: __mapper_args__
+      :type:  Dict[str, str]
+
+
+   .. py:method:: get_model_for_mean_rate(rate_mean: astropy.units.Quantity[u.s**(-1)]) -> astropy.modeling.Model
+
+      For a mean lightcurve count rate, generate a model that can be passed to MindTheGaps.
+
+      :param rate_mean: Mean light curve count.
+      :type rate_mean: float
+
+      :rtype: A Mind the Gaps model.
+
+
+

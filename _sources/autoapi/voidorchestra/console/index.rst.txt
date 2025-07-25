@@ -1,0 +1,21 @@
+voidorchestra.console
+=====================
+
+.. py:module:: voidorchestra.console
+
+.. autoapi-nested-parse::
+
+   Console is the sub-package defining the CLI.
+
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/voidorchestra/console/cli/index
+   /autoapi/voidorchestra/console/commands/index
+
+

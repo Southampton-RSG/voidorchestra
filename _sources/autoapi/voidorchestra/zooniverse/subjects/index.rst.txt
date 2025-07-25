@@ -1,0 +1,77 @@
+voidorchestra.zooniverse.subjects
+=================================
+
+.. py:module:: voidorchestra.zooniverse.subjects
+
+.. autoapi-nested-parse::
+
+   Subjects and the subject sets they belong to are the very heart of any
+   Zooniverse project. This module includes functions which create subjects
+   and subject sets, as well as a number of functions for keeping a database of
+   subjects up to date with the local and remote stamps/subjects.
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   voidorchestra.zooniverse.subjects.logger
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   voidorchestra.zooniverse.subjects.add_panoptes_subjects_to_local_subject_database
+   voidorchestra.zooniverse.subjects.upload_sonifications_to_zooniverse
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+   :type:  logging.Logger
+
+.. py:function:: add_panoptes_subjects_to_local_subject_database(session: sqlalchemy.orm.Session, panoptes_project_id: str | int, panoptes_subject_set_id: str | int, new_panoptes_subjects: List[panoptes_client.Subject], commit_frequency: int = 1000) -> None
+
+   Add subjects to the subjects database.
+
+   To add a subject, its metadata is checked against the stamps table to ensure
+   that there is a corresponding sonification and to ensure that the metadata is
+   correct. If there is already a subject for that sonification, then that entry
+   is updated with the new subject. Otherwise, a new entry is created.
+
+   :param session: The database session to interact wth the database.
+   :type session: Session
+   :param panoptes_project_id: The ID of the project in Zooniverse.
+   :type panoptes_project_id: str | int
+   :param panoptes_subject_set_id: The ID of the subject set the subjects were uploaded to.
+   :type panoptes_subject_set_id: str | int
+   :param new_panoptes_subjects: A list containing new Panoptes Subjects to be added to the database.
+   :type new_panoptes_subjects: List[PanoptesSubject]
+   :param commit_frequency: The frequency of which to commit new entries to the database.
+   :type commit_frequency: int
+
+
+.. py:function:: upload_sonifications_to_zooniverse(panoptes_project_id: int, commit_frequency: int | None = 250) -> None
+
+   Update a subject set with more subjects.
+
+   This has been designed to work with just URL manifests, therefore you cannot
+   add subjects which are not URLS such as raw images.
+
+   Adds all sonifications in the database to a subject set based on their sonification profile.
+
+   :param panoptes_project_id: The ID for the project on the Zooniverse.
+   :type panoptes_project_id: int
+   :param commit_frequency: The frequency at which to commit entries to the database. Default value
+                            is 1000.
+   :type commit_frequency: int
+
+   :returns: **panoptes_subject_set** -- The updated panoptes subject set.
+   :rtype: PanoptesSubjectSet
+
+

@@ -1,0 +1,150 @@
+voidorchestra.zooniverse.sync
+=============================
+
+.. py:module:: voidorchestra.zooniverse.sync
+
+.. autoapi-nested-parse::
+
+   This module contains operations to sync with the Zooniverse database.
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   voidorchestra.zooniverse.sync.NO_SUBJECT_SET_ASSIGNED
+   voidorchestra.zooniverse.sync.NO_WORKFLOW_ASSIGNED
+   voidorchestra.zooniverse.sync.logger
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   voidorchestra.zooniverse.sync.__check_panoptes_subject_valid
+   voidorchestra.zooniverse.sync.__add_subject_set
+   voidorchestra.zooniverse.sync.__clean_up_old_linked_subject_sets
+   voidorchestra.zooniverse.sync.sync_subject_database_with_zooniverse
+   voidorchestra.zooniverse.sync.remove_broken_local_subject_sets_from_database
+   voidorchestra.zooniverse.sync.sync_local_subject_set_database_with_zooniverse
+
+
+Module Contents
+---------------
+
+.. py:data:: NO_SUBJECT_SET_ASSIGNED
+   :value: None
+
+
+.. py:data:: NO_WORKFLOW_ASSIGNED
+   :value: None
+
+
+.. py:data:: logger
+   :type:  logging.Logger
+
+.. py:function:: __check_panoptes_subject_valid(panoptes_subject: panoptes_client.Subject) -> Tuple[int, int, str]
+
+   Check that a subject has "valid" setup.
+
+   Check if a subject has a valid setup by checking for the ID of the subject
+   set and workflow it is assigned to -- in theory both of these can be
+   NULL or None. Additionally also get the stamp name. If this is None, then
+   something has gone wrong with the subject.
+
+   :param panoptes_subject: The subject to check.
+   :type panoptes_subject: Subject
+
+   :returns: The subject set ID, the workflow ID and the name of the stamp.
+   :rtype: Tuple[int, int, str]
+
+   :raises ValueError: Raised when a subject has been found to be in multiple subject sets.
+
+
+.. py:function:: __add_subject_set(session: sqlalchemy.orm.Session, panoptes_subject_set: panoptes_client.SubjectSet, panoptes_workflow_id: int | None) -> None
+
+   Add a subject set to a database session.
+
+   The database is queried to ensure that duplicates are not added.
+
+   :param session: A database session to edit.
+   :type session: Session
+   :param panoptes_subject_set: The Panoptes subject set to potentially add to the database.
+   :type panoptes_subject_set: PanoptesSubjectSet
+   :param panoptes_workflow_id: The ID of the workflow the subject set is linked to.
+   :type panoptes_workflow_id: int | None
+
+
+.. py:function:: __clean_up_old_linked_subject_sets(session: sqlalchemy.orm.Session, panoptes_subject_set: panoptes_client.SubjectSet) -> None
+
+   Remove entries which have a non-NULL workflow ID.
+
+   This exists because subject sets which become unlinked would not have their
+   previous non-NULL entries removed. We should only get here when a workflow
+   has no linked workflows.
+
+   :param session: The database session to edit.
+   :type session: Session
+   :param panoptes_subject_set: The subject set to try and remove non-NULL entries from.
+   :type panoptes_subject_set: PanoptesSubjectSet
+
+
+.. py:function:: sync_subject_database_with_zooniverse(session: sqlalchemy.orm.Session, panoptes_subjects_from_zooniverse: List[panoptes_client.Subject], num_panoptes_subjects: int, commit_frequency: int | None = 250) -> None
+
+   Add subjects to the database which have already been uploaded to Zooniverse.
+
+   The subjects to be added need to be passed to this function. The subjects
+   can be gotten using something like `panoptes_client.Subject.find()` or
+   `panoptes_client.SubjectSet.subjects`.
+
+   This function is different to :meth:`update_subjects_database`, as it makes
+   a number of assumptions about data existing and where it exists which is
+   not the case in :meth:`update_subjects_database`.
+   When debug logging is enabled, multiple counters are printed to show how
+   many subjects were found, added and linked/added to the subject database.
+
+   TODO: this function could do with a refactor
+
+   :param session: The database session to write to.
+   :type session: Session
+   :param panoptes_subjects_from_zooniverse: A list of Zooniverse Subjects to process.
+   :param num_panoptes_subjects: The number of subjects to process.
+   :param commit_frequency: The frequency of which to commit to the database.
+   :type commit_frequency: int
+
+
+.. py:function:: remove_broken_local_subject_sets_from_database(session: sqlalchemy.orm.Session) -> None
+
+   Removes subject sets with no Zooniverse counterpart from the local DB.
+
+   Checks local subject sets to see if there's a matching set on the Zooniverse,
+   and removes them if there isn't.
+
+   :param session: A SQLAlchemy database session to the MoleMarshal database.
+   :type session: Session
+
+
+.. py:function:: sync_local_subject_set_database_with_zooniverse(session: sqlalchemy.orm.Session, panoptes_subject_sets_to_add: List[panoptes_client.SubjectSet], num_panoptes_subject_sets_to_add: int, _commit_frequency: int = 250) -> None
+
+   Add subject sets to the database which have been uploaded to Zooniverse.
+
+   Panoptes subject sets which have been uploaded to Zooniverse are processed and
+   updated in the database. If the priority of the subject set cannot be found
+   either in the metadata or in the name of the subject set, then a null value
+   is used instead.
+
+   :param session: A SQLAlchemy database session to the MoleMarshal database.
+   :type session: Session
+   :param panoptes_subject_sets_to_add: A list containing SubjectSet's to add to the database.
+   :type panoptes_subject_sets_to_add: List[SubjectSet]
+   :param num_panoptes_subject_sets_to_add: The number of subject sets which will be added.
+   :type num_panoptes_subject_sets_to_add: int
+   :param _commit_frequency: The frequency to commit changes. Currently unused.
+   :type _commit_frequency: int
+
+   :raises ValueError: Raised when an unknown source is provided.
+
+

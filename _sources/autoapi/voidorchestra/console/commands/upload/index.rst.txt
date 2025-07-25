@@ -1,0 +1,41 @@
+voidorchestra.console.commands.upload
+=====================================
+
+.. py:module:: voidorchestra.console.commands.upload
+
+.. autoapi-nested-parse::
+
+   This module contains sub-commands for `voidorchestra upload`.
+
+   The commands should be used to upload new things, such as subjects or subject
+   sets, to the Zooniverse project.
+
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   voidorchestra.console.commands.upload.upload
+   voidorchestra.console.commands.upload.upload_new_sonifications
+
+
+Module Contents
+---------------
+
+.. py:function:: upload()
+
+   Upload new things and changes to Zooniverse
+
+
+.. py:function:: upload_new_sonifications(ctx: click.Context, zooniverse_project_id: int) -> None
+
+   Add and upload stamps to MoleMarshal and Zooniverse
+
+   This sub-command can be used to upload new sonifications to a subject set or to
+   create a new subject set.
+
+   The default behaviour will upload sonifications to a subject set based on their sonification profile.
+
+

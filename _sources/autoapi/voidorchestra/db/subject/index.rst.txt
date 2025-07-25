@@ -1,0 +1,146 @@
+voidorchestra.db.subject
+========================
+
+.. py:module:: voidorchestra.db.subject
+
+.. autoapi-nested-parse::
+
+   Defines the database object for Zooniverse subjects.
+
+   These are used to query the subjects which have been uploaded to the Zooniverse.
+   Can be used to filter subjects which are part of a certain subject set, workflow
+   or project.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   voidorchestra.db.subject.Subject
+
+
+Module Contents
+---------------
+
+.. py:class:: Subject
+
+   Bases: :py:obj:`voidorchestra.db.Base`
+
+
+   ORM class for subject sets.
+
+   This class is used to query the subjects which have been uploaded and
+   contains metadata about associations of the subject to projects, users
+   and other structures in Zooniverse.
+
+   .. attribute:: subject_id
+
+      The ID of the subject in the local DB
+
+      :type: integer
+
+   .. attribute:: zooniverse_subject_id
+
+      Foreign key, the ID of the subject this is
+
+      :type: integer
+
+   .. attribute:: retired
+
+      Boolean flag to indicate if the subject has been retired due to a
+      consensus being reached.
+
+      :type: boolean
+
+   .. attribute:: zooniverse_workflow_id
+
+      The Zooniverse ID of the workflow the subject is assigned to.
+
+      :type: integer
+
+   .. attribute:: subject_set_id
+
+      Foreign key, the ID of the subject set the subject is assigned to
+
+      :type: integer
+
+   .. attribute:: zooniverse_subject_set_id
+
+      The Zooniverse ID of the subject set this is a subject of.
+
+      :type: integer
+
+   .. attribute:: classifications
+
+      A relationship link to the classifications of this subject.
+
+      :type: relationship
+
+   .. attribute:: subject_set
+
+      A relationship link to the subject set.
+
+      :type: relationship
+
+   .. attribute:: sonification
+
+      A relationship link to the sonification.
+
+      :type: relationship
+
+
+   .. py:attribute:: __tablename__
+      :type:  str
+      :value: 'subject'
+
+
+
+   .. py:attribute:: id
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: sonification_id
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: sonification
+      :type:  sqlalchemy.orm.Mapped[voidorchestra.db.Sonification]
+
+
+   .. py:attribute:: subject_set_id
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: subject_set
+      :type:  sqlalchemy.orm.Mapped[voidorchestra.db.SubjectSet]
+
+
+   .. py:attribute:: classifications
+      :type:  sqlalchemy.orm.Mapped[List[voidorchestra.db.Classification]]
+
+
+   .. py:attribute:: zooniverse_project_id
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: zooniverse_subject_id
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: zooniverse_subject_set_id
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: zooniverse_workflow_id
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: retired
+      :type:  sqlalchemy.orm.Mapped[bool]
+
+
+   .. py:method:: __repr__() -> str
+
+

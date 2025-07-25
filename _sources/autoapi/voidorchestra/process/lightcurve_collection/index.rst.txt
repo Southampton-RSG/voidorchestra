@@ -1,0 +1,19 @@
+voidorchestra.process.lightcurve_collection
+===========================================
+
+.. py:module:: voidorchestra.process.lightcurve_collection
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   voidorchestra.process.lightcurve_collection.assign_lightcurve_collection_subject_sets_to_workflows
+
+
+Module Contents
+---------------
+
+.. py:function:: assign_lightcurve_collection_subject_sets_to_workflows(session: sqlalchemy.orm.Session, lightcurve_collection: voidorchestra.db.LightcurveCollection, sonification_profile_to_workflow_id: Dict[voidorchestra.db.SonificationProfile, int])
+

@@ -1,0 +1,68 @@
+voidorchestra
+=============
+
+.. py:module:: voidorchestra
+
+.. autoapi-nested-parse::
+
+   Root of the Voidorchestra module.
+   Holds module-level things, like the config settings.
+
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/voidorchestra/active_learning/index
+   /autoapi/voidorchestra/console/index
+   /autoapi/voidorchestra/db/index
+   /autoapi/voidorchestra/log/index
+   /autoapi/voidorchestra/process/index
+   /autoapi/voidorchestra/tests/index
+   /autoapi/voidorchestra/zooniverse/index
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   voidorchestra.__version__
+   voidorchestra.ENVIRONMENT_VARIABLE
+   voidorchestra.config_file_location
+   voidorchestra.config_file_path
+   voidorchestra.config
+   voidorchestra.config_paths
+   voidorchestra.root_path
+
+
+Package Contents
+----------------
+
+.. py:data:: __version__
+   :type:  str
+   :value: '0.1a'
+
+
+.. py:data:: ENVIRONMENT_VARIABLE
+   :type:  str
+   :value: 'VOIDORCHESTRA'
+
+
+.. py:data:: config_file_location
+   :type:  str
+
+.. py:data:: config_file_path
+   :type:  pathlib.Path
+
+.. py:data:: config
+   :type:  configparser.ConfigParser
+
+.. py:data:: config_paths
+   :type:  Dict[str, pathlib.Path]
+
+.. py:data:: root_path
+

@@ -1,0 +1,71 @@
+voidorchestra.db.classification
+===============================
+
+.. py:module:: voidorchestra.db.classification
+
+.. autoapi-nested-parse::
+
+   Defines the database object for Zooniverse subject classifications.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   voidorchestra.db.classification.Classification
+
+
+Module Contents
+---------------
+
+.. py:class:: Classification
+
+   Bases: :py:obj:`voidorchestra.db.Base`
+
+
+   ORM class for image classifications.
+
+   This class is used to query classifications of sonifications.
+
+   .. attribute:: id
+
+      Caesar reduction/classification ID.
+
+      :type: Integer
+
+   .. attribute:: subject_id
+
+      Foreign key, the Zooniverse ID for the subject this
+      classification is for.
+
+      :type: Integer
+
+   .. attribute:: subject
+
+      A relationship link to the subject
+
+      :type: relationship
+
+
+   .. py:attribute:: __tablename__
+      :value: 'classification'
+
+
+
+   .. py:attribute:: id
+
+
+   .. py:attribute:: zooniverse_classification_id
+
+
+   .. py:attribute:: subject_id
+
+
+   .. py:attribute:: subject
+
+
+   .. py:method:: __repr__() -> str
+
+

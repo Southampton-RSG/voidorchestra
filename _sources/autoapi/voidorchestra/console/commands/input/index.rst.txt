@@ -1,0 +1,338 @@
+voidorchestra.console.commands.input
+====================================
+
+.. py:module:: voidorchestra.console.commands.input
+
+.. autoapi-nested-parse::
+
+   This module contains sub-commands for `void-orchestra add`.
+
+   The commands should add new entries to the DB from a fixture file.
+
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/voidorchestra/console/commands/input/lightcurve/index
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   voidorchestra.console.commands.input.config_paths
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   voidorchestra.console.commands.input.SonificationMethodSoundfont
+   voidorchestra.console.commands.input.SonificationProfile
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   voidorchestra.console.commands.input.lightcurve
+   voidorchestra.console.commands.input.connect_to_database_engine
+   voidorchestra.console.commands.input.input
+   voidorchestra.console.commands.input.add_soundfonts
+   voidorchestra.console.commands.input.add_sonification_profiles
+
+
+Package Contents
+----------------
+
+.. py:data:: config_paths
+   :type:  Dict[str, pathlib.Path]
+
+.. py:function:: lightcurve()
+
+   Add new lightcurves from fixture files.
+
+
+.. py:function:: connect_to_database_engine(location: str) -> sqlalchemy.engine.Engine
+
+   Create a connection to the database.
+
+   Return an SQLAlchemy Engine which creates a connection to the
+   database. If the database does not exist, a new database is created. In
+   the case of multiple calls of this function, a new engine will not be
+   created and an already existing engine will be returned.
+
+   :param location: The filepath to the database to open.
+   :type location: str
+
+   :returns: **engine** -- The engine object to connect to the database.
+   :rtype: sqlalchemy.engine
+
+
+.. py:class:: SonificationMethodSoundfont
+
+   Bases: :py:obj:`voidorchestra.db.sonification_method.SonificationMethod`
+
+
+   Shared-table inheritance subclass for Soundfont sonification methods.
+
+   .. attribute:: preset
+
+      aaa
+
+   .. attribute:: preset_modification
+
+      aaa
+
+   .. attribute:: path
+
+      aaae
+
+   .. attribute:: continuous
+
+      aaa
+
+
+   .. py:attribute:: preset
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: preset_modification
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: path
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: continuous
+      :type:  sqlalchemy.orm.Mapped[bool]
+
+
+   .. py:attribute:: sonification_profiles
+      :type:  sqlalchemy.orm.Mapped[List[voidorchestra.db.SonificationProfile]]
+
+
+   .. py:attribute:: SYSTEM
+      :type:  str
+      :value: 'mono'
+
+
+
+   .. py:attribute:: COLUMNS
+      :type:  List[str]
+      :value: ['preset_modification', 'path', 'continuous', 'preset']
+
+
+
+   .. py:attribute:: __mapper_args__
+      :type:  Dict[str, str]
+
+
+   .. py:method:: __repr__() -> str
+
+      Gets the name of the sonification method.
+      :returns: The string representation of the sonificaiton method..
+      :rtype: str
+
+
+
+   .. py:method:: sonify_lightcurve(score: strauss.score.Score, lightcurve: astropy.timeseries.TimeSeries) -> strauss.sonification.Sonification
+
+      Gets the generator used to sonify the data by this method.
+
+      :param score: The key and tempo used (set by the sonification profile).
+      :type score: Score
+      :param lightcurve: The data to sonify.
+      :type lightcurve: TimeSeries
+
+      :returns: The sonified sound.
+      :rtype: StraussSonification
+
+
+
+   .. py:method:: load_fixtures(session: sqlalchemy.orm.Session, fixtures_path: pathlib.Path = None) -> None
+      :staticmethod:
+
+
+      Loads the fixtures from disk (if they aren't loaded already)
+
+      :param session: A database session to add the fixtures to.
+      :type session: Session
+      :param fixtures_path: The fixtures JSON file to load the fixtures from.
+      :type fixtures_path: Path
+
+      :raises FileNotFoundError: If the passed path (or the path in the config file) does not exist.
+      :raises ValueError: If the file doesn't have the right columns.
+
+
+
+.. py:class:: SonificationProfile
+
+   Bases: :py:obj:`voidorchestra.db.Base`
+
+
+   ORM class for sonification profiles.
+
+   These are the patterns of sonification that are used to generate sonifications for data.
+   They include an instrument, and how it is used.
+
+   .. attribute:: id
+
+      A unique ID for the sonification profile.
+
+      :type: integer
+
+   .. attribute:: sonification_method_id
+
+      The ID of the sonification method used by this profile.
+
+      :type: integer
+
+   .. attribute:: name
+
+      The name of the sonification profile.
+
+      :type: string
+
+   .. attribute:: description
+
+      A description of the sonification profile.
+
+      :type: string
+
+   .. attribute:: tempo
+
+      The speed of the sonification.
+
+      :type: float
+
+   .. attribute:: key
+
+      The note(s) to use for the sonification.
+
+      :type: text
+
+   .. attribute:: sonification_method
+
+      The method used to sonify data as part of this profile.
+      Can be synthesizer or instrument samples.
+
+      :type: relationship
+
+   .. attribute:: sonifications
+
+      The sonifications generated using this profile.
+
+      :type: relationship
+
+
+   .. py:attribute:: __tablename__
+      :type:  str
+      :value: 'sonification_profile'
+
+
+
+   .. py:attribute:: id
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: sonification_method_id
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: name
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: description
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: tempo
+      :type:  sqlalchemy.orm.Mapped[float]
+
+
+   .. py:attribute:: key
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: sonifications
+      :type:  sqlalchemy.orm.Mapped[List[voidorchestra.db.Sonification]]
+
+
+   .. py:attribute:: sonification_method
+      :type:  sqlalchemy.orm.Mapped[voidorchestra.db.SonificationMethod]
+
+
+   .. py:attribute:: subject_sets
+      :type:  sqlalchemy.orm.Mapped[voidorchestra.db.SubjectSet]
+
+
+   .. py:attribute:: COLUMNS
+      :type:  List[str]
+      :value: ['id', 'sonification_method_id', 'tempo', 'key', 'name', 'description']
+
+
+
+   .. py:attribute:: __table_args__
+
+
+   .. py:method:: __repr__() -> str
+
+
+   .. py:method:: load_fixtures(session: sqlalchemy.orm.Session, fixtures_path: pathlib.Path = None) -> List[SonificationProfile]
+      :staticmethod:
+
+
+      Loads the fixtures from disk (if they aren't loaded already)
+
+      :param session: A database session to add the fixtures to
+      :type session: Session
+      :param fixtures_path: The fixtures JSON file to load the fixtures from
+      :type fixtures_path: Path
+
+      :raises FileNotFoundError: If the passed path (or the path in the config file) does not exist
+      :raises ValueError: If the file doesn't have the right columns.
+
+
+
+   .. py:method:: get_key() -> List[str]
+
+
+   .. py:method:: create_sonification(lightcurve: astropy.timeseries.TimeSeries) -> strauss.sonification.Sonification
+
+      :param lightcurve: The lightcurve to sonify.
+      :type lightcurve: TimeSeries
+
+      :returns: The sonified lightcurve.
+      :rtype: StraussSonification
+
+
+
+.. py:function:: input()
+
+   Add new entities from fixture files.
+
+
+.. py:function:: add_soundfonts(ctx: click.Context, filepath: pathlib.Path) -> None
+
+   Add new soundfonts into Void Orchestra.
+
+   :param filepath: Path to the soundfont fixtures to add
+
+
+.. py:function:: add_sonification_profiles(ctx: click.Context, filepath: pathlib.Path) -> None
+
+   Add new sonification profiles into Void Orchestra.
+
+   :param filepath: Path to the sonification profiles to add
+
+

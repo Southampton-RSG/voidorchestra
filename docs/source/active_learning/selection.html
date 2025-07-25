@@ -1,0 +1,504 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
+
+    <!-- Generated with Sphinx 8.2.3 and Furo 2025.07.19 -->
+        <title>Selection - voidorchestra v0.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=25af2a20" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/autodoc_pydantic.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/custom.css?v=98e9b53e" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #2b2b2b;
+  --color-code-foreground: #f8f8f2;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #2b2b2b;
+  --color-code-foreground: #f8f8f2;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../index.html"><div class="brand">voidorchestra <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.1.0</code></div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
+  
+  <span class="sidebar-brand-text">voidorchestra <code style='font-size: var(--font-size--small--4);color: var(--sd-color-primary);'>v0.1.0</code></span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../autoapi/index.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/index.html">voidorchestra</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of voidorchestra</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/active_learning/index.html">voidorchestra.active_learning</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of voidorchestra.active_learning</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/active_learning/weights/index.html">voidorchestra.active_learning.weights</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/console/index.html">voidorchestra.console</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of voidorchestra.console</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/console/cli/index.html">voidorchestra.console.cli</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/console/commands/index.html">voidorchestra.console.commands</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of voidorchestra.console.commands</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/console/commands/admin/index.html">voidorchestra.console.commands.admin</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of voidorchestra.console.commands.admin</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../../autoapi/voidorchestra/console/commands/admin/local/index.html">voidorchestra.console.commands.admin.local</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../../autoapi/voidorchestra/console/commands/admin/zooniverse/index.html">voidorchestra.console.commands.admin.zooniverse</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../../../autoapi/voidorchestra/console/commands/check/index.html">voidorchestra.console.commands.check</a></li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/console/commands/create/index.html">voidorchestra.console.commands.create</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of voidorchestra.console.commands.create</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../../autoapi/voidorchestra/console/commands/create/sonifications/index.html">voidorchestra.console.commands.create.sonifications</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../../../autoapi/voidorchestra/console/commands/delete/index.html">voidorchestra.console.commands.delete</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../autoapi/voidorchestra/console/commands/init/index.html">voidorchestra.console.commands.init</a></li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/console/commands/input/index.html">voidorchestra.console.commands.input</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of voidorchestra.console.commands.input</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../../autoapi/voidorchestra/console/commands/input/lightcurve/index.html">voidorchestra.console.commands.input.lightcurve</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../../../autoapi/voidorchestra/console/commands/sync/index.html">voidorchestra.console.commands.sync</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../autoapi/voidorchestra/console/commands/upload/index.html">voidorchestra.console.commands.upload</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../autoapi/voidorchestra/console/commands/upload_molegazer/index.html">voidorchestra.console.commands.upload_molegazer</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../autoapi/voidorchestra/console/commands/watch/index.html">voidorchestra.console.commands.watch</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/db/index.html">voidorchestra.db</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of voidorchestra.db</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/db/classification/index.html">voidorchestra.db.classification</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/db/lightcurve/index.html">voidorchestra.db.lightcurve</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of voidorchestra.db.lightcurve</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../../autoapi/voidorchestra/db/lightcurve/synthetic/index.html">voidorchestra.db.lightcurve.synthetic</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/db/lightcurve_collection/index.html">voidorchestra.db.lightcurve_collection</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/db/qpo_model/index.html">voidorchestra.db.qpo_model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/db/sonification/index.html">voidorchestra.db.sonification</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/db/sonification_method/index.html">voidorchestra.db.sonification_method</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of voidorchestra.db.sonification_method</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../../autoapi/voidorchestra/db/sonification_method/soundfont/index.html">voidorchestra.db.sonification_method.soundfont</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../autoapi/voidorchestra/db/sonification_method/synthesizer/index.html">voidorchestra.db.sonification_method.synthesizer</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/db/sonification_profile/index.html">voidorchestra.db.sonification_profile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/db/subject/index.html">voidorchestra.db.subject</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/db/subject_set/index.html">voidorchestra.db.subject_set</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/voidorchestra/log/index.html">voidorchestra.log</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/process/index.html">voidorchestra.process</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of voidorchestra.process</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/process/lightcurve_collection/index.html">voidorchestra.process.lightcurve_collection</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/process/lightcurves/index.html">voidorchestra.process.lightcurves</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/process/sonification/index.html">voidorchestra.process.sonification</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of voidorchestra.process.sonification</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../../autoapi/voidorchestra/process/sonification/figure/index.html">voidorchestra.process.sonification.figure</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/tests/index.html">voidorchestra.tests</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle navigation of voidorchestra.tests</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/tests/test_all/index.html">voidorchestra.tests.test_all</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/zooniverse/index.html">voidorchestra.zooniverse</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of voidorchestra.zooniverse</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/zooniverse/classifications/index.html">voidorchestra.zooniverse.classifications</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/zooniverse/subject_sets/index.html">voidorchestra.zooniverse.subject_sets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/zooniverse/subjects/index.html">voidorchestra.zooniverse.subjects</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/zooniverse/sync/index.html">voidorchestra.zooniverse.sync</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/zooniverse/workflows/index.html">voidorchestra.zooniverse.workflows</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/zooniverse/zooniverse/index.html">voidorchestra.zooniverse.zooniverse</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../../../_sources/docs/source/active_learning/selection.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="selection">
+<h1>Selection<a class="headerlink" href="#selection" title="Link to this heading">¶</a></h1>
+<p>Once each stamp has been given a confidence, the subjects which represent these stamps on
+Zooniverse will be arranged into different subject sets depending on their confidence. Each subject set will have a
+different weighting which affects the probability a subject will be selected from a subject set.</p>
+<section id="priority-subject-sets">
+<h2>Priority subject sets<a class="headerlink" href="#priority-subject-sets" title="Link to this heading">¶</a></h2>
+<p>A “priority subject set” is the same as a “regular” subject set, except <em>MoleMarshal</em> has tagged them with
+a priority and selection weight which tells Zooniverse which subjects should ideally be classified first. A subject set
+with priority 1, and largest sample probability, contains the lowest confidence stamps and Zooniverse will present users
+with stamps from this subject set more often.</p>
+<p>The selection weight/probability of all the priority subject sets must sum to 1. If we have three subject sets, one with
+a weight of 0.9 and the other 0.05, then for every 10 subjects randomly selected 9 of them will come from the first
+two subjects sets and 1 from each of the other remaining subject sets (on average, at least).</p>
+</section>
+<section id="arranging-subjects-into-subject-sets">
+<h2>Arranging subjects into subject sets<a class="headerlink" href="#arranging-subjects-into-subject-sets" title="Link to this heading">¶</a></h2>
+<p>The priority subject sets each represent an equal share of machine confidence parameter space, that is if there are four
+priority subject sets then subject set 1 would cover a confidence interval of 0 - 0.25, and subject set 2 would cover
+the interval 0.25 - 0.5, and so on. This translates into a bin width of <code class="docutils literal notranslate"><span class="pre">bin_width</span> <span class="pre">=</span> <span class="pre">1</span> <span class="pre">/</span> <span class="pre">num_priority_sets</span></code>. The
+binning of subjects by their machine confidence is straightforward <code class="docutils literal notranslate"><span class="pre">priority_rank</span> <span class="pre">=</span> <span class="pre">confidence</span> <span class="pre">//</span> <span class="pre">bin_width</span></code>, with
+appropriate upper and lower limits applied. Arranging the subjects into priority subject sets is done by the function
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">bin_subjects_into_priority_subject_sets()</span></code> which takes a list of the priority subject sets as input.</p>
+<p>The function <code class="xref py py-meth docutils literal notranslate"><span class="pre">bin_subjects_into_priority_subject_sets()</span></code> will bin all of the subjects in the subject database which
+have not been retired.</p>
+<p>Subjects should only belong in one subject set in MoleMarshal, thus as subjects are moved around between the different
+priority subject sets (if their machine confidence has change) additional bookkeeping is done to ensure that subjects
+are only in one subject set.</p>
+<section id="creating-priority-subject-sets">
+<h3>Creating priority subject sets<a class="headerlink" href="#creating-priority-subject-sets" title="Link to this heading">¶</a></h3>
+<p>Creation of the priority subject sets is identical to regular subject sets, with the only difference being some
+internal tracking in the <em>MoleMarshal</em> database which is used to put subjects into the correct priority subject set
+depending on their weight.</p>
+<p>To automatically create and retrieve priority subject sets, you will need the ID for the project and workflow they will
+be assigned to as well as the number of priority subject sets,</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">molemarshal.active_learning.weights</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_priority_subject_sets</span>
+
+<span class="n">priority_subject_sets</span> <span class="o">=</span> <span class="n">get_priority_subject_sets</span><span class="p">(</span><span class="n">PROJECT_ID</span><span class="p">,</span> <span class="n">WORKFLOW_ID</span><span class="p">,</span> <span class="n">NUM_PRIORITY_SETS</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The above function will deal with getting subject sets from the <em>MoleMarshal</em> database (or Zooniverse) and creating any
+missing subject sets and the necessary bookkeeping to track the priority and selection weighting. It is not really
+advisable to create your own priority subject sets, as there is a lot of bookkeeping required to ensure that no
+duplicate subject sets are created or linked to the wrong workflows.</p>
+<p>The priority subject sets follow a standing naming convention,</p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">WF(WORKFLOW_ID) Mole Stamp Priority Priority #(PRIORITY)</span>
+</pre></div>
+</div>
+<p>Where <code class="docutils literal notranslate"><span class="pre">(WORKFLOW_ID)</span></code> and <code class="docutils literal notranslate"><span class="pre">(PRIORITY)</span></code> reflect the workflow the subject set is assigned to and the priority ranking
+respectively. Each workflow will have its own unique subject sets. <em>MoleMarshal</em> does not support linking a priority
+subject set to multiple workflows, as given the setup and the name of the subject sets this would be too confusing. It
+is possible to have <em>regular</em> subjects sets linked to multiple workflows however.</p>
+</section>
+</section>
+<section id="selection-weighting">
+<h2>Selection weighting<a class="headerlink" href="#selection-weighting" title="Link to this heading">¶</a></h2>
+<p>The selection weighting is set on a per workflow basis for each subject set. This actually means you can have the same
+subject set in multiple workflows all with different selection weightings. The selection weights of the subjects are
+updating using <span class="xref std std-ref">molemarshal.active_learning.weights.set_priority_subject_set_weights_for_workflow</span> which takes a
+list of subject set IDs and the workflow as input,</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">molemarshal</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">molemarshal.active_learning.weights</span><span class="w"> </span><span class="kn">import</span> <span class="n">set_priority_subject_set_weights_for_workflow</span>
+
+<span class="n">workflow</span> <span class="o">=</span> <span class="n">Workflow</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">WORKFLOW_ID</span><span class="p">)</span>
+<span class="n">priority_subject_sets</span> <span class="o">=</span> <span class="n">get_priority_subject_sets</span><span class="p">(</span><span class="n">PROJECT_ID</span><span class="p">,</span> <span class="n">WORKFLOW_ID</span><span class="p">,</span> <span class="n">NUM_PRIORITY_SETS</span><span class="p">)</span>
+<span class="n">weights</span> <span class="o">=</span> <span class="n">molemarshal</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;ACTIVE LEARNING&quot;</span><span class="p">][</span><span class="s2">&quot;selection-weights&quot;</span><span class="p">]</span>
+<span class="n">set_priority_subject_set_weights_for_workflow</span><span class="p">([</span><span class="n">subject_set_id</span> <span class="k">for</span> <span class="n">subject_set</span> <span class="ow">in</span> <span class="n">priority_subject_sets</span><span class="p">],</span> <span class="n">weights</span><span class="p">,</span> <span class="n">workflow</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The selection weightings must all sum to 1 and all of the subject set IDs passed must belong to subject sets which are
+assigned to the passed workflow. The function will fail otherwise.</p>
+<p>If you want to get your hands dirty, you can modify the weights directly using the panoptes API as follows,</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">isclose</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">panoptes_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">Workflow</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">molemarshal.active_learning.weights</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_priority_subject_sets</span>
+
+<span class="c1"># we can get subject sets using `get_priority_subject_sets` which will</span>
+<span class="c1"># return a list of subject sets</span>
+<span class="n">priority_subject_sets</span> <span class="o">=</span> <span class="n">get_priority_subject_sets</span><span class="p">(</span><span class="n">PROJECT_ID</span><span class="p">,</span> <span class="n">WORKFLOW_ID</span><span class="p">,</span> <span class="n">NUM_PRIORITY_SETS</span><span class="p">)</span>
+<span class="c1"># what we also need is the IDs of the subject sets and the selection</span>
+<span class="c1"># weighting we want to give them</span>
+<span class="n">ids</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">subject_set</span><span class="o">.</span><span class="n">id</span><span class="p">)</span> <span class="k">for</span> <span class="n">subject_set</span> <span class="ow">in</span> <span class="n">subject_set_ids</span><span class="p">]</span>
+<span class="n">weights</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]</span>
+<span class="c1"># the weights SHOULD sum up to 1. There is nothing in the API to really stop</span>
+<span class="c1"># you from having weights which do not sum to 1 though</span>
+<span class="k">assert</span> <span class="n">isclose</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">weights</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># we add the priority subject sets in the regular way</span>
+<span class="n">workflow</span> <span class="o">=</span> <span class="n">Workflow</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">WORKFLOW_ID</span><span class="p">)</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">add_subject_sets</span><span class="p">(</span><span class="n">priority_subject_sets</span><span class="p">)</span>
+<span class="c1"># the magic is in workflow.configuration, where we add a new key</span>
+<span class="c1"># &quot;subject_set_weights&quot;, which is a dict of subject_set_id: weight.</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">configuration</span><span class="p">[</span><span class="s2">&quot;subject_set_weights&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">ids</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="n">weights</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ids</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="n">weights</span><span class="p">[</span><span class="mi">1</span><span class="p">]}</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="updating-the-weights-on-zooniverse">
+<h2>Updating the weights on Zooniverse<a class="headerlink" href="#updating-the-weights-on-zooniverse" title="Link to this heading">¶</a></h2>
+<p>Updating the weights of priority subject sets on Zooniverse and the subject sets which subjects are in (e.g. if the
+machine confidence of stamps have been updated) can be done using the <cite>molemarshal</cite> command,</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>molemarshal<span class="w"> </span>upload<span class="w"> </span>subject-weights
+</pre></div>
+</div>
+<p>This command will deal with creating/unlinking priority subject sets, setting their selection weights (as designed in
+the configuration file) and with arrange the subjects into the correct subject sets given the machine confidence of
+their stamps.</p>
+<p>In cases where the number of priority subject sets stays the same but the selection weight is changed, the weights will
+be updated for the workflow and database but nothing else will change. In the case of the number of subject sets
+changing, then the subjects will be re-arranged into the new group of priority subject sets.</p>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; The voidorchestra authors
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Selection</a><ul>
+<li><a class="reference internal" href="#priority-subject-sets">Priority subject sets</a></li>
+<li><a class="reference internal" href="#arranging-subjects-into-subject-sets">Arranging subjects into subject sets</a><ul>
+<li><a class="reference internal" href="#creating-priority-subject-sets">Creating priority subject sets</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#selection-weighting">Selection weighting</a></li>
+<li><a class="reference internal" href="#updating-the-weights-on-zooniverse">Updating the weights on Zooniverse</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../../../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script src="../../../_static/js/custom.js?v=956e5d78"></script>
+    </body>
+</html>

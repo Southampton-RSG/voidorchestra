@@ -1,0 +1,44 @@
+voidorchestra.process.sonification.figure
+=========================================
+
+.. py:module:: voidorchestra.process.sonification.figure
+
+.. autoapi-nested-parse::
+
+   Creates figures for the sonification plots.
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   voidorchestra.process.sonification.figure.logger
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   voidorchestra.process.sonification.figure.plot_lightcurve
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+   :type:  logging.Logger
+
+.. py:function:: plot_lightcurve(lightcurve: astropy.timeseries.TimeSeries) -> plotly.graph_objs.Figure
+
+   Given a lightcurve, plots it (with uncertainty regions).
+
+   :param lightcurve: The lightcurve table to plot.
+   :type lightcurve: TimeSeries
+
+   :returns: The plotted figure.
+   :rtype: Figure
+
+

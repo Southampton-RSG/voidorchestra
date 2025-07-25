@@ -1,0 +1,44 @@
+voidorchestra.console.commands.create
+=====================================
+
+.. py:module:: voidorchestra.console.commands.create
+
+.. autoapi-nested-parse::
+
+   This module contains sub-commands for `voidorchestra create`.
+
+   These are commands that create files using entities already in the database, e.g. the sonifications.
+
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/voidorchestra/console/commands/create/sonifications/index
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   voidorchestra.console.commands.create.create_sonifications
+   voidorchestra.console.commands.create.create
+
+
+Package Contents
+----------------
+
+.. py:function:: create_sonifications(ctx: dict, regenerate: bool = False) -> None
+
+   Create sonifications for sonification descriptors that have not yet been produced.
+
+
+.. py:function:: create()
+
+   Create entities within the database
+
+

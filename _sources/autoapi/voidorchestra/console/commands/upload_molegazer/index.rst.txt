@@ -1,0 +1,40 @@
+voidorchestra.console.commands.upload_molegazer
+===============================================
+
+.. py:module:: voidorchestra.console.commands.upload_molegazer
+
+.. autoapi-nested-parse::
+
+   This module contains sub-commands for `molegazer upload`.
+
+   The commands should upload data into MoleDB from the perspective of MoleGazer.
+
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   voidorchestra.console.commands.upload_molegazer.upload
+   voidorchestra.console.commands.upload_molegazer.upload_images
+
+
+Module Contents
+---------------
+
+.. py:function:: upload()
+
+   Input existing data into MoleDB
+
+
+.. py:function:: upload_images(ctx: dict, directory: Optional[str] = None) -> None
+
+   Input new files from a directory.
+
+   Inputs the files in the config file's PATHS:images_new directory into the database.
+
+   :param directory: If provided, a directory to upload data from (that is not the default one)
+   :type directory: Optional[str]
+
+
