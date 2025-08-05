@@ -64,17 +64,11 @@ def update_subject_table(
     connect_to_zooniverse()
 
     if source == "project":
-        subjects_to_add = Subject.where(
-            project_id=source_id if source_id else (source_id := int(config["ZOONIVERSE"]["project_id"]))
-        )
+        subjects_to_add = Subject.where(project_id=source_id if source_id else (source_id := int(config["ZOONIVERSE"]["project_id"])))
     elif source == "subject_set":
-        subjects_to_add = Subject.where(
-            subject_set_id=source_id if source_id else (source_id := config["ZOONIVERSE"]["subject_set_id"])
-        )
+        subjects_to_add = Subject.where(subject_set_id=source_id if source_id else (source_id := config["ZOONIVERSE"]["subject_set_id"]))
     elif source == "workflow":
-        subjects_to_add = Subject.where(
-            workflow_id=source_id if source_id else (source_id := config["ZOONIVERSE"]["workflow_id"])
-        )
+        subjects_to_add = Subject.where(workflow_id=source_id if source_id else (source_id := config["ZOONIVERSE"]["workflow_id"]))
     else:
         raise ValueError(f"{source} is an unknown option")
 
@@ -82,9 +76,7 @@ def update_subject_table(
         click.echo(f"No subjects found in {source} with ID {source_id}")
         return
 
-    with Session(
-        engine := connect_to_database_engine(config["PATHS"]["database"]), info={"url": engine.url}
-    ) as session:
+    with Session(engine := connect_to_database_engine(config["PATHS"]["database"]), info={"url": engine.url}) as session:
         sync_subject_database_with_zooniverse(
             session,
             subjects_to_add,
@@ -127,13 +119,9 @@ def update_subject_set_table(
     connect_to_zooniverse()
 
     if source == "project":
-        subject_sets_to_add = SubjectSet.where(
-            project_id=source_id if source_id else (source_id := config["ZOONIVERSE"]["project_id"])
-        )
+        subject_sets_to_add = SubjectSet.where(project_id=source_id if source_id else (source_id := config["ZOONIVERSE"]["project_id"]))
     elif source == "workflow":
-        subject_sets_to_add = SubjectSet.where(
-            workflow_id=source_id if source_id else (source_id := config["ZOONIVERSE"]["workflow_id"])
-        )
+        subject_sets_to_add = SubjectSet.where(workflow_id=source_id if source_id else (source_id := config["ZOONIVERSE"]["workflow_id"]))
     else:
         raise ValueError(f"{source} is an unknown option. Allowed: project, workflow")
 
@@ -147,9 +135,7 @@ def update_subject_set_table(
         engine := connect_to_database_engine(config["PATHS"]["database"]),
         info={"url": engine.url},
     ) as session:
-        sync_local_subject_set_database_with_zooniverse(
-            session, subject_sets_to_add, subject_sets_to_add.meta["count"], ctx.obj["COMMIT_FREQUENCY"]
-        )
+        sync_local_subject_set_database_with_zooniverse(session, subject_sets_to_add, subject_sets_to_add.meta["count"], ctx.obj["COMMIT_FREQUENCY"])
 
 
 @sync.command(name="classifications")

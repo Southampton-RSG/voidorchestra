@@ -13,6 +13,7 @@ from logging import Logger
 from typing import List
 
 from panoptes_client import Project as PanoptesProject, Subject as PanoptesSubject, SubjectSet as PanoptesSubjectSet
+from panoptes_client.panoptes import PanoptesAPIException
 from sqlalchemy.orm import Session
 from tqdm import tqdm
 
@@ -75,9 +76,7 @@ def add_panoptes_subjects_to_local_subject_database(
     ):
         # Match the Panoptes subject to a local sonification.
         subject_sonification_uuid: str = panoptes_subject.metadata["uuid"]
-        sonification: Sonification | None = (
-            session.query(Sonification).filter(Sonification.uuid == subject_sonification_uuid).first()
-        )
+        sonification: Sonification | None = session.query(Sonification).filter(Sonification.uuid == subject_sonification_uuid).first()
 
         if not sonification:
             # Something has gone wrong, we need to strip this subject out from Panoptes.
@@ -106,9 +105,7 @@ def add_panoptes_subjects_to_local_subject_database(
         # check if it exists, and merge if we do. first() is fine here because
         # sonification_id is part of the composite primary key of the subjects table,
         # so there should only be one returned anyway
-        local_subject_exists: bool = bool(
-            session.query(LocalSubject).filter(LocalSubject.sonification == sonification).first()
-        )
+        local_subject_exists: bool = bool(session.query(LocalSubject).filter(LocalSubject.sonification == sonification).first())
 
         if local_subject_exists:
             session.merge(local_subject)
@@ -132,9 +129,7 @@ def add_panoptes_subjects_to_local_subject_database(
         panoptes_subject_set.remove(panoptes_subjects_to_remove)
         panoptes_subject_set.save()
 
-    logger.info(
-        f"Added {len(new_panoptes_subjects) - len(panoptes_subjects_to_remove)} subjects to {session.info.get('url', 'database')}."
-    )
+    logger.info(f"Added {len(new_panoptes_subjects) - len(panoptes_subjects_to_remove)} subjects to {session.info.get('url', 'database')}.")
 
 
 def upload_sonifications_to_zooniverse(
@@ -186,27 +181,19 @@ def upload_sonifications_to_zooniverse(
                     panoptes_project, proposed_subject_set_name=f"{sonification_profile} - {lightcurve_collection}"
                 )
                 sonifications_in_subject_set: List[Sonification] = [
-                    sonification
-                    for sonification in sonifications
-                    if sonification.lightcurve.lightcurve_collection == lightcurve_collection
+                    sonification for sonification in sonifications if sonification.lightcurve.lightcurve_collection == lightcurve_collection
                 ]
 
                 # Get the UUIDs of the local subjects
                 uuids_of_local_subjects_in_subject_set: List[str] = [
                     local_subject.sonification.uuid
-                    for local_subject in session.query(LocalSubject).filter(
-                        LocalSubject.zooniverse_subject_set_id == panoptes_subject_set.id
-                    )
+                    for local_subject in session.query(LocalSubject).filter(LocalSubject.zooniverse_subject_set_id == panoptes_subject_set.id)
                 ]
                 if len(uuids_of_local_subjects_in_subject_set):
-                    logger.debug(
-                        f"{sonification_profile}: {len(uuids_of_local_subjects_in_subject_set)} subjects already in subject set."
-                    )
+                    logger.debug(f"{sonification_profile}: {len(uuids_of_local_subjects_in_subject_set)} subjects already in subject set.")
 
                 sonifications_to_add: List[Sonification] = [
-                    sonification
-                    for sonification in sonifications_in_subject_set
-                    if sonification.uuid not in uuids_of_local_subjects_in_subject_set
+                    sonification for sonification in sonifications_in_subject_set if sonification.uuid not in uuids_of_local_subjects_in_subject_set
                 ]
 
                 total_sonifications: int = len(sonifications_to_add)
@@ -238,11 +225,15 @@ def upload_sonifications_to_zooniverse(
                             session.query(LocalSubject).filter(LocalSubject.sonification_id == sonification.id).first()
                         )
 
+                        panoptes_subject: PanoptesSubject | None = None
                         if local_subject:
-                            panoptes_subject: PanoptesSubject = PanoptesSubject.find(
-                                local_subject.zooniverse_subject_id
-                            )
-                        else:
+                            try:
+                                panoptes_subject = PanoptesSubject.find(local_subject.zooniverse_subject_id)
+                            except PanoptesAPIException:
+                                # It looks like the subject has been deleted and we haven't reflected that in the local DB.
+                                session.delete(local_subject)
+
+                        if not panoptes_subject:
                             panoptes_subject: PanoptesSubject = PanoptesSubject()
                             panoptes_subject.links.project = panoptes_project
                             location = {"video/mp4": sonification_url}
@@ -257,7 +248,7 @@ def upload_sonifications_to_zooniverse(
                                 f"Subject {i}: location {location}, metadata {metadata}, Panoptes subject {panoptes_subject}",
                             )
 
-                        new_panoptes_subjects.append(panoptes_subject)
+                            new_panoptes_subjects.append(panoptes_subject)
 
                 if len(new_panoptes_subjects) > 0:
                     panoptes_subject_set.add(new_panoptes_subjects)
@@ -277,6 +268,4 @@ def upload_sonifications_to_zooniverse(
         else:
             logger.info("No new Panoptes subjects.")
 
-    logger.debug(
-        f"Uploaded {num_subjects_added_across_subject_sets} sonifications to {num_subject_sets_added_to} subject sets on the Zooniverse."
-    )
+    logger.debug(f"Uploaded {num_subjects_added_across_subject_sets} sonifications to {num_subject_sets_added_to} subject sets on the Zooniverse.")

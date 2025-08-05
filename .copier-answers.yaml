@@ -7,5 +7,5 @@ email: s.mangham@soton.ac.uk
 github: Southampton-RSG
 project_description: Creates QPO sonifications, and syncs them to the Zooniverse.
 project_name: voidorchestra
-python_version_primary: '3.12'
+python_version_primary: '3.11'
 team: Sam Mangham

@@ -184,9 +184,7 @@ class LightcurveSyntheticRegular(LightcurveSynthetic):
                 raise FileNotFoundError(f"The fixtures file '{fixtures_path}' does not exist.")
 
         fixtures_df: DataFrame = read_csv(fixtures_path, skipinitialspace=True)
-        expected_columns: List[str] = (
-            Lightcurve.COLUMNS + LightcurveSynthetic.COLUMNS + LightcurveSyntheticRegular.COLUMNS
-        )
+        expected_columns: List[str] = Lightcurve.COLUMNS + LightcurveSynthetic.COLUMNS + LightcurveSyntheticRegular.COLUMNS
         if fixtures_df.columns != expected_columns:
             raise ValueError(
                 f"Expecting columns '{', '.join(expected_columns)}'.\n Got '{', '.join(fixtures_df.columns)}'.\n"

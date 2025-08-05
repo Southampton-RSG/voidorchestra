@@ -27,17 +27,11 @@ def generate_parameter_grid(
     parameter_combination: Dict[str, Any]
         A point on the parameter grid.
     """
-    fixed_parameters: Dict[str, Any] = {
-        key: value for key, value in parameter_grid.items() if not isinstance(value, list)
-    }
-    varying_parameters: Dict[str, Any] = {
-        key: value for key, value in parameter_grid.items() if isinstance(value, list)
-    }
+    fixed_parameters: Dict[str, Any] = {key: value for key, value in parameter_grid.items() if not isinstance(value, list)}
+    varying_parameters: Dict[str, Any] = {key: value for key, value in parameter_grid.items() if isinstance(value, list)}
 
     for value_combinations in product(*varying_parameters.values()):
-        parameter_combination: Dict[str, Any] = fixed_parameters | dict(
-            zip(varying_parameters.keys(), value_combinations)
-        )
+        parameter_combination: Dict[str, Any] = fixed_parameters | dict(zip(varying_parameters.keys(), value_combinations))
         yield parameter_combination
 
 

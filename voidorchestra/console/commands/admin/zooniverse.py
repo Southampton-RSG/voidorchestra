@@ -37,7 +37,7 @@ def clean_loose_zooniverse_subjects(
         )
     )
     panoptes_subject_set: PanoptesSubjectSet = PanoptesSubjectSet.find(
-        config["ZOONIVERSE"].getint("subject_set_id"),
+        config["ZOONIVERSE"].getint("dummy_subject_set_id"),
     )
 
     print(f"Found up to {len(panoptes_subjects)} subjects for project")
@@ -50,7 +50,7 @@ def clean_loose_zooniverse_subjects(
             num_deleted_panoptes_subjects += 1
 
     # Doesn't work if you don't move them to the subject set first?
-    for panoptes_subject in panoptes_subject_set.subjects:
+    for panoptes_subject in panoptes_subject_set.links.subjects:
         panoptes_subject.delete()
 
     click.echo(f"Deleted {num_deleted_panoptes_subjects} subject(s) with no subject set.")

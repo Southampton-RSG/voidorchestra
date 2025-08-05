@@ -40,9 +40,7 @@ admin.add_command(zooniverse)
 @click.pass_context
 @click.argument("old_panoptes_subject_set_id")
 @click.argument("new_panoptes_subject_set_id")
-def transfer_between_subject_sets(
-    ctx: Context, old_panoptes_subject_set_id: str | int, new_panoptes_subject_set_id: str | int
-) -> None:
+def transfer_between_subject_sets(ctx: Context, old_panoptes_subject_set_id: str | int, new_panoptes_subject_set_id: str | int) -> None:
     """
     Move subjects from one subject set to another.
 
@@ -141,9 +139,7 @@ def transfer_all_subjects_to_one_subject_set(
         engine := connect_to_database_engine(config_paths["database"]),
         info={"url": engine.url},
     ) as session:
-        local_subjects: Query[LocalSubject] = session.query(LocalSubject).filter(
-            LocalSubject.zooniverse_project_id == int(panoptes_project.id)
-        )
+        local_subjects: Query[LocalSubject] = session.query(LocalSubject).filter(LocalSubject.zooniverse_project_id == int(panoptes_project.id))
 
         for local_subject in tqdm(
             local_subjects,
@@ -158,9 +154,7 @@ def transfer_all_subjects_to_one_subject_set(
                 old_panoptes_subject_set: PanoptesSubjectSet = PanoptesSubjectSet.find(local_subject.subject_set_id)
                 local_subject_set_cache[local_subject.zooniverse_subject_set_id] = old_panoptes_subject_set
             else:
-                old_panoptes_subject_set: PanoptesSubjectSet = local_subject_set_cache[
-                    local_subject.zooniverse_subject_set_id
-                ]
+                old_panoptes_subject_set: PanoptesSubjectSet = local_subject_set_cache[local_subject.zooniverse_subject_set_id]
 
             new_panoptes_subject_set.add(panoptes_subject)
             old_panoptes_subject_set.remove(panoptes_subject)

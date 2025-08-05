@@ -18,9 +18,7 @@ def upload():
     """Input existing data into MoleDB"""
 
 
-@upload.command(
-    name="images", help="Inputs the files in the config file's PATHS:images_new directory into the database."
-)
+@upload.command(name="images", help="Inputs the files in the config file's PATHS:images_new directory into the database.")
 @click.pass_context
 @click.option(
     "-d",

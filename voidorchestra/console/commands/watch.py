@@ -21,9 +21,7 @@ def watch():
     """Watch directories for new input data"""
 
 
-@watch.command(
-    name="images", help="Inputs the files in the config file's PATHS:images_new directory into the database."
-)
+@watch.command(name="images", help="Inputs the files in the config file's PATHS:images_new directory into the database.")
 @click.pass_context
 @click.option(
     "-d",

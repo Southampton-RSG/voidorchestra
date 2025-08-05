@@ -50,9 +50,7 @@ def __dump_classifications_to_file(classifications: list[dict[str, int]], workfl
     """
     # remove special characters from name (excluding spaces and _) and format
     # what's left to fit form: workflow_name_classification.csv
-    workflow_name = (
-        workflow_name.translate(str.maketrans("", "", "!\"#$%&'()*+,-./:;<=>?@[\\]^`{|}~")).lower().replace(" ", "_")
-    )
+    workflow_name = workflow_name.translate(str.maketrans("", "", "!\"#$%&'()*+,-./:;<=>?@[\\]^`{|}~")).lower().replace(" ", "_")
 
     with open(
         file_name := f"{voidorchestra.config['PATHS']['data_directory']}/{workflow_name}_classifications.csv",
@@ -89,9 +87,7 @@ def __convert_answer_to_bool(answer: str) -> str | bool:
     answer = str(answer)
     lower = answer.lower()
     # pylint: disable=simplifiable-if-expression
-    return (
-        answer if lower not in ["yes", "no", "true", "false"] else True if lower in ["yes", "true"] else False
-    )  # heck yeah, nested ternary
+    return answer if lower not in ["yes", "no", "true", "false"] else True if lower in ["yes", "true"] else False  # heck yeah, nested ternary
 
 
 # Public functions -------------------------------------------------------------
@@ -163,10 +159,7 @@ def get_workflow_task_answers(workflow: Workflow) -> dict:
                 "T1": ["1", "2", "3", "4", "5"]
             }
     """
-    return {
-        task_key: [str(answer["label"]) for answer in workflow.tasks[task_key]["answers"]]
-        for task_key in workflow.tasks.keys()
-    }
+    return {task_key: [str(answer["label"]) for answer in workflow.tasks[task_key]["answers"]] for task_key in workflow.tasks.keys()}
 
 
 def get_workflow_classifications(session: Session, workflow_id: str | int) -> List[dict]:
@@ -267,9 +260,7 @@ def get_workflow_classifications(session: Session, workflow_id: str | int) -> Li
     return classifications
 
 
-def process_workflow_classifications(
-    session: Session, reduced_data: List[dict], workflow_id: str | int, commit_frequency: int = 250
-) -> int:
+def process_workflow_classifications(session: Session, reduced_data: List[dict], workflow_id: str | int, commit_frequency: int = 250) -> int:
     """
     Process classifications for all subject classifications.
 
@@ -310,11 +301,7 @@ def process_workflow_classifications(
         # sometimes the reducers will throw in random junk which are no longer
         # subjects tracked, or for subjects which are in the project but not
         # linked to a subject set. filter these out with a debug warning
-        subject = (
-            session.query(voidorchestra.db.Subject)
-            .filter(voidorchestra.db.Subject.subject_id == subject_classification["subject_id"])
-            .first()
-        )
+        subject = session.query(voidorchestra.db.Subject).filter(voidorchestra.db.Subject.subject_id == subject_classification["subject_id"]).first()
         if not subject:
             logger.debug(
                 "Classification %d for subject %d which is not in the subject table",
@@ -335,9 +322,7 @@ def process_workflow_classifications(
         # check if we have a classification already -- do this via subject
         # rather than classification id
         classification_exists = bool(
-            session.query(voidorchestra.db.Classification)
-            .filter(voidorchestra.db.Classification.subject_id == database_entry.subject_id)
-            .first()
+            session.query(voidorchestra.db.Classification).filter(voidorchestra.db.Classification.subject_id == database_entry.subject_id).first()
         )
 
         # since classifications can change with enough consensus from new
@@ -417,9 +402,9 @@ def update_classification_database(workflow_id: str | int = None, commit_frequen
     try:
         workflow = Workflow.find(workflow_id)
     except PanoptesAPIException as exc:
-        raise ValueError(
-            f"Unable to open the workflow with ID {workflow_id}. Check that is exists and you have permission."
-        ).with_traceback(exc.__traceback__)
+        raise ValueError(f"Unable to open the workflow with ID {workflow_id}. Check that is exists and you have permission.").with_traceback(
+            exc.__traceback__
+        )
 
     with Session(
         engine := voidorchestra.db.connect_to_database_engine(voidorchestra.config["PATHS"]["database"]),
@@ -430,9 +415,7 @@ def update_classification_database(workflow_id: str | int = None, commit_frequen
 
         logger.debug("%d classifications to process", num_classifications)
 
-        num_classifications_linked = process_workflow_classifications(
-            session, workflow_classifications, workflow.id, commit_frequency
-        )
+        num_classifications_linked = process_workflow_classifications(session, workflow_classifications, workflow.id, commit_frequency)
 
     if num_classifications_linked == 0:
         logger.info("No classifications were linked to any subjects or stamps")

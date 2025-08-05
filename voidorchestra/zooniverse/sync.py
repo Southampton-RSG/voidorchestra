@@ -60,9 +60,7 @@ def __check_panoptes_subject_valid(panoptes_subject: PanoptesSubject) -> Tuple[i
     if panoptes_subject_set_id is NO_SUBJECT_SET_ASSIGNED:
         panoptes_subject_set_workflows: List[PanoptesWorkflow] = []
     else:
-        panoptes_subject_set_workflows = (
-            PanoptesSubjectSet.find(panoptes_subject_set_id).raw["links"].get("workflows", [])
-        )
+        panoptes_subject_set_workflows = PanoptesSubjectSet.find(panoptes_subject_set_id).raw["links"].get("workflows", [])
     if len(panoptes_subject_set_workflows) == 0:
         panoptes_workflow_id: int | None = NO_WORKFLOW_ASSIGNED
     else:
@@ -73,9 +71,7 @@ def __check_panoptes_subject_valid(panoptes_subject: PanoptesSubject) -> Tuple[i
     return panoptes_subject_set_id, panoptes_workflow_id, sonification_uuid
 
 
-def __add_subject_set(
-    session: Session, panoptes_subject_set: PanoptesSubjectSet, panoptes_workflow_id: int | None
-) -> None:
+def __add_subject_set(session: Session, panoptes_subject_set: PanoptesSubjectSet, panoptes_workflow_id: int | None) -> None:
     """
     Add a subject set to a database session.
 
@@ -143,9 +139,7 @@ def __clean_up_old_linked_subject_sets(session: Session, panoptes_subject_set: P
     if workflow_count > 0:
         raise ValueError("This function does not support subject sets which are linked to multiple workflows")
 
-    subject_set_query = session.query(LocalSubjectSet).filter(
-        LocalSubjectSet.zooniverse_subject_set_id == int(panoptes_subject_set.id)
-    )
+    subject_set_query = session.query(LocalSubjectSet).filter(LocalSubjectSet.zooniverse_subject_set_id == int(panoptes_subject_set.id))
     if subject_set_query.count() > 1:
         # pylint: disable=singleton-comparison
         non_null_workflow_query = subject_set_query.filter(LocalSubjectSet.zooniverse_workflow_id is not None)
@@ -200,22 +194,16 @@ def sync_subject_database_with_zooniverse(
             disable=logger.level > logging.INFO,
         )
     ):
-        panoptes_subject_set_id, panoptes_workflow_id, sonification_uuid = __check_panoptes_subject_valid(
-            panoptes_subject
-        )
+        panoptes_subject_set_id, panoptes_workflow_id, sonification_uuid = __check_panoptes_subject_valid(panoptes_subject)
         if sonification_uuid is None:  # don't know what to do with stamps with no names
             continue
 
-        sonification_query: Query[Sonification] = session.query(
-            Sonification.filter(Sonification.uuid == sonification_uuid)
-        )
+        sonification_query: Query[Sonification] = session.query(Sonification.filter(Sonification.uuid == sonification_uuid))
         if sonification_query.count() != 1:
             continue
 
         try:
-            retired_status: bool = bool(
-                panoptes_subject.subject_workflow_status(panoptes_workflow_id).raw["retired_at"]
-            )
+            retired_status: bool = bool(panoptes_subject.subject_workflow_status(panoptes_workflow_id).raw["retired_at"])
         except StopIteration:  # stop iteration raised when subject is not in the workflow
             retired_status: bool = False
 
@@ -226,9 +214,7 @@ def sync_subject_database_with_zooniverse(
             retired=retired_status,
         )
 
-        local_subject_query: Query[LocalSubject] = session.query(LocalSubject).filter(
-            LocalSubject.zooniverse_subject_id == panoptes_subject.id
-        )
+        local_subject_query: Query[LocalSubject] = session.query(LocalSubject).filter(LocalSubject.zooniverse_subject_id == panoptes_subject.id)
         num_local_subjects_existing: int = local_subject_query.count()
 
         if num_local_subjects_existing > 1:

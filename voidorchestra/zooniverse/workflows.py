@@ -37,9 +37,7 @@ def get_panoptes_workflow(panoptes_workflow_id: str | int) -> PanoptesWorkflow:
     return PanoptesWorkflow.find(panoptes_workflow_id)
 
 
-def assign_panoptes_workflow_to_panoptes_subject_set(
-    panoptes_workflow: PanoptesWorkflow, panoptes_subject_set: PanoptesSubjectSet
-) -> None:
+def assign_panoptes_workflow_to_panoptes_subject_set(panoptes_workflow: PanoptesWorkflow, panoptes_subject_set: PanoptesSubjectSet) -> None:
     """
     Assign a given workflow to a subject set.
 

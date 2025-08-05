@@ -12,9 +12,7 @@ from voidorchestra.db import Sonification, commit_database, connect_to_database_
 from voidorchestra.process.sonification import write_sonification_files
 
 
-@click.command(
-    name="sonifications", help="Create sonifications for sonification descriptors that have not yet been produced."
-)
+@click.command(name="sonifications", help="Create sonifications for sonification descriptors that have not yet been produced.")
 @click.option(
     "-r",
     "--regenerate",

@@ -61,9 +61,7 @@ class Subject(Base):  # pylint: disable=too-few-public-methods
     subject_set_id: Mapped[int] = mapped_column(ForeignKey("subject_set.id"), nullable=True)
     subject_set: Mapped["SubjectSet"] = relationship("SubjectSet", back_populates="subjects", uselist=False)
 
-    classifications: Mapped[List["Classification"]] = relationship(
-        "Classification", back_populates="subject", uselist=True
-    )
+    classifications: Mapped[List["Classification"]] = relationship("Classification", back_populates="subject", uselist=True)
 
     zooniverse_project_id: Mapped[int] = mapped_column(Integer)
     zooniverse_subject_id: Mapped[int] = mapped_column(Integer)

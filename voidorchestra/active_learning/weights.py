@@ -169,9 +169,7 @@ def __create_missing_priority_local_subject_sets(
             logger.debug(f"A subject set already exists with priority {priority} for workflow {panoptes_workflow.id}")
             for _iter in existing_local_subject_sets:
                 if _iter.workflow_id is None:  # pylint: disable=singleton-comparison
-                    index: int = [
-                        subject_set.display_name for subject_set in panoptes_project.links.subject_sets
-                    ].index(display_name)
+                    index: int = [subject_set.display_name for subject_set in panoptes_project.links.subject_sets].index(display_name)
                     panoptes_subject_set: PanoptesSubjectSet = panoptes_project.links.subject_sets[index]
                     _iter.workflow_id = int(panoptes_workflow.id)
             # this is purely a safety mechanism in-case the subject set is
@@ -233,17 +231,13 @@ def get_priority_panoptes_subject_sets(
         SubjectSet objects.
     """
     requested_priorities: List[int] = list(range(1, num_priority_subject_sets + 1))
-    panoptes_subject_sets: List[PanoptesSubjectSet] = PanoptesSubjectSet.where(
-        project_id=config["ZOONIVERSE"]["project_id"]
-    )
+    panoptes_subject_sets: List[PanoptesSubjectSet] = PanoptesSubjectSet.where(project_id=config["ZOONIVERSE"]["project_id"])
 
     with Session(
         engine := connect_to_database_engine(config_paths["database"]),
         info={"url": engine.url},
     ) as session:
-        sync_local_subject_set_database_with_zooniverse(
-            session, panoptes_subject_sets, panoptes_subject_sets.meta["count"]
-        )
+        sync_local_subject_set_database_with_zooniverse(session, panoptes_subject_sets, panoptes_subject_sets.meta["count"])
 
         local_subject_sets_already_in_workflow: List[LocalSubjectSet] = (
             session.query(LocalSubjectSet)
@@ -256,9 +250,7 @@ def get_priority_panoptes_subject_sets(
         # We need to ensure there are no missing digits, e.g. if priorities =
         # [1, 3, 4], is_sequential will be False. But will be true if
         # priorities = [1, 3, 2] or some combination like that
-        priorities_in_database: List[int] = [
-            subject_set.priority for subject_set in local_subject_sets_already_in_workflow
-        ]
+        priorities_in_database: List[int] = [subject_set.priority for subject_set in local_subject_sets_already_in_workflow]
 
         if priorities_in_database:
             sequential_priorities: List[int] | None = sorted(priorities_in_database) == list(
@@ -268,14 +260,12 @@ def get_priority_panoptes_subject_sets(
             sequential_priorities: List[int] | None = False
 
         if len(priorities_in_database) != num_priority_subject_sets or sequential_priorities is False:
-            local_subject_sets_already_in_workflow: List[LocalSubjectSet] = (
-                __create_missing_priority_local_subject_sets(
-                    session,
-                    panoptes_project_id,
-                    panoptes_workflow_id,
-                    num_priority_subject_sets,
-                    priorities_in_database,
-                )
+            local_subject_sets_already_in_workflow: List[LocalSubjectSet] = __create_missing_priority_local_subject_sets(
+                session,
+                panoptes_project_id,
+                panoptes_workflow_id,
+                num_priority_subject_sets,
+                priorities_in_database,
             )
 
     # return a list of SubjectSets sorted by priority
@@ -395,22 +385,15 @@ def bin_subjects_into_priority_panoptes_subject_sets(
             # when the machine confidence changes into a different priority bin,
             # the subject has to be removed from the old subject set and moved
             # into the new one
-            if (
-                local_subject.zooniverse_subject_set_id
-                and local_subject.zooniverse_subject_set_id != priority_panoptes_subject_sets[priority].id
-            ):
+            if local_subject.zooniverse_subject_set_id and local_subject.zooniverse_subject_set_id != priority_panoptes_subject_sets[priority].id:
                 try:
                     # disabling the following warning, because the code works as expected
                     # pylint: disable=cell-var-from-loop
                     old_panoptes_subject_set: PanoptesSubjectSet = next(
-                        filter(
-                            lambda x: x.id == local_subject.zooniverse_subject_set_id, priority_panoptes_subject_sets
-                        )
+                        filter(lambda x: x.id == local_subject.zooniverse_subject_set_id, priority_panoptes_subject_sets)
                     )
                 except StopIteration:
-                    old_panoptes_subject_set: PanoptesSubjectSet = PanoptesSubjectSet.find(
-                        local_subject.zooniverse_subject_set_id
-                    )
+                    old_panoptes_subject_set: PanoptesSubjectSet = PanoptesSubjectSet.find(local_subject.zooniverse_subject_set_id)
                     priority_panoptes_subject_sets.append(old_panoptes_subject_set)
 
                 # if the subject is new (i.e. never been in a subject set
@@ -518,15 +501,9 @@ def update_weighted_sampling_scheme(
     try:
         selection_weights: List[float] = list(ast.literal_eval(config["ACTIVE LEARNING"]["selection_weighting"]))
     except SyntaxError as exc:
-        raise SyntaxError(
-            "selection-weighting in the configuration file is not correctly formatted, should be a comma separated list"
-        ) from exc
+        raise SyntaxError("selection-weighting in the configuration file is not correctly formatted, should be a comma separated list") from exc
 
-    priority_subject_sets: List[PanoptesSubjectSet] = get_priority_panoptes_subject_sets(
-        panoptes_project_id, panoptes_workflow_id, num_priority_sets
-    )
+    priority_subject_sets: List[PanoptesSubjectSet] = get_priority_panoptes_subject_sets(panoptes_project_id, panoptes_workflow_id, num_priority_sets)
     bin_subjects_into_priority_panoptes_subject_sets(copy.copy(priority_subject_sets), panoptes_workflow.id)
-    set_priority_subject_set_weights_for_workflow(
-        [subject_set.id for subject_set in priority_subject_sets], selection_weights, panoptes_workflow
-    )
+    set_priority_subject_set_weights_for_workflow([subject_set.id for subject_set in priority_subject_sets], selection_weights, panoptes_workflow)
     unlink_unused_subject_sets_from_workflow(panoptes_workflow, num_priority_sets)

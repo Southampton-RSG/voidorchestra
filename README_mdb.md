@@ -1,4 +1,4 @@
-# MoleDB
+# Mol
 
 MoleDB is the repository containing the code which defines and manages the database that both MoleGazer and
 MoleMarshal use.

@@ -10,7 +10,7 @@ from typing import Dict
 
 # Config -----------------------------------------------------------------------
 __version__: str = "0.1a"
-ENVIRONMENT_VARIABLE: str = "VOIDORCHESTRA"
+ENVIRONMENT_VARIABLE: str = "VOIDORCHESTRA_CONFIG"
 config_file_location: str = getenv(ENVIRONMENT_VARIABLE)
 if not config_file_location:
     raise OSError(f"No {ENVIRONMENT_VARIABLE} environment variable")

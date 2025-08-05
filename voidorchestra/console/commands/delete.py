@@ -82,9 +82,7 @@ def delete_sonifications(
             engine := connect_to_database_engine(config_paths["database"]),
             info={"url": engine.url},
         ) as session:
-            sonifications: List[Sonification] = session.query(
-                Sonification
-            ).all()  # This bit is only here to type-hint for the IDE
+            sonifications: List[Sonification] = session.query(Sonification).all()  # This bit is only here to type-hint for the IDE
             num_sonifications_deleted: int = 0
 
             for sonification in sonifications:
@@ -166,9 +164,7 @@ def delete_sonification_profiles(
         click.echo(f"Could not connect to database: {e}")
 
 
-@delete.command(
-    name="collection", help="Clears sonifications and lightcurves associated with a collection from the database."
-)
+@delete.command(name="collection", help="Clears sonifications and lightcurves associated with a collection from the database.")
 @click.pass_context
 @click.argument(
     "lightcurve_collection",
@@ -190,17 +186,11 @@ def delete_lightcurve_collection(
         ) as session:
             try:
                 lightcurve_collection: LightcurveCollection = (
-                    session.query(LightcurveCollection)
-                    .filter(LightcurveCollection.id == int(lightcurve_collection))
-                    .all()[0]
+                    session.query(LightcurveCollection).filter(LightcurveCollection.id == int(lightcurve_collection)).all()[0]
                 )
             except Exception:
                 try:
-                    lightcurve_collection = (
-                        session.query(LightcurveCollection)
-                        .filter(LightcurveCollection.name == lightcurve_collection)
-                        .all()[0]
-                    )
+                    lightcurve_collection = session.query(LightcurveCollection).filter(LightcurveCollection.name == lightcurve_collection).all()[0]
                 except Exception:
                     click.echo(f"Could not find collection '{lightcurve_collection}' in database")
                     return

@@ -5,10 +5,10 @@ build-backend="hatchling.build"
 [project]
 name = "voidorchestra"
 description = "Creates QPO sonifications, and syncs them to the Zooniverse."
-requires-python = ">=3.11"
 readme = "README.md"
 license = { text = "Apache-2.0" }
 version = "0.1.0"
+requires-python = ">=3.11"
 keywords = []
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -23,22 +23,19 @@ classifiers = [
     "Programming Language :: Python :: 3.13",
 ]
 dependencies = [
-    "astropy>=7.0.1",
-    "black>=25.1.0",
-    "click>=8.1.8",
-    "kaleido>=1.0.0",
+    "astropy",
+    "click",
+    "kaleido",
     "mind-the-gaps",
-    "moviepy>=2.1.2",
-    "numba>=0.61.2",
-    "pandas>=2.2.3",
-    "panoptes-client>=1.7.0",
-    "plotly>=6.2.0",
-    "pydantic>=2.11.7",
-    "ruff>=0.11.13",
-    "sqlalchemy-utils>=0.41.2",
-    "sqlalchemy>=2.0.40",
-    "strauss>=1.0.1",
-    "watchdog>=6.0.0",
+    "moviepy",
+    "numba",
+    "pandas",
+    "panoptes-client>=1.7",
+    "plotly",
+    "pydantic",
+    "sqlalchemy-utils",
+    "sqlalchemy",
+    "strauss",
 ]
 
 
@@ -48,7 +45,10 @@ develop = [
     "build",
     "bump-my-version",
     "check-manifest",
+    "codespell>=2.4,<2.5",
     "hatchling",
+    "mdformat>=0.7.22,<0.8",
+    "mdformat-tables>=1",
     "pytest",
     "pytest-cov",
     "ruff",
@@ -57,20 +57,9 @@ develop = [
     "wheel",
 ]
 
-docs = [
-    "sphinx>=8.2.3",
-]
-
-[dependency-groups]
-dev = [
-    "black>=25.1.0",
-    "copier>=9.8.0",
-    "pylint>=3.3.6",
-    "tqdm>=4.67.1",
-]
 
 [project.scripts]
-void-orchestra = "voidorchestra.console.cli:cli"
+voidorchestra = "voidorchestra.console.cli:cli"
 
 [project.urls]
 Repository = "https://github.com/Southampton-RSG/voidorchestra"
@@ -80,6 +69,7 @@ Homepage = "https://github.com/Southampton-RSG/voidorchestra"
 current_version = "0.1.0"
 commit = true
 tag = true
+commit_args = "-s"
 
 [[tool.bumpversion.files]]
 filename = "voidorchestra/__init__.py"
@@ -130,7 +120,7 @@ packages = ["voidorchestra"]
 addopts = ["-vvv", "--junitxml=junit.xml"]
 testpaths = "voidorchestra/tests"
 [tool.ruff]
-line-length = 120
+line-length = 150
 
 [tool.ruff.lint]
 extend-select = ["I"]
@@ -152,4 +142,3 @@ title = "voidorchestra"
 root = "README.md"
 pages = []
 use-autoapi = true
-
