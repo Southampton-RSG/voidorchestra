@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" />
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2025.07.19 -->
-        <title>MoleGazer - voidorchestra v0.1.0</title>
+        <title>Void Orchestra - voidorchestra v0.1.0</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=25af2a20" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
@@ -323,58 +323,63 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <section class="tex2jax_ignore mathjax_ignore" id="molegazer">
-<h1>MoleGazer<a class="headerlink" href="#molegazer" title="Link to this heading">¶</a></h1>
-<p><em>MoleGazer</em> is a python package designed to use image recognition to identify moles from photos of patients,
-and then upload those to a database.</p>
-<section id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h2>
-<p>To install <em>MoleGazer</em> you will first need to clone the repository using the <code class="docutils literal notranslate"><span class="pre">--recursive</span></code> flag
-to also download the <em>MoleDB</em> submodule,</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>git@github.com:MoleGazer/MoleGazer.git<span class="w"> </span>--recursive
+          <section class="tex2jax_ignore mathjax_ignore" id="void-orchestra">
+<h1>Void Orchestra<a class="headerlink" href="#void-orchestra" title="Link to this heading">¶</a></h1>
+<p><em>Void Orchestra</em> is a python package designed to create lightcurves of quasi-periodic oscillations,</p>
+<section id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Link to this heading">¶</a></h2>
+<section id="package-manager">
+<h3>Package Manager<a class="headerlink" href="#package-manager" title="Link to this heading">¶</a></h3>
+<p><strong>Void Orchestra</strong> uses the Python package manager <a class="reference external" href="https://docs.astral.sh/uv/"><strong>uv</strong></a>.
+This can easily be installed system-wide using <code class="docutils literal notranslate"><span class="pre">pipx</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>pipx<span class="w">  </span><span class="c1"># Or if on RHEL, sudo yum install pipx</span>
+$<span class="w"> </span>pipx<span class="w"> </span>install<span class="w"> </span>uv
 </pre></div>
 </div>
-<p><em>MoleGazer</em> can then be installed through pip or setup tools where you will need a minimum Python verison of 3.9.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>.
-$<span class="w"> </span>python<span class="w"> </span>setup.py<span class="w"> </span>install
+</section>
+<section id="plot-graphics">
+<h3>Plot Graphics<a class="headerlink" href="#plot-graphics" title="Link to this heading">¶</a></h3>
+<p>Plots are generated using the <code class="docutils literal notranslate"><span class="pre">plotly</span></code> Python package, which requires a working browser.
+If using a server that doesn’t have a browser by default, install <strong>chromium</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>chromium<span class="w">  </span><span class="c1"># </span>
 </pre></div>
 </div>
-<p>A shell environment variable <code class="docutils literal notranslate"><span class="pre">MOLE_CONFIG</span></code> is also required,
-which points to the configuration file which configures <em>MoleGazer</em>,</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span><span class="nb">export</span><span class="w"> </span><span class="nv">MOLE_CONFIG</span><span class="o">=</span><span class="s2">&quot;/path/to/config/file&quot;</span>
+</section>
+<section id="environment-variables">
+<h3>Environment Variables<a class="headerlink" href="#environment-variables" title="Link to this heading">¶</a></h3>
+<p>A shell environment variable <code class="docutils literal notranslate"><span class="pre">VOIDORCHESTRA_CONFIG</span></code> is also required,
+which points to the configuration file which configures <em>Void Orchestra</em>,</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span><span class="nb">export</span><span class="w"> </span><span class="nv">VOIDORCHESTRA_CONFIG</span><span class="o">=</span><span class="s2">&quot;/path/to/config/file&quot;</span>
 </pre></div>
 </div>
 <p>or if you use fish,</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span><span class="nb">set</span><span class="w"> </span>-gx<span class="w"> </span>MOLE_CONFIG<span class="w"> </span><span class="s2">&quot;/path/to/config/file&quot;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span><span class="nb">set</span><span class="w"> </span>-gx<span class="w"> </span>VOIDORCHESTRA_CONFIG<span class="w"> </span><span class="s2">&quot;/path/to/config/file&quot;</span>
 </pre></div>
 </div>
 <p>If this configuration file does not exist at this location,
 the default configuration file will be copied to this location.</p>
 </section>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h2>
+<p>To install <em>Void Orchestra</em>, create a <code class="docutils literal notranslate"><span class="pre">/var/www</span></code> directory (if it doesn’t already exist) and clone the repository there:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>/var/www<span class="w"> </span>
+<span class="nb">cd</span><span class="w"> </span>/var/www
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/Southampton-RSG/voidorchestra.git<span class="w"> </span>
+</pre></div>
+</div>
+<p>Then, enter the directory, install the software and initialise the database, before installing the ‘fixtures’ containing
+pre-set sonification methods and profiles:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>voidorchestra
+make<span class="w"> </span>install
+make<span class="w"> </span>database<span class="w"> </span>
+make<span class="w"> </span>fixtures
+</pre></div>
+</div>
+</section>
 <section id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Link to this heading">¶</a></h2>
-<p>Initialise the database, and import the data on the ‘standard views’ in it using the database <em>MoleDB</em> as:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>moledb<span class="w"> </span>init
-moledb<span class="w"> </span>init<span class="w"> </span>views
-</pre></div>
-</div>
-<p>Then, start watching the directory you’ll be adding files to using:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>molegazer<span class="w"> </span>watch<span class="w"> </span>images
-</pre></div>
-</div>
-<p>This will run continuously. When you add any new files to the directory,
-they’ll automatically be uploaded, and then parsed.</p>
-<p>If you already have images in the directory,
-MoleGazer will automatically import them when it detects any other changes.
-You can manually trigger this process by:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>molegazer<span class="w"> </span>upload<span class="w"> </span>images
-</pre></div>
-</div>
-<p>Once the images have been entered into the database, you can generate the stamps for them using:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>molegazer<span class="w"> </span>create<span class="w"> </span>stamps
-</pre></div>
-</div>
-<p>This process is not automatic. It can be scheduled using a cron job, or run manually.</p>
+<p>Once the database has been installed and initialised, you can begin creating new sonifications.</p>
 </section>
 </section>
 
@@ -415,7 +420,13 @@ You can manually trigger this process by:</p>
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">MoleGazer</a><ul>
+<li><a class="reference internal" href="#">Void Orchestra</a><ul>
+<li><a class="reference internal" href="#requirements">Requirements</a><ul>
+<li><a class="reference internal" href="#package-manager">Package Manager</a></li>
+<li><a class="reference internal" href="#plot-graphics">Plot Graphics</a></li>
+<li><a class="reference internal" href="#environment-variables">Environment Variables</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#installation">Installation</a></li>
 <li><a class="reference internal" href="#usage">Usage</a></li>
 </ul>

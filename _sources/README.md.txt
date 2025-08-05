@@ -1,68 +1,64 @@
-# MoleGazer
+# Void Orchestra
 
-*MoleGazer* is a python package designed to use image recognition to identify moles from photos of patients,
-and then upload those to a database.
+*Void Orchestra* is a python package designed to create lightcurves of quasi-periodic oscillations,
 
 
-## Installation
+## Requirements
 
-To install *MoleGazer* you will first need to clone the repository using the `--recursive` flag
-to also download the *MoleDB* submodule,
+### Package Manager 
+**Void Orchestra** uses the Python package manager [**uv**](https://docs.astral.sh/uv/). 
+This can easily be installed system-wide using `pipx`:
 
 ```bash
-$ git clone git@github.com:MoleGazer/MoleGazer.git --recursive
+$ sudo apt install pipx  # Or if on RHEL, sudo yum install pipx
+$ pipx install uv
 ```
 
-*MoleGazer* can then be installed through pip or setup tools where you will need a minimum Python verison of 3.9.
-
+### Plot Graphics
+Plots are generated using the `plotly` Python package, which requires a working browser.
+If using a server that doesn't have a browser by default, install **chromium**:
 ```bash
-$ pip install .
-$ python setup.py install
+$ sudo apt install chromium  # 
 ```
 
-A shell environment variable `MOLE_CONFIG` is also required, 
-which points to the configuration file which configures *MoleGazer*,
+### Environment Variables
+
+A shell environment variable `VOIDORCHESTRA_CONFIG` is also required, 
+which points to the configuration file which configures *Void Orchestra*,
 
 ```bash
-$ export MOLE_CONFIG="/path/to/config/file"
+$ export VOIDORCHESTRA_CONFIG="/path/to/config/file"
 ```
 
 or if you use fish,
 
 ```bash
-$ set -gx MOLE_CONFIG "/path/to/config/file"
+$ set -gx VOIDORCHESTRA_CONFIG "/path/to/config/file"
 ```
 
 If this configuration file does not exist at this location, 
 the default configuration file will be copied to this location.
 
+## Installation
+
+To install *Void Orchestra*, create a `/var/www` directory (if it doesn't already exist) and clone the repository there:
+
+```bash
+mkdir /var/www 
+cd /var/www
+git clone https://github.com/Southampton-RSG/voidorchestra.git 
+```
+
+Then, enter the directory, install the software and initialise the database, before installing the 'fixtures' containing
+pre-set sonification methods and profiles:
+
+```bash 
+cd voidorchestra
+make install
+make database 
+make fixtures
+```
+
 ## Usage
 
-Initialise the database, and import the data on the 'standard views' in it using the database *MoleDB* as:
-
-```bash
-moledb init
-moledb init views
-```
-
-Then, start watching the directory you'll be adding files to using:
-```bash
-molegazer watch images
-```
-
-This will run continuously. When you add any new files to the directory, 
-they'll automatically be uploaded, and then parsed.
-
-If you already have images in the directory, 
-MoleGazer will automatically import them when it detects any other changes.
-You can manually trigger this process by:
-
-```bash
-molegazer upload images
-```
-
-Once the images have been entered into the database, you can generate the stamps for them using:
-```bash
-molegazer create stamps
-```
-This process is not automatic. It can be scheduled using a cron job, or run manually.
+Once the database has been installed and initialised, you can begin creating new sonifications.

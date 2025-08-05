@@ -49,7 +49,7 @@ Package Contents
 
 .. py:data:: ENVIRONMENT_VARIABLE
    :type:  str
-   :value: 'VOIDORCHESTRA'
+   :value: 'VOIDORCHESTRA_CONFIG'
 
 
 .. py:data:: config_file_location
