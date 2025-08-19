@@ -380,6 +380,44 @@ make<span class="w"> </span>fixtures
 <section id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Link to this heading">¶</a></h2>
 <p>Once the database has been installed and initialised, you can begin creating new sonifications.</p>
+<section id="file-server">
+<h3>File Server<a class="headerlink" href="#file-server" title="Link to this heading">¶</a></h3>
+<p>To serve the files to Zooniverse, you can use the provided Nginx container.
+Launch a screen, start the server, then disconnect:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>screen
+docker<span class="w"> </span>compose<span class="w"> </span>up
+<span class="o">[</span>Ctrl-A,<span class="w"> </span>Ctrl-D<span class="o">]</span>
+</pre></div>
+</div>
+<p>Using <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">up</span></code> will launch Nginx, and serve files from the output directory.
+If using this on a machine serving multiple sites,
+you can instead add the configuration file to your existing Nginx setup.
+Assign ownership of the directory to the <code class="docutils literal notranslate"><span class="pre">voidorchestra-staff</span></code> group and add <code class="docutils literal notranslate"><span class="pre">nginx</span></code> to it:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>usermod<span class="w"> </span>-a<span class="w"> </span>-G<span class="w"> </span>voidorchestra-staff<span class="w"> </span>nginx
+sudo<span class="w"> </span>chgrp<span class="w"> </span>-R<span class="w"> </span>voidorchestra-staff<span class="w"> </span>/var/www/voidorchestra
+sudo<span class="w"> </span>chmod<span class="w"> </span>-R<span class="w"> </span>g+rw<span class="w"> </span>/var/www/voidorchestra<span class="w"> </span>
+</pre></div>
+</div>
+<p>Then, depending on your Linux distribution:</p>
+<section id="debian-ubuntu">
+<h4>Debian/Ubuntu<a class="headerlink" href="#debian-ubuntu" title="Link to this heading">¶</a></h4>
+<p>Copy or link <code class="docutils literal notranslate"><span class="pre">nginx/voidorchestra.conf</span></code> to your <code class="docutils literal notranslate"><span class="pre">/etc/nginx/sites-enabled/</span></code> directory, then restart Nginx:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ln<span class="w"> </span>-s<span class="w"> </span>/var/www/voidorchestra/nginx/voidorchestra.conf<span class="w"> </span>/etc/nginx/sites-enabled/<span class="w"> </span>
+sudo<span class="w"> </span>systemctl<span class="w"> </span>reload<span class="w"> </span>nginx
+sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>nginx
+</pre></div>
+</div>
+</section>
+<section id="fedora-rhel">
+<h4>Fedora/RHEL<a class="headerlink" href="#fedora-rhel" title="Link to this heading">¶</a></h4>
+<p>Copy <code class="docutils literal notranslate"><span class="pre">nginx/voidorchestra.conf</span></code> file to your <code class="docutils literal notranslate"><span class="pre">/etc/nginx/conf.d</span></code> directory,
+then flag the log directory as permitted by SELinux:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>cp<span class="w"> </span>/var/www/voidorchestra/nginx/voidorchestra.conf<span class="w"> </span>/etc/nginx/conf.d/
+sudo<span class="w"> </span>chcon<span class="w"> </span>-R<span class="w"> </span>system_u:object_r:httpd_log_t:s0<span class="w"> </span>/var/www/voidorchestra/logs<span class="w"> </span>
+</pre></div>
+</div>
+</section>
+</section>
 </section>
 </section>
 
@@ -428,7 +466,14 @@ make<span class="w"> </span>fixtures
 </ul>
 </li>
 <li><a class="reference internal" href="#installation">Installation</a></li>
-<li><a class="reference internal" href="#usage">Usage</a></li>
+<li><a class="reference internal" href="#usage">Usage</a><ul>
+<li><a class="reference internal" href="#file-server">File Server</a><ul>
+<li><a class="reference internal" href="#debian-ubuntu">Debian/Ubuntu</a></li>
+<li><a class="reference internal" href="#fedora-rhel">Fedora/RHEL</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
