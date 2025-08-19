@@ -102,11 +102,14 @@ $ sudo systemctl reload nginx
 $ sudo systemctl restart nginx
 ```
 
-
 #### Fedora/RHEL
-Copy `nginx/voidorchestra.conf` file to your `/etc/nginx/conf.d` directory, 
-then flag the log directory as permitted by SELinux:
+Copy `nginx/voidorchestra.conf` file to your `/etc/nginx/conf.d` directory.
+Then, flag the log directory as a log directory under SELinux,
+and the output directory as as HTML content directory too:
 ```bash 
-$ sudo cp /var/www/voidorchestra/nginx/voidorchestra.conf /etc/nginx/conf.d/
-$ sudo chcon -R system_u:object_r:httpd_log_t:s0 /var/www/voidorchestra/logs 
+$ sudo cp /var/www/voidorchestra/nginx/voidorchestra.conf /etc/nginx/conf.d/ 
+$ sudo semanage fcontext -a -t httpd_sys_content_t "/var/www/voidorchestra/data/output(/.*)?"
+$ sudo restorecon -R -v /var/www/voidorchestra/data/output/
+$ sudo semanage fcontext -a -t httpd_log_t "/var/www/voidorchestra/logs(/.*)?"
+$ sudo restorecon -R -v /var/www/voidorchestra/logs/
 ```
