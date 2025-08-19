@@ -1,6 +1,4 @@
 libbrotli-dev
 libblosc-dev
 libgif-dev
-libopencv-dev
-libopenjp2-7-dev
-python-opencv
+libmagic-dev
