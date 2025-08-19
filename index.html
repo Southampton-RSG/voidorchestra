@@ -422,10 +422,14 @@ $<span class="w"> </span>sudo<span class="w"> </span>systemctl<span class="w"> <
 </section>
 <section id="fedora-rhel">
 <h4>Fedora/RHEL<a class="headerlink" href="#fedora-rhel" title="Link to this heading">¶</a></h4>
-<p>Copy <code class="docutils literal notranslate"><span class="pre">nginx/voidorchestra.conf</span></code> file to your <code class="docutils literal notranslate"><span class="pre">/etc/nginx/conf.d</span></code> directory,
-then flag the log directory as permitted by SELinux:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>cp<span class="w"> </span>/var/www/voidorchestra/nginx/voidorchestra.conf<span class="w"> </span>/etc/nginx/conf.d/
-$<span class="w"> </span>sudo<span class="w"> </span>chcon<span class="w"> </span>-R<span class="w"> </span>system_u:object_r:httpd_log_t:s0<span class="w"> </span>/var/www/voidorchestra/logs<span class="w"> </span>
+<p>Copy <code class="docutils literal notranslate"><span class="pre">nginx/voidorchestra.conf</span></code> file to your <code class="docutils literal notranslate"><span class="pre">/etc/nginx/conf.d</span></code> directory.
+Then, flag the log directory as a log directory under SELinux,
+and the output directory as as HTML content directory too:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>cp<span class="w"> </span>/var/www/voidorchestra/nginx/voidorchestra.conf<span class="w"> </span>/etc/nginx/conf.d/<span class="w"> </span>
+$<span class="w"> </span>sudo<span class="w"> </span>semanage<span class="w"> </span>fcontext<span class="w"> </span>-a<span class="w"> </span>-t<span class="w"> </span>httpd_sys_content_t<span class="w"> </span><span class="s2">&quot;/var/www/voidorchestra/data/output(/.*)?&quot;</span>
+$<span class="w"> </span>sudo<span class="w"> </span>restorecon<span class="w"> </span>-R<span class="w"> </span>-v<span class="w"> </span>/var/www/voidorchestra/data/output/
+$<span class="w"> </span>sudo<span class="w"> </span>semanage<span class="w"> </span>fcontext<span class="w"> </span>-a<span class="w"> </span>-t<span class="w"> </span>httpd_log_t<span class="w"> </span><span class="s2">&quot;/var/www/voidorchestra/logs(/.*)?&quot;</span>
+$<span class="w"> </span>sudo<span class="w"> </span>restorecon<span class="w"> </span>-R<span class="w"> </span>-v<span class="w"> </span>/var/www/voidorchestra/logs/
 </pre></div>
 </div>
 </section>
