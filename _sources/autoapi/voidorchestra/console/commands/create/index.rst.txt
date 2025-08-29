@@ -17,6 +17,7 @@ Submodules
 .. toctree::
    :maxdepth: 1
 
+   /autoapi/voidorchestra/console/commands/create/qpo_models/index
    /autoapi/voidorchestra/console/commands/create/sonifications/index
 
 
@@ -25,12 +26,18 @@ Functions
 
 .. autoapisummary::
 
+   voidorchestra.console.commands.create.create_psds
    voidorchestra.console.commands.create.create_sonifications
    voidorchestra.console.commands.create.create
 
 
 Package Contents
 ----------------
+
+.. py:function:: create_psds(ctx: dict) -> None
+
+   Create sonifications for sonification descriptors that have not yet been produced.
+
 
 .. py:function:: create_sonifications(ctx: dict, regenerate: bool = False) -> None
 

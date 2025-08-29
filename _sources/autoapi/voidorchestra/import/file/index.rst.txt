@@ -1,0 +1,55 @@
+voidorchestra.import.file
+=========================
+
+.. py:module:: voidorchestra.import.file
+
+.. autoapi-nested-parse::
+
+   Code for importing observational lightcurves from file
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   voidorchestra.import.file.logger
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   voidorchestra.import.file.load_observational_data_from_file
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+
+.. py:function:: load_observational_data_from_file(file_path: pathlib.Path, format: str | None = 'ascii', time_column: str | None = 'time', time_format: str | None = 'mjd', units: Dict[str, astropy.units.UnitBase] | None = None, column_mapping: Dict[str, str] | None = None, length: astropy.units.UnitBase | None = None) -> astropy.timeseries.TimeSeries
+
+   Imports observational data from file
+
+   :param file_path: Path to the file to import.
+   :type file_path: Path
+   :param format: File format.
+   :type format: str
+   :param time_column: Time column name.
+   :type time_column: str
+   :param time_format: Format of the time column, in Astropy time format terms.
+   :type time_format: str
+   :param units: A dictionary containing 'name' and 'error' and the units of those columns in the file.
+   :type units: Dict[str, UnitBase]|None
+   :param column_mapping: A dictionary containing 'name' and 'error' and the names of the columns in the file that map onto them.
+   :type column_mapping: Dict[str, str]|None
+   :param length: Length of observation. If provided, selects a subset of the data of this length.
+   :type length: UnitBase|None
+
+   :returns: TimeSeries object containing the observational data.
+   :rtype: TimeSeries
+
+

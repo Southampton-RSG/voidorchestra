@@ -7,6 +7,7 @@
 
 ### System Requirements
 To reduce warning from the Zooniverse code, at system level install `libmagic`:
+
 ```bash
 $ sudo apt install libmagic-dev
 ```
@@ -17,12 +18,9 @@ If using a server that doesn't have a browser by default, install **chromium**:
 $ sudo apt install chromium  # Or if on RHEL, sudo yum install chromium
 ```
 
-
 ### Package Manager 
 **Void Orchestra** uses the Python package manager [**uv**](https://docs.astral.sh/uv/). 
 This can easily be installed system-wide using `pipx`:
-
-### Plot Graphics
 
 ### Environment Variables
 
@@ -63,6 +61,15 @@ Then set up the database, and load the 'fixtures' describing the basic sonificai
 $ make database 
 $ make fixtures
 ```
+
+### Plots
+
+To plot images using plotly, activate the virtual environment and install Chrome using:
+```bash 
+source .venv/bin/activate
+plotly_get_chrome
+```
+
 
 ## Usage
 

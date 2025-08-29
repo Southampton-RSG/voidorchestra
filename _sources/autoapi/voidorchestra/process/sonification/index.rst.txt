@@ -179,7 +179,7 @@ Package Contents
    :rtype: logging.Logger
 
 
-.. py:function:: plot_lightcurve(lightcurve: astropy.timeseries.TimeSeries) -> plotly.graph_objs.Figure
+.. py:function:: plot_lightcurve(timeseries: astropy.timeseries.TimeSeries) -> plotly.graph_objs.Figure
 
    Given a lightcurve, plots it (with uncertainty regions).
 

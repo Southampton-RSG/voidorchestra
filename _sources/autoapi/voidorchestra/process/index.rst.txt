@@ -12,6 +12,7 @@ Submodules
 
    /autoapi/voidorchestra/process/lightcurve_collection/index
    /autoapi/voidorchestra/process/lightcurves/index
+   /autoapi/voidorchestra/process/qpo_models/index
    /autoapi/voidorchestra/process/sonification/index
 
 

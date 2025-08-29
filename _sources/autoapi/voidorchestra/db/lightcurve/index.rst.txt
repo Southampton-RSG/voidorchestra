@@ -17,6 +17,7 @@ Submodules
 .. toctree::
    :maxdepth: 1
 
+   /autoapi/voidorchestra/db/lightcurve/file/index
    /autoapi/voidorchestra/db/lightcurve/synthetic/index
 
 

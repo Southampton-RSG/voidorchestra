@@ -39,7 +39,7 @@ Module Contents
    :Yields: **parameter_combination** (*Dict[str, Any]*) -- A point on the parameter grid.
 
 
-.. py:function:: create_synthetic_regular_lightcurves(lightcurve_collection: voidorchestra.db.LightcurveCollection, parameter_grid: Dict[str, Any], session: sqlalchemy.orm.Session, repeats: int = 1)
+.. py:function:: create_synthetic_regular_lightcurves(lightcurve_collection: voidorchestra.db.LightcurveCollection, parameter_grid: Dict[str, Any], session: sqlalchemy.orm.Session)
 
    Creates synthetic lightcurves covering the specified parameter grid.
 

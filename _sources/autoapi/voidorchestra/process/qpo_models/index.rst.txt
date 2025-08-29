@@ -1,0 +1,47 @@
+voidorchestra.process.qpo_models
+================================
+
+.. py:module:: voidorchestra.process.qpo_models
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   voidorchestra.process.qpo_models.plot_power_spectrum
+   voidorchestra.process.qpo_models.write_psd_images
+
+
+Module Contents
+---------------
+
+.. py:function:: plot_power_spectrum(timeseries: astropy.timeseries.TimeSeries, figure_title: str, figure_vlines: List[Tuple[astropy.time.TimeDelta, str]]) -> plotly.graph_objects.Figure
+
+   Given a simulated lightcurve, takes the power spectrum and plots it.
+
+   :param timeseries: The lightcurve table to plot.
+   :type timeseries: TimeSeries
+   :param figure_title: The title for the combined plot.
+   :type figure_title: str
+   :param figure_vlines: A list of model component frequencies to add to the graph.
+   :type figure_vlines: List[Tuple[TimeDelta, str]]
+
+   :returns: The plotted figure, with the simulated lightcurve and PSD derived for it.
+   :rtype: Figure
+
+
+.. py:function:: write_psd_images(qpo_models: List[voidorchestra.db.QPOModel], filenames: List[str] | None = None)
+
+   Simulates high-resolution spectra of the provided QPO models, and writes images of the PSDs.
+
+   Intended to be used for verification purposes.
+
+   :param qpo_models: The models to write images of.
+   :type qpo_models: List[QPOModel]
+   :param filenames: If present, the filenames for the models to save to.
+   :type filenames: List[str]|None
+
+   :rtype: None
+
+

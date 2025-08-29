@@ -43,6 +43,7 @@ Classes
 
    voidorchestra.db.Classification
    voidorchestra.db.Lightcurve
+   voidorchestra.db.LightcurveFile
    voidorchestra.db.LightcurveSynthetic
    voidorchestra.db.LightcurveSyntheticRegular
    voidorchestra.db.LightcurveCollection
@@ -223,6 +224,129 @@ Package Contents
 
 
 
+.. py:class:: LightcurveFile
+
+   Bases: :py:obj:`voidorchestra.db.lightcurve.Lightcurve`
+
+
+   Observational lightcurve loaded from file.
+
+   .. attribute:: rate_mean_value
+
+      Mean rate of simulated observations, unit is 'per second'.
+
+      :type: float
+
+   .. attribute:: rate_mean_units
+
+      The units of the mean rate.
+
+      :type: str
+
+   .. attribute:: qpo_model_id
+
+      The ID of the QPO model this lightcurve uses.
+
+      :type: int
+
+   .. attribute:: qpo_model
+
+      The QPO model used to generate the synthetic lightcurve.
+
+      :type: relationship
+
+   .. attribute:: random_state
+
+      The random seed for the simulation.
+
+      :type: int
+
+
+   .. py:attribute:: path
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: file_format
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: time_column
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: time_format
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: rate_column
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: rate_units
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: error_column
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: error_units
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: exposure_column
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: exposure_units
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: observation_index_start
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: observation_index_finish
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: __mapper_args__
+      :type:  Dict[str, str]
+
+
+   .. py:method:: __repr__()
+
+      Gets the name of the lightcurve.
+
+      :returns: The string representation of the lightcurve.
+      :rtype: str
+
+
+
+   .. py:method:: get_data(**kwargs) -> astropy.timeseries.TimeSeries
+
+      Returns the data associated with the lightcurve.
+
+      :param kwargs:
+      :type kwargs: None
+
+      :returns: **lightcurve** -- The timeseries of data for the lightcurve
+      :rtype: TimeSeries
+
+
+
+   .. py:method:: get_subsets(subsets: int, observation_length: astropy.time.TimeDelta)
+
+      :param subsets: Number of sub-lightcurves to produce
+      :type subsets: int
+      :param observation_length: Length of each sub-lightcurve
+      :type observation_length: TimeDelta
+
+      :returns: **lightcurve_file_subsets** -- The subsets, as their own LightcurveFile DB entries.
+      :rtype: List[LightcurveFile]
+
+
+
 .. py:class:: LightcurveSynthetic
 
    Bases: :py:obj:`voidorchestra.db.lightcurve.Lightcurve`
@@ -262,24 +386,31 @@ Package Contents
 
 
    .. py:attribute:: rate_mean_value
+      :type:  sqlalchemy.orm.Mapped[float]
 
 
    .. py:attribute:: rate_mean_units
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: exposure_value
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: exposure_units
+      :type:  sqlalchemy.orm.Mapped[str]
 
 
    .. py:attribute:: qpo_model_id
+      :type:  sqlalchemy.orm.Mapped[int]
 
 
    .. py:attribute:: qpo_model
+      :type:  sqlalchemy.orm.Mapped[voidorchestra.db.QPOModel]
 
 
    .. py:attribute:: random_state
-
-
-   .. py:attribute:: COLUMNS
-      :type:  List[str]
-      :value: ['rate_mean', 'qpo_model_id']
-
+      :type:  sqlalchemy.orm.Mapped[int]
 
 
    .. py:attribute:: __mapper_args__
@@ -287,6 +418,8 @@ Package Contents
 
 
    .. py:method:: get_rate_mean() -> astropy.units.Quantity
+
+      Gets the mean rate with units.
 
       :returns: The mean rate, in counts per second.
       :rtype: Quantity
@@ -311,7 +444,7 @@ Package Contents
 
    Synthetic lightcurve with regular cadence.
 
-   .. attribute:: start_time
+   .. attribute:: observation_start
 
       First date of the campaign.
 
@@ -319,48 +452,66 @@ Package Contents
 
    .. attribute:: observation_count
 
-      Number of observations.
+      Number of simulated observations.
 
       :type: int
 
-   .. attribute:: cadence
+   .. attribute:: cadence_value
 
-      Gap between observations, in days.
+      :ength of time between each observation.
 
       :type: float
 
-   .. attribute:: qpo_model
+   .. attribute:: cadence_units
 
-      The QPO model used to generate the synthetic lightcurve.
+      Units of the cadence, in Astropy-parseable format (e.g. 'd', 'days').
 
-      :type: relationship
+      :type: str
+
+   .. attribute:: exposure_value
+
+      Length of exposure for each simulated observation.
+
+      :type: float
+
+   .. attribute:: exposure_units
+
+      Units of the exposure time, in Astropy-parseable format (e.g. 's', 'seconds').
+
+      :type: str
 
 
    .. py:attribute:: __mapper_args__
       :type:  Dict[str, str]
 
 
-   .. py:attribute:: start_time
+   .. py:attribute:: observation_start
+      :type:  sqlalchemy.orm.Mapped[datetime.datetime]
 
 
    .. py:attribute:: observation_count
+      :type:  sqlalchemy.orm.Mapped[int]
 
 
    .. py:attribute:: cadence_value
+      :type:  sqlalchemy.orm.Mapped[float]
 
 
    .. py:attribute:: cadence_format
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: exposure_value
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: exposure_units
+      :type:  sqlalchemy.orm.Mapped[str]
 
 
    .. py:attribute:: EXTENSION_FACTOR
       :type:  int
       :value: 2
-
-
-
-   .. py:attribute:: COLUMNS
-      :type:  List[str]
-      :value: ['start_time', 'observation_count', 'cadence']
 
 
 
@@ -370,9 +521,21 @@ Package Contents
 
 
 
+   .. py:method:: get_exposure() -> astropy.units.Quantity
+
+      Gets the exposure duration for this lightcurve, with units.
+
+      :returns: The exposure duration for these synthetic observations.
+      :rtype: Quantity
+
+
+
    .. py:method:: get_cadence() -> astropy.time.TimeDelta
 
-      Gets the cadence for these observations, as an Astropy TimeDelta
+      Gets the cadence for these observations, as an Astropy TimeDelta.
+
+      :returns: The cadence for the synthetic observating campaign.
+      :rtype: TimeDelta
 
 
 
@@ -380,24 +543,8 @@ Package Contents
 
       Gets a lightcurve generated by the simulator for this method.
 
-      :returns: The lightcurve generated.
+      :returns: **timeseries** -- The lightcurve generated.
       :rtype: TimeSeries
-
-
-
-   .. py:method:: load_fixtures(session: sqlalchemy.orm.Session, fixtures_path: pathlib.Path = None) -> None
-      :staticmethod:
-
-
-      Loads the fixtures from disk (if they aren't loaded already)
-
-      :param session: A database session to add the fixtures to
-      :type session: Session
-      :param fixtures_path: The fixtures JSON file to load the fixtures from
-      :type fixtures_path: Path
-
-      :raises FileNotFoundError: If the passed path (or the path in the config file) does not exist
-      :raises ValueError: If the file doesn't have the right columns.
 
 
 
@@ -566,6 +713,10 @@ Package Contents
       :type:  sqlalchemy.orm.Mapped[QPOModel]
 
 
+   .. py:attribute:: qpo_model_children
+      :type:  sqlalchemy.orm.Mapped[List[QPOModel]]
+
+
    .. py:attribute:: lightcurves
       :type:  sqlalchemy.orm.Mapped[List[voidorchestra.db.LightcurveSynthetic]]
 
@@ -601,6 +752,12 @@ Package Contents
 
 
    Wrapper for the Bending Powerlaw model from Mind the Gaps.
+
+
+   .. py:attribute:: model_name
+      :type:  str
+      :value: 'BPL'
+
 
 
    .. py:attribute:: __mapper_args__
@@ -664,6 +821,12 @@ Package Contents
    Wrapper for the Lorentzian model from Mind the Gaps.
 
 
+   .. py:attribute:: model_name
+      :type:  str
+      :value: 'Lorentzian'
+
+
+
    .. py:attribute:: __mapper_args__
       :type:  Dict[str, str]
 
@@ -685,6 +848,12 @@ Package Contents
 
 
    Wrapper for the SHO model from Mind the Gaps.
+
+
+   .. py:attribute:: model_name
+      :type:  str
+      :value: 'SHO'
+
 
 
    .. py:attribute:: __mapper_args__

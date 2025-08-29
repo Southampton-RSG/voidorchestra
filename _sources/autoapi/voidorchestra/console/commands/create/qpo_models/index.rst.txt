@@ -1,0 +1,27 @@
+voidorchestra.console.commands.create.qpo_models
+================================================
+
+.. py:module:: voidorchestra.console.commands.create.qpo_models
+
+.. autoapi-nested-parse::
+
+   Create PSD images for QPO models
+
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   voidorchestra.console.commands.create.qpo_models.create_psds
+
+
+Module Contents
+---------------
+
+.. py:function:: create_psds(ctx: dict) -> None
+
+   Create sonifications for sonification descriptors that have not yet been produced.
+
+

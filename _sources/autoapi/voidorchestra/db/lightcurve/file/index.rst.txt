@@ -1,0 +1,156 @@
+voidorchestra.db.lightcurve.file
+================================
+
+.. py:module:: voidorchestra.db.lightcurve.file
+
+.. autoapi-nested-parse::
+
+   For lightcurves loaded from files on disk
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   voidorchestra.db.lightcurve.file.logger
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   voidorchestra.db.lightcurve.file.LightcurveFile
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+   :type:  logging.Logger
+
+.. py:class:: LightcurveFile
+
+   Bases: :py:obj:`voidorchestra.db.lightcurve.Lightcurve`
+
+
+   Observational lightcurve loaded from file.
+
+   .. attribute:: rate_mean_value
+
+      Mean rate of simulated observations, unit is 'per second'.
+
+      :type: float
+
+   .. attribute:: rate_mean_units
+
+      The units of the mean rate.
+
+      :type: str
+
+   .. attribute:: qpo_model_id
+
+      The ID of the QPO model this lightcurve uses.
+
+      :type: int
+
+   .. attribute:: qpo_model
+
+      The QPO model used to generate the synthetic lightcurve.
+
+      :type: relationship
+
+   .. attribute:: random_state
+
+      The random seed for the simulation.
+
+      :type: int
+
+
+   .. py:attribute:: path
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: file_format
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: time_column
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: time_format
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: rate_column
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: rate_units
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: error_column
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: error_units
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: exposure_column
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: exposure_units
+      :type:  sqlalchemy.orm.Mapped[str]
+
+
+   .. py:attribute:: observation_index_start
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: observation_index_finish
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
+   .. py:attribute:: __mapper_args__
+      :type:  Dict[str, str]
+
+
+   .. py:method:: __repr__()
+
+      Gets the name of the lightcurve.
+
+      :returns: The string representation of the lightcurve.
+      :rtype: str
+
+
+
+   .. py:method:: get_data(**kwargs) -> astropy.timeseries.TimeSeries
+
+      Returns the data associated with the lightcurve.
+
+      :param kwargs:
+      :type kwargs: None
+
+      :returns: **lightcurve** -- The timeseries of data for the lightcurve
+      :rtype: TimeSeries
+
+
+
+   .. py:method:: get_subsets(subsets: int, observation_length: astropy.time.TimeDelta)
+
+      :param subsets: Number of sub-lightcurves to produce
+      :type subsets: int
+      :param observation_length: Length of each sub-lightcurve
+      :type observation_length: TimeDelta
+
+      :returns: **lightcurve_file_subsets** -- The subsets, as their own LightcurveFile DB entries.
+      :rtype: List[LightcurveFile]
+
+
+

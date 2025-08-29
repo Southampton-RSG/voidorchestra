@@ -1,0 +1,20 @@
+voidorchestra.import
+====================
+
+.. py:module:: voidorchestra.import
+
+.. autoapi-nested-parse::
+
+   Code relating to importing observational lightcurves (not database fixtures)
+
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/voidorchestra/import/file/index
+
+

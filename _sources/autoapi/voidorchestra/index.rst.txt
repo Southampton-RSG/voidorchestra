@@ -19,6 +19,7 @@ Submodules
    /autoapi/voidorchestra/active_learning/index
    /autoapi/voidorchestra/console/index
    /autoapi/voidorchestra/db/index
+   /autoapi/voidorchestra/import/index
    /autoapi/voidorchestra/log/index
    /autoapi/voidorchestra/process/index
    /autoapi/voidorchestra/tests/index

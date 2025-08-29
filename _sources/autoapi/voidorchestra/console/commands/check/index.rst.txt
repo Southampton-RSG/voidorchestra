@@ -21,6 +21,7 @@ Functions
    voidorchestra.console.commands.check.print_version
    voidorchestra.console.commands.check.workflow_stats
    voidorchestra.console.commands.check.project_stats
+   voidorchestra.console.commands.check.check_collections
 
 
 Module Contents
@@ -50,5 +51,11 @@ Module Contents
 
    :param panoptes_project_id: The ID of the project to check statistics for.
    :type panoptes_project_id: int
+
+
+.. py:function:: check_collections(ctx: click.Context) -> None
+
+   Print project information
+
 
 

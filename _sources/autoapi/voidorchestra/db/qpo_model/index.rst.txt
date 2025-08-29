@@ -144,6 +144,10 @@ Module Contents
       :type:  sqlalchemy.orm.Mapped[QPOModel]
 
 
+   .. py:attribute:: qpo_model_children
+      :type:  sqlalchemy.orm.Mapped[List[QPOModel]]
+
+
    .. py:attribute:: lightcurves
       :type:  sqlalchemy.orm.Mapped[List[voidorchestra.db.LightcurveSynthetic]]
 
@@ -219,6 +223,12 @@ Module Contents
    Wrapper for the SHO model from Mind the Gaps.
 
 
+   .. py:attribute:: model_name
+      :type:  str
+      :value: 'SHO'
+
+
+
    .. py:attribute:: __mapper_args__
       :type:  Dict[str, str]
 
@@ -242,6 +252,12 @@ Module Contents
    Wrapper for the Lorentzian model from Mind the Gaps.
 
 
+   .. py:attribute:: model_name
+      :type:  str
+      :value: 'Lorentzian'
+
+
+
    .. py:attribute:: __mapper_args__
       :type:  Dict[str, str]
 
@@ -263,6 +279,12 @@ Module Contents
 
 
    Wrapper for the Bending Powerlaw model from Mind the Gaps.
+
+
+   .. py:attribute:: model_name
+      :type:  str
+      :value: 'BPL'
+
 
 
    .. py:attribute:: __mapper_args__

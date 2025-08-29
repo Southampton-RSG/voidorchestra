@@ -30,6 +30,7 @@ Functions
    voidorchestra.console.commands.delete.delete_soundfonts
    voidorchestra.console.commands.delete.delete_sonification_profiles
    voidorchestra.console.commands.delete.delete_lightcurve_collection
+   voidorchestra.console.commands.delete.delete_qpo_models
 
 
 Module Contents
@@ -71,5 +72,12 @@ Module Contents
 .. py:function:: delete_lightcurve_collection(ctx: click.Context, lightcurve_collection: str) -> None
 
    Remove imported sonification profiles from the database.
+
+
+.. py:function:: delete_qpo_models(ctx: click.Context) -> None
+
+   Remove unused QPO models from the database.
+
+   Any QPO model that isn't being used by a lightcurve is deleted, including sub-components of composite models.
 
 
