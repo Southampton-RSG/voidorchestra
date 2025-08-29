@@ -13,7 +13,7 @@ from astropy.time import TimeDelta
 from astropy.units import Quantity
 from mind_the_gaps.models.psd_models import SHO, BendingPowerlaw, Lorentzian
 from sqlalchemy import Double, Float, ForeignKey, String
-from sqlalchemy.orm import Mapped, Session, backref, mapped_column, relationship
+from sqlalchemy.orm import Mapped, Session, mapped_column, relationship
 
 from voidorchestra.db import Base, LightcurveSynthetic
 
@@ -61,11 +61,8 @@ class QPOModel(Base):
     period_value: Mapped[float] = mapped_column(Double(), nullable=True)
     period_format: Mapped[str] = mapped_column(String(16), nullable=True)
 
-    qpo_model_parent: Mapped["QPOModel"] = relationship(
-        remote_side=qpo_model_parent_id,
-        uselist=False,
-        backref=backref("qpo_model_children", remote_side=id, uselist=True),
-    )
+    qpo_model_parent: Mapped["QPOModel"] = relationship(remote_side="QPOModel.id", back_populates="qpo_model_children")
+    qpo_model_children: Mapped[List["QPOModel"]] = relationship()
     lightcurves: Mapped[List[LightcurveSynthetic]] = relationship(back_populates="qpo_model")
 
     def __repr__(self) -> str:
@@ -160,6 +157,8 @@ class QPOModelSHO(QPOModel):
     Wrapper for the SHO model from Mind the Gaps.
     """
 
+    model_name: str = "SHO"
+
     __mapper_args__: Dict[str, str] = {
         "polymorphic_identity": "mind_the_gaps_sho",
     }
@@ -188,6 +187,8 @@ class QPOModelLorentzian(QPOModel):
     """
     Wrapper for the Lorentzian model from Mind the Gaps.
     """
+
+    model_name: str = "Lorentzian"
 
     __mapper_args__: Dict[str, str] = {
         "polymorphic_identity": "mind_the_gaps_lorentzian",
@@ -218,6 +219,8 @@ class QPOModelBPL(QPOModel):
     Wrapper for the Bending Powerlaw model from Mind the Gaps.
     """
 
+    model_name: str = "BPL"
+
     __mapper_args__: Dict[str, str] = {
         "polymorphic_identity": "mind_the_gaps_bpl",
     }
@@ -237,6 +240,6 @@ class QPOModelBPL(QPOModel):
         """
         return BendingPowerlaw(
             omega0=2.0 * np.pi / self.get_period().to(u.s).value,
-            Q=self.coherence,
+            Q=1 / 2,
             S0=self.variance_fraction**2.0 * rate_mean.to(u.s**-1).value ** 2,
         )

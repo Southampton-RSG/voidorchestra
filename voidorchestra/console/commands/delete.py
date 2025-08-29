@@ -18,6 +18,7 @@ import voidorchestra.log
 from voidorchestra import config_paths
 from voidorchestra.db import (
     LightcurveCollection,
+    QPOModel,
     Sonification,
     SonificationMethodSoundfont,
     SonificationProfile,
@@ -106,6 +107,10 @@ def delete_sonifications(
 
     if hard:
         num_sonifications_deleted: int = 0
+
+        for path_sonification in directory_output.rglob("*.png"):
+            path_sonification.unlink()
+
         for path_sonification in directory_output.rglob("*.mp*"):
             path_sonification.unlink()
 
@@ -216,6 +221,48 @@ def delete_lightcurve_collection(
             click.echo(
                 f"Deleted lightcurve collection {lightcurve_collection}, including {lightcurves_deleted} lightcurves and {sonifications_deleted} sonifications from database"
             )
+
+    except Exception as e:
+        click.echo(f"Could not connect to database: {e}")
+
+
+@delete.command(name="models", help="Clears unused QPO models from the database.")
+@click.pass_context
+def delete_qpo_models(
+    ctx: Context,  # noqa: D417
+) -> None:
+    """
+    Remove unused QPO models from the database.
+
+    Any QPO model that isn't being used by a lightcurve is deleted, including sub-components of composite models.
+    """
+    qpo_models_deleted: int = 0
+    qpo_model_components_deleted: int = 0
+    qpo_models_path: Path = config_paths["output"] / "qpo_models"
+
+    try:
+        with Session(
+            engine := connect_to_database_engine(config_paths["database"]),
+            info={"url": engine.url},
+        ) as session:
+            qpo_models: List[QPOModel] = session.query(QPOModel).filter(QPOModel.qpo_model_parent_id == None).all()
+            click.echo(f"Found {len(qpo_models)} top-level QPO models in database")
+
+            for qpo_model in qpo_models:
+                if not len(qpo_model.lightcurves):
+                    psd_path: Path = qpo_models_path / f"qpo_model-{qpo_model.id}.psd.png"
+                    if psd_path.exists() and psd_path.is_file():
+                        psd_path.unlink()
+
+                    for qpo_model_child in qpo_model.qpo_model_children:
+                        session.delete(qpo_model_child)
+                        qpo_model_components_deleted += 1
+
+                    qpo_models_deleted += 1
+                    session.delete(qpo_model)
+
+            session.commit()
+            click.echo(f"Deleted {qpo_models_deleted} unused QPO models, {qpo_model_components_deleted} components.")
 
     except Exception as e:
         click.echo(f"Could not connect to database: {e}")

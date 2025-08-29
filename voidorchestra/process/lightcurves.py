@@ -39,7 +39,6 @@ def create_synthetic_regular_lightcurves(
     lightcurve_collection: LightcurveCollection,
     parameter_grid: Dict[str, Any],
     session: Session,
-    repeats: int = 1,
 ):
     """
     Creates synthetic lightcurves covering the specified parameter grid.
@@ -62,12 +61,14 @@ def create_synthetic_regular_lightcurves(
 
     for parameters in generate_parameter_grid(parameter_grid):
         lightcurve: LightcurveSyntheticRegular = LightcurveSyntheticRegular(
-            start_time=parameters["start_time"],
+            observation_start=parameters["observation_start"],
             observation_count=parameters["observation_count"],
             cadence_value=parameters["cadence_value"],
             cadence_format=parameters["cadence_format"],
             rate_mean_value=parameters["rate_mean_value"],
             rate_mean_units=parameters["rate_mean_units"],
+            exposure_value=parameters["exposure_value"],
+            exposure_units=parameters["exposure_units"],
             qpo_model=parameters["qpo_model"],
             lightcurve_collection=lightcurve_collection,
         )

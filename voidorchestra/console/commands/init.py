@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usrStraight copy-paste of file from previosu code/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Entry point for the `voidorchestra` command.

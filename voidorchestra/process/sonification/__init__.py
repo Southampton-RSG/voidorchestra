@@ -36,16 +36,20 @@ def write_sonification_files(
             disable=logger.level > INFO,
         )
     ):
-        lightcurve: TimeSeries = sonification.lightcurve.get_data()
-        strauss_sonification: StraussSonification = sonification.sonification_profile.create_sonification(lightcurve)
-        strauss_sonification.render()
+        try:
+            timeseries: TimeSeries = sonification.lightcurve.get_data()
+            strauss_sonification: StraussSonification = sonification.sonification_profile.create_sonification(timeseries)
+            strauss_sonification.render()
+        except Exception as e:
+            logger.warning(f"Failed to create sonification for lightcurve {sonification.lightcurve}: {e}")
+            continue
 
         path_wav: Path = (directory_output / sonification.path_audio).with_suffix(".wav")
         strauss_sonification.save(path_wav, embed_caption=False)
         audio: AudioFileClip = AudioFileClip(path_wav)
         audio.write_audiofile(directory_output / sonification.path_audio, codec="mp3", logger=None)
 
-        figure: Figure = plot_lightcurve(lightcurve)
+        figure: Figure = plot_lightcurve(timeseries)
         figure.write_image(directory_output / sonification.path_image)
 
         video: ImageClip = ImageClip(directory_output / sonification.path_image)

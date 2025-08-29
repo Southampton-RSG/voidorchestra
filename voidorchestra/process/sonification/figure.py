@@ -58,7 +58,7 @@ templates.default = "plotly_dark+zooniverse"
 
 
 def plot_lightcurve(
-    lightcurve: TimeSeries,
+    timeseries: TimeSeries,
 ) -> Figure:
     """
     Given a lightcurve, plots it (with uncertainty regions).
@@ -73,7 +73,7 @@ def plot_lightcurve(
     Figure:
         The plotted figure.
     """
-    time: NDArray[floating] = lightcurve["time"].jd
+    time: NDArray[floating] = timeseries["time"].jd
     figure: Figure = Figure(
         # data=[
         #     Scatter(
@@ -101,7 +101,7 @@ def plot_lightcurve(
         data=[
             Scatter(
                 x=time,
-                y=lightcurve["rate"],
+                y=timeseries["rate"],
                 mode="markers",
             )
         ],

@@ -7,12 +7,17 @@ The commands should check properties or statistics for various parts of the
 Voidorchestra package or for the Zooniverse project and its components.
 """
 
+from typing import List
+
 import click
+from click import Context
 from panoptes_client import Project as PanoptesProject, Workflow as PanoptesWorkflow
 from panoptes_client.panoptes import PanoptesAPIException
+from sqlalchemy.orm import Session
 
 import voidorchestra
 from voidorchestra import config
+from voidorchestra.db import LightcurveCollection, connect_to_database_engine
 from voidorchestra.zooniverse.zooniverse import connect_to_zooniverse
 
 
@@ -105,3 +110,21 @@ def project_stats(panoptes_project_id: int) -> None:
 
     except PanoptesAPIException:
         click.echo(f"Unable to open project with ID {panoptes_project_id}")
+
+
+@check.command(name="collections")
+@click.pass_context
+def check_collections(
+    ctx: Context,  # noqa: D417
+) -> None:
+    """
+    Print project information
+
+    Parameters
+    ----------
+
+    """
+    with Session(engine := connect_to_database_engine(config["PATHS"]["database"]), info={"url": engine.url}) as session:
+        lightcurve_collections: List[LightcurveCollection] = session.query(LightcurveCollection).all()
+        for lightcurve_collection in lightcurve_collections:
+            click.echo(f"* {lightcurve_collection.id} - {lightcurve_collection.name}: {len(lightcurve_collection.lightcurves)}")

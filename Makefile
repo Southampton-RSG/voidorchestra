@@ -118,18 +118,24 @@ print-%:
 ############################################################################################
 
 database:
-	uv run void-orchestra --debug delete database
-	uv run void-orchestra --debug delete sonifications --hard
-	uv run void-orchestra --debug init database
+	uv run voidorchestra --debug delete database
+	uv run voidorchestra --debug delete sonifications --hard
+	uv run voidorchestra --debug init database
 
 fixtures:
-	uv run void-orchestra --debug delete soundfonts
-	uv run void-orchestra --debug delete profiles
-	uv run void-orchestra --debug input soundfonts
-	uv run void-orchestra --debug input profiles
+	uv run voidorchestra --debug delete soundfonts
+	uv run voidorchestra --debug delete profiles
+	uv run voidorchestra --debug input soundfonts
+	uv run voidorchestra --debug input profiles
 
 synthetic:
 	uv run scripts/generate_synthetic_lightcurves.py
 
+observed:
+	uv run scripts/import_observed_lightcurves.py
+
+sonifications-hard:
+	uv run voidorchestra --debug create sonifications --regenerate
+
 sonifications:
-	uv run void-orchestra create sonifications --regenerate
+	uv run voidorchestra --debug create sonifications

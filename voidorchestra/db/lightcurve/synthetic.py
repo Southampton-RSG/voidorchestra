@@ -4,22 +4,23 @@
 For lightcurves generated from synthetic data
 """
 
-from pathlib import Path
-from typing import Dict, List
+from datetime import datetime
+from typing import TYPE_CHECKING, Dict
 
 import numpy as np
-from astropy.time import TimeDelta
+from astropy.time import Time, TimeDelta
 from astropy.timeseries import TimeSeries
 from astropy.units import Quantity, Unit
 from mind_the_gaps.simulator import Simulator
 from numpy import floating
 from numpy.typing import NDArray
-from pandas import DataFrame, read_csv
-from sqlalchemy import Column, DateTime, Float, ForeignKey, Integer, Sequence, String
-from sqlalchemy.orm import Session, relationship
+from sqlalchemy import DateTime, Float, ForeignKey, Sequence, String
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from voidorchestra import config_paths
 from voidorchestra.db.lightcurve import Lightcurve
+
+if TYPE_CHECKING:
+    from voidorchestra.db import QPOModel
 
 
 class LightcurveSynthetic(Lightcurve):
@@ -40,19 +41,19 @@ class LightcurveSynthetic(Lightcurve):
         The random seed for the simulation.
     """
 
-    rate_mean_value = Column("rate_mean_value", Float(), nullable=False)
-    rate_mean_units = Column("rate_mean_units", String(32), nullable=False)
-    qpo_model_id = Column("qpo_model_id", Integer(), ForeignKey("qpo_model.id"))
-    qpo_model = relationship(
+    rate_mean_value: Mapped[float] = mapped_column(Float(), nullable=True)
+    rate_mean_units: Mapped[str] = mapped_column(String(32), nullable=True)
+    exposure_value: Mapped[int] = mapped_column(Float(), nullable=True)
+    exposure_units: Mapped[str] = mapped_column(String(32), nullable=True, use_existing_column=True)
+    qpo_model_id: Mapped[int] = mapped_column(ForeignKey("qpo_model.id"), nullable=True)
+    qpo_model: Mapped["QPOModel"] = relationship(
         "QPOModel",
         back_populates="lightcurves",
     )
-    random_state = Column(
-        "random_state",
-        Integer(),
+    random_state: Mapped[int] = mapped_column(
         Sequence("unique_random_state", start=1, increment=1),
+        nullable=True,
     )
-    COLUMNS: List[str] = ["rate_mean", "qpo_model_id"]
 
     __mapper_args__: Dict[str, str] = {
         "polymorphic_identity": "lightcurve_synthetic",
@@ -60,6 +61,7 @@ class LightcurveSynthetic(Lightcurve):
 
     def get_rate_mean(self) -> Quantity:
         """
+        Gets the mean rate with units.
 
         Returns
         -------
@@ -86,31 +88,32 @@ class LightcurveSyntheticRegular(LightcurveSynthetic):
 
     Attributes
     ----------
-    start_time: datetime
+    observation_start: datetime
         First date of the campaign.
     observation_count: int
-        Number of observations.
-    cadence: float
-        Gap between observations, in days.
-    qpo_model: relationship
-        The QPO model used to generate the synthetic lightcurve.
+        Number of simulated observations.
+    cadence_value: float
+        :ength of time between each observation.
+    cadence_units: str
+        Units of the cadence, in Astropy-parseable format (e.g. 'd', 'days').
+    exposure_value: float
+        Length of exposure for each simulated observation.
+    exposure_units: str
+        Units of the exposure time, in Astropy-parseable format (e.g. 's', 'seconds').
     """
 
     __mapper_args__: Dict[str, str] = {
         "polymorphic_identity": "lightcurve_synthetic_regular",
     }
 
-    start_time = Column("start_time", DateTime(), nullable=False)
-    observation_count = Column("observation_count", Integer(), nullable=False)
-    cadence_value = Column("cadence_value", Float(), nullable=False)
-    cadence_format = Column("cadence_format", String(32))
+    observation_start: Mapped[datetime] = mapped_column(DateTime(), nullable=True, use_existing_column=True)
+    observation_count: Mapped[int] = mapped_column(nullable=True)
+    cadence_value: Mapped[float] = mapped_column(Float(), nullable=True)
+    cadence_format: Mapped[str] = mapped_column(String(32), nullable=True)
+    exposure_value: Mapped[str] = mapped_column(Float(), nullable=True, use_existing_column=True)
+    exposure_units: Mapped[str] = mapped_column(String(32), nullable=True, use_existing_column=True)
 
-    EXTENSION_FACTOR: int = 2
-    COLUMNS: List[str] = [
-        "start_time",
-        "observation_count",
-        "cadence",
-    ]
+    EXTENSION_FACTOR: int = 2  # How long beyond the actual 'observed' campaign to simulate the LC
 
     def __repr__(self) -> str:
         """
@@ -118,9 +121,25 @@ class LightcurveSyntheticRegular(LightcurveSynthetic):
         """
         return f"LightcurveSyntheticRegular(id={self.id!r}, name={self.name!r})"
 
+    def get_exposure(self) -> Quantity:
+        """
+        Gets the exposure duration for this lightcurve, with units.
+
+        Returns
+        -------
+        Quantity:
+            The exposure duration for these synthetic observations.
+        """
+        return Quantity(self.exposure_value, unit=self.exposure_units)
+
     def get_cadence(self) -> TimeDelta:
         """
-        Gets the cadence for these observations, as an Astropy TimeDelta
+        Gets the cadence for these observations, as an Astropy TimeDelta.
+
+        Returns
+        -------
+        TimeDelta:
+            The cadence for the synthetic observating campaign.
         """
         return TimeDelta(self.cadence_value, format=self.cadence_format)
 
@@ -130,24 +149,33 @@ class LightcurveSyntheticRegular(LightcurveSynthetic):
 
         Returns
         -------
-        TimeSeries:
+        timeseries: TimeSeries
             The lightcurve generated.
         """
         rate_units: Unit = Unit(self.rate_mean_units)
 
-        lightcurve: TimeSeries = TimeSeries(
-            time_start=self.start_time,
-            time_delta=self.get_cadence(),
+        time_start_seconds: Time = Time(self.observation_start)
+        time_start_seconds.format = "unix"
+
+        time_delta_seconds: TimeDelta = self.get_cadence()
+        time_delta_seconds.format = "sec"
+
+        exposure_seconds: Quantity = self.get_exposure().to("s").value
+
+        timeseries: TimeSeries = TimeSeries(
+            time_start=time_start_seconds,
+            time_delta=time_delta_seconds,
             n_samples=self.observation_count,
             data={
-                "rate": np.ones(self.observation_count) * rate_units,
+                "rate": np.ones(self.observation_count) * self.get_rate_mean(),
                 "error": np.zeros(self.observation_count) * rate_units,
             },
         )
+
         simulator: Simulator = Simulator(
             self.qpo_model.get_model_for_mean_rate(self.get_rate_mean()),
-            lightcurve["time"].mjd,
-            lightcurve["rate"].value,
+            times=timeseries["time"].value,
+            exposures=exposure_seconds,
             mean=self.get_rate_mean().value,
             pdf="Gaussian",
             extension_factor=self.EXTENSION_FACTOR,
@@ -155,43 +183,8 @@ class LightcurveSyntheticRegular(LightcurveSynthetic):
         )
         rates_clean: NDArray[floating] = simulator.generate_lightcurve()
         rates_noisy, uncertainties = simulator.add_noise(rates_clean)
-        lightcurve["rate"] = (rates_noisy * rate_units,)
-        lightcurve["error"] = (uncertainties * rate_units,)
-        return lightcurve
 
-    @staticmethod
-    def load_fixtures(session: Session, fixtures_path: Path = None) -> None:
-        """
-        Loads the fixtures from disk (if they aren't loaded already)
-
-        Parameters
-        ----------
-        session: Session
-            A database session to add the fixtures to
-        fixtures_path: Path
-            The fixtures JSON file to load the fixtures from
-
-        Raises
-        ------
-        FileNotFoundError
-            If the passed path (or the path in the config file) does not exist
-        ValueError
-            If the file doesn't have the right columns.
-        """
-        if not fixtures_path:
-            fixtures_path = Path(config_paths["lightcurve_synthetic_regular"])
-            if not fixtures_path.exists():
-                raise FileNotFoundError(f"The fixtures file '{fixtures_path}' does not exist.")
-
-        fixtures_df: DataFrame = read_csv(fixtures_path, skipinitialspace=True)
-        expected_columns: List[str] = Lightcurve.COLUMNS + LightcurveSynthetic.COLUMNS + LightcurveSyntheticRegular.COLUMNS
-        if fixtures_df.columns != expected_columns:
-            raise ValueError(
-                f"Expecting columns '{', '.join(expected_columns)}'.\n Got '{', '.join(fixtures_df.columns)}'.\n"
-                f"Difference: {set(expected_columns).difference(set(fixtures_df.columns))}."
-            )
-
-        for idx, row in fixtures_df.iterrows():
-            session.add(LightcurveSyntheticRegular(**row))
-
-        session.commit()
+        timeseries["rate"] = (rates_noisy * rate_units,)
+        timeseries["error"] = (uncertainties * rate_units,)
+        timeseries["rate_clean"] = rates_clean
+        return timeseries

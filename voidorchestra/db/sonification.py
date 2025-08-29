@@ -89,7 +89,7 @@ def create_sonification(
         The sonification, with derived columns like UUID filled in.
     """
     sonification_uuid: str = str(uuid4())
-    path_root: Path = Path(f"{sonification_uuid}-lightcurve-{lightcurve.id}-profile-{sonification_profile.id}")
+    path_root: Path = Path(f"sonifications/{sonification_uuid}-lightcurve-{lightcurve.id}-profile-{sonification_profile.id}")
 
     sonification: Sonification = Sonification(
         lightcurve=lightcurve,

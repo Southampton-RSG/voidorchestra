@@ -1,10 +1,14 @@
 """
+Generates synthetic lightcurves
 
+Call using python scripts/generate_synthetic_lightcurves.py
 """
 from datetime import datetime
 from logging import INFO, Logger
 from typing import Any, Dict, List
 
+from astropy import units as u
+from astropy.units import Quantity
 from sqlalchemy.orm import Session
 from tqdm import tqdm
 
@@ -16,16 +20,44 @@ from voidorchestra.db.qpo_model import QPOModel, QPOModelBPL, QPOModelComposite,
 from voidorchestra.db.sonification import Sonification, create_sonification
 from voidorchestra.db.sonification_profile import SonificationProfile
 from voidorchestra.log import get_logger
-from voidorchestra.process.lightcurves import create_synthetic_regular_lightcurves
+from voidorchestra.process.lightcurves import create_synthetic_regular_lightcurves, generate_parameter_grid
 
 logger: Logger = get_logger(__name__.replace(".", "-"))
+
+
+MODEL_PARAMETER_GRID: dict[str, Any] = {
+    'drw_long_period': [Quantity(10**6, 's'), Quantity(10**6.5, 's')],
+    'drw_long_power_fraction': 0.2,
+    'drw_short_period': [Quantity(10**4.5, 's'), Quantity(10**5.5, 's')],
+    'drw_short_power_fraction': 0.2,
+    'lorentzian_period': Quantity(1.0e6, 's'),
+    'lorentzian_power_fraction': [0, 0.5],
+    'lorentzian_coherence': [5, 10],
+}
+SIMULATION_PARAMETER_GRID: Dict[str, Any] = {
+    "observation_start": datetime.now(),
+    "rate_mean_value": 25,
+    "rate_mean_units": "1 / s",
+    "cadence_value": 3,
+    "cadence_format": "jd",
+    "exposure_value": 1,
+    "exposure_units": "s",
+    "observation_count": 100,
+}
 
 
 with Session(
     engine := connect_to_database_engine(config_paths["database"]),
     info={"url": engine.url}
 ) as session:
+    # Has this already been done?
+    if found_lightcurve_collection := session.query(LightcurveCollection).where(
+            LightcurveCollection.name == "Initial Synthetic Batch"
+    ).all():
+        print(f"Found already-generated lightcurves: {found_lightcurve_collection}")
+        exit()
 
+    # Set up the lightcurve collection to collect all these
     lightcurve_collection: LightcurveCollection = LightcurveCollection(
         name="Initial Synthetic Batch"
     )
@@ -33,68 +65,53 @@ with Session(
 
     qpo_models: List[QPOModel] = []
 
-    for fraction_bpl, fraction_lorentzian in [
-        [.4, .0], [.3, .1], [.2, .2], [.1, .3], [.0, .4]
-    ]:
-        model_name: str = f"Initial Synthetic Batch: L {fraction_lorentzian}/B {fraction_bpl}"
+    for parameters in generate_parameter_grid(MODEL_PARAMETER_GRID):
+        qpo_model_parent: QPOModel = QPOModelComposite()
+        session.add(qpo_model_parent)
+        commit_database(session)
 
-        if not fraction_lorentzian == 0:
-            qpo_model: QPOModel = QPOModelBPL(
-                name=model_name,
-                coherence=5.0,
-                period_value=21,
-                period_format="jd",
-                variance_fraction=fraction_bpl,
-            )
-            session.add(qpo_model)
+        qpo_model_drw_short: QPOModelBPL = QPOModelBPL(
+            name=f"Long DRW (period: {parameters['drw_long_period']}, frac: {parameters['drw_long_power_fraction']})",
+            qpo_model_parent_id=qpo_model_parent.id,
+            coherence=1.0,
+            period_value=parameters["drw_long_period"].to(u.d).value,
+            period_format="jd",
+            variance_fraction=parameters["drw_long_power_fraction"],
+        )
+        session.add(qpo_model_drw_short)
 
-        elif fraction_bpl == 0:
-            qpo_model: QPOModel = QPOModelLorentzian(
-                name=model_name,
-                coherence=5.0,
-                period_value=21,
-                period_format="jd",
-                variance_fraction=fraction_bpl,
-            )
-            session.add(qpo_model)
+        qpo_model_drw_short: QPOModelBPL = QPOModelBPL(
+            name=f"Long DRW (period: {parameters['drw_long_period']}, frac: {parameters['drw_long_power_fraction']})",
+            qpo_model_parent_id=qpo_model_parent.id,
+            coherence=1.0,
+            period_value=parameters["drw_short_period"].to(u.d).value,
+            period_format="jd",
+            variance_fraction=parameters["drw_short_power_fraction"],
+        )
+        session.add(qpo_model_drw_short)
 
-        else:
-            qpo_model: QPOModel = QPOModelComposite()
-            session.add(qpo_model)
-            qpo_model_bpl: QPOModel = QPOModelBPL(
-                name=model_name,
-                qpo_model_parent=qpo_model,
-                coherence=5.0,
-                period_value=21,
-                period_format="jd",
-                variance_fraction=fraction_bpl,
-            )
-            session.add(qpo_model_bpl)
-            qpo_model_lorentzian: QPOModel = QPOModelLorentzian(
-                name=model_name,
-                qpo_model_parent=qpo_model,
-                coherence=5.0,
-                period_value=21,
-                period_format="jd",
-                variance_fraction=fraction_lorentzian,
-            )
-            session.add(qpo_model_lorentzian)
+        qpo_model_lorentzian: QPOModelLorentzian = QPOModelLorentzian(
+            name=f"Lorentzian (period: {parameters['lorentzian_period']}, frac: {parameters['lorentzian_power_fraction']}",
+            qpo_model_parent_id=qpo_model_parent.id,
+            coherence=10.0,
+            period_value=parameters["lorentzian_period"].to(u.d).value,
+            period_format="jd",
+            variance_fraction=parameters["lorentzian_power_fraction"],
+        )
+        session.add(qpo_model_lorentzian)
 
-        qpo_models.append(qpo_model)
+        commit_database(session)
 
-    parameter_grid: Dict[str, Any] = {
-        'start_time': datetime.now(),
-        'rate_mean_value': 25,
-        'rate_mean_units': '1 / s',
-        'cadence_value': 3,
-        'cadence_format': 'jd',
-        'observation_count': 100,
-        'qpo_model': qpo_models,
-    }
+        qpo_models.append(qpo_model_parent)
+
+
+    simulation_parameter_grid: Dict[str, Any] = SIMULATION_PARAMETER_GRID.copy()
+    simulation_parameter_grid["qpo_model"] = qpo_models
+
     synthetic_lightcurves: List[LightcurveSyntheticRegular] = create_synthetic_regular_lightcurves(
-        lightcurve_collection, parameter_grid, session,
+        lightcurve_collection, simulation_parameter_grid, session,
     )
-    sonification_repeats: int = 5
+    sonification_repeats: int = 3
     sonifications: List[Sonification] = []
 
     for sonification_profile in [
@@ -118,7 +135,7 @@ with Session(
                 )
             )
 
-    print(f"Created {len(sonifications)} sonifications.")
+    print(f"Created {len(synthetic_lightcurves)} lightcurves, {len(sonifications)} sonifications.")
 
     session.add_all(sonifications)
     commit_database(session)

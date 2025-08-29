@@ -8,6 +8,7 @@ These are commands that create files using entities already in the database, e.g
 
 import click
 
+from voidorchestra.console.commands.create.qpo_models import create_psds
 from voidorchestra.console.commands.create.sonifications import create_sonifications
 
 
@@ -19,3 +20,4 @@ def create():
 
 
 create.add_command(create_sonifications)
+create.add_command(create_psds)

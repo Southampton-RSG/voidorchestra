@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Dict, List, Tuple
 
 from astropy.timeseries import TimeSeries
+from astropy.units import Quantity
 from numpy import floating
 from numpy.typing import NDArray
 from pandas import DataFrame, read_csv
@@ -93,7 +94,7 @@ class SonificationMethodSoundfont(SonificationMethod):
 
         maps: Dict[str, NDArray[floating]] = {
             "time": lightcurve["time"].mjd,
-            "pitch": lightcurve["rate"].value,
+            "pitch": lightcurve["rate"].value if isinstance(lightcurve["rate"], Quantity) else lightcurve["rate"],
         }
 
         # set 0 to 100 percentile limits so the full pitch range is used...
@@ -104,9 +105,12 @@ class SonificationMethodSoundfont(SonificationMethod):
         lims: Dict[str, Tuple[str, str]] = {"time": ("0%", "105%"), "pitch": ("0%", "100%")}
 
         # set up source
-        sources: Events = Events(maps.keys())
-        sources.fromdict(maps)
-        sources.apply_mapping_functions(map_lims=lims)
+        try:
+            sources: Events = Events(maps.keys())
+            sources.fromdict(maps)
+            sources.apply_mapping_functions(map_lims=lims)
+        except Exception as e:
+            logger.error(f"Failed to sonify lightcurve: {e}")
 
         return StraussSonification(score, sources, sampler, self.SYSTEM)
 

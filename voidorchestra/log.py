@@ -11,8 +11,6 @@ from pkgutil import iter_modules
 from types import ModuleType
 from typing import List
 
-import voidorchestra
-
 
 # Classes ----------------------------------------------------------------------
 class __VariableFormatter(Formatter):
@@ -102,10 +100,14 @@ def set_logger_levels(level: int) -> None:
     level: int
         The logging level to set. Usually something like logging.WARNING, etc.
     """
+    import voidorchestra.db
+    import voidorchestra.process
+    import voidorchestra.zooniverse
+
     module_names: List[str] = __list_module_names_in_packages(
         [
             voidorchestra,
-            voidorchestra.process,
+            voidorchestra.db,
             voidorchestra.process,
             voidorchestra.zooniverse,
         ]

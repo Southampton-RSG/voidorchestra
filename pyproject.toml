@@ -36,6 +36,7 @@ dependencies = [
     "sqlalchemy-utils",
     "sqlalchemy",
     "strauss",
+    "stingray>=2.2.7",
 ]
 
 
