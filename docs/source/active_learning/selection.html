@@ -1,14 +1,14 @@
 <!doctype html>
 <html class="no-js" lang="en" data-content_root="../../../">
-  <head><meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
+<link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.07.19 -->
+    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
         <title>Selection - voidorchestra v0.1.0</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=25af2a20" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
@@ -28,14 +28,14 @@
   }
   @media not print {
     body[data-theme="dark"] {
-      --color-code-background: #2b2b2b;
-  --color-code-foreground: #f8f8f2;
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
   
     }
     @media (prefers-color-scheme: dark) {
       body:not([data-theme="light"]) {
-        --color-code-background: #2b2b2b;
-  --color-code-foreground: #f8f8f2;
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
   
       }
     }
@@ -150,14 +150,10 @@
   </symbol>
 </svg>
 
-<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
-<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
-<label class="overlay sidebar-overlay" for="__navigation">
-  <div class="visually-hidden">Hide navigation sidebar</div>
-</label>
-<label class="overlay toc-overlay" for="__toc">
-  <div class="visually-hidden">Hide table of contents sidebar</div>
-</label>
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
 
 <a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
@@ -167,8 +163,7 @@
   <header class="mobile-header">
     <div class="header-left">
       <label class="nav-overlay-icon" for="__navigation">
-        <div class="visually-hidden">Toggle site navigation sidebar</div>
-        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
       </label>
     </div>
     <div class="header-center">
@@ -176,8 +171,7 @@
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
-        <button class="theme-toggle">
-          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
           <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
           <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
           <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
@@ -185,8 +179,7 @@
         </button>
       </div>
       <label class="toc-overlay-icon toc-header-icon" for="__toc">
-        <div class="visually-hidden">Toggle table of contents sidebar</div>
-        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
       </label>
     </div>
   </header>
@@ -204,43 +197,42 @@
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../../autoapi/index.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/index.html">voidorchestra</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of voidorchestra</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/active_learning/index.html">voidorchestra.active_learning</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of voidorchestra.active_learning</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../autoapi/index.html">API Reference</a><input aria-label="Toggle navigation of API Reference" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/index.html">voidorchestra</a><input aria-label="Toggle navigation of voidorchestra" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/active_learning/index.html">voidorchestra.active_learning</a><input aria-label="Toggle navigation of voidorchestra.active_learning" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/active_learning/weights/index.html">voidorchestra.active_learning.weights</a></li>
 </ul>
 </li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/console/index.html">voidorchestra.console</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of voidorchestra.console</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/console/index.html">voidorchestra.console</a><input aria-label="Toggle navigation of voidorchestra.console" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/console/cli/index.html">voidorchestra.console.cli</a></li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/console/commands/index.html">voidorchestra.console.commands</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of voidorchestra.console.commands</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l5 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/console/commands/admin/index.html">voidorchestra.console.commands.admin</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of voidorchestra.console.commands.admin</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/console/commands/index.html">voidorchestra.console.commands</a><input aria-label="Toggle navigation of voidorchestra.console.commands" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/console/commands/admin/index.html">voidorchestra.console.commands.admin</a><input aria-label="Toggle navigation of voidorchestra.console.commands.admin" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l6"><a class="reference internal" href="../../../autoapi/voidorchestra/console/commands/admin/local/index.html">voidorchestra.console.commands.admin.local</a></li>
 <li class="toctree-l6"><a class="reference internal" href="../../../autoapi/voidorchestra/console/commands/admin/zooniverse/index.html">voidorchestra.console.commands.admin.zooniverse</a></li>
 </ul>
 </li>
 <li class="toctree-l5"><a class="reference internal" href="../../../autoapi/voidorchestra/console/commands/check/index.html">voidorchestra.console.commands.check</a></li>
-<li class="toctree-l5 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/console/commands/create/index.html">voidorchestra.console.commands.create</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of voidorchestra.console.commands.create</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/console/commands/create/index.html">voidorchestra.console.commands.create</a><input aria-label="Toggle navigation of voidorchestra.console.commands.create" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l6"><a class="reference internal" href="../../../autoapi/voidorchestra/console/commands/create/qpo_models/index.html">voidorchestra.console.commands.create.qpo_models</a></li>
 <li class="toctree-l6"><a class="reference internal" href="../../../autoapi/voidorchestra/console/commands/create/sonifications/index.html">voidorchestra.console.commands.create.sonifications</a></li>
 </ul>
 </li>
 <li class="toctree-l5"><a class="reference internal" href="../../../autoapi/voidorchestra/console/commands/delete/index.html">voidorchestra.console.commands.delete</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../../autoapi/voidorchestra/console/commands/init/index.html">voidorchestra.console.commands.init</a></li>
-<li class="toctree-l5 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/console/commands/input/index.html">voidorchestra.console.commands.input</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of voidorchestra.console.commands.input</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/console/commands/input/index.html">voidorchestra.console.commands.input</a><input aria-label="Toggle navigation of voidorchestra.console.commands.input" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l6"><a class="reference internal" href="../../../autoapi/voidorchestra/console/commands/input/lightcurve/index.html">voidorchestra.console.commands.input.lightcurve</a></li>
 </ul>
 </li>
 <li class="toctree-l5"><a class="reference internal" href="../../../autoapi/voidorchestra/console/commands/sync/index.html">voidorchestra.console.commands.sync</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../../autoapi/voidorchestra/console/commands/upload/index.html">voidorchestra.console.commands.upload</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../../autoapi/voidorchestra/console/commands/upload_molegazer/index.html">voidorchestra.console.commands.upload_molegazer</a></li>
-<li class="toctree-l5"><a class="reference internal" href="../../../autoapi/voidorchestra/console/commands/watch/index.html">voidorchestra.console.commands.watch</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/db/index.html">voidorchestra.db</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of voidorchestra.db</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/db/index.html">voidorchestra.db</a><input aria-label="Toggle navigation of voidorchestra.db" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/db/classification/index.html">voidorchestra.db.classification</a></li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/db/lightcurve/index.html">voidorchestra.db.lightcurve</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of voidorchestra.db.lightcurve</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/db/lightcurve/index.html">voidorchestra.db.lightcurve</a><input aria-label="Toggle navigation of voidorchestra.db.lightcurve" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../../autoapi/voidorchestra/db/lightcurve/file/index.html">voidorchestra.db.lightcurve.file</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../../autoapi/voidorchestra/db/lightcurve/synthetic/index.html">voidorchestra.db.lightcurve.synthetic</a></li>
 </ul>
@@ -248,7 +240,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/db/lightcurve_collection/index.html">voidorchestra.db.lightcurve_collection</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/db/qpo_model/index.html">voidorchestra.db.qpo_model</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/db/sonification/index.html">voidorchestra.db.sonification</a></li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/db/sonification_method/index.html">voidorchestra.db.sonification_method</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of voidorchestra.db.sonification_method</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/db/sonification_method/index.html">voidorchestra.db.sonification_method</a><input aria-label="Toggle navigation of voidorchestra.db.sonification_method" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../../autoapi/voidorchestra/db/sonification_method/soundfont/index.html">voidorchestra.db.sonification_method.soundfont</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../../autoapi/voidorchestra/db/sonification_method/synthesizer/index.html">voidorchestra.db.sonification_method.synthesizer</a></li>
 </ul>
@@ -258,26 +250,26 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/db/subject_set/index.html">voidorchestra.db.subject_set</a></li>
 </ul>
 </li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/import/index.html">voidorchestra.import</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of voidorchestra.import</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/import/index.html">voidorchestra.import</a><input aria-label="Toggle navigation of voidorchestra.import" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/import/file/index.html">voidorchestra.import.file</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../../autoapi/voidorchestra/log/index.html">voidorchestra.log</a></li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/process/index.html">voidorchestra.process</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of voidorchestra.process</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/process/index.html">voidorchestra.process</a><input aria-label="Toggle navigation of voidorchestra.process" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/process/lightcurve_collection/index.html">voidorchestra.process.lightcurve_collection</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/process/lightcurves/index.html">voidorchestra.process.lightcurves</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/process/qpo_models/index.html">voidorchestra.process.qpo_models</a></li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/process/sonification/index.html">voidorchestra.process.sonification</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle navigation of voidorchestra.process.sonification</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/process/sonification/index.html">voidorchestra.process.sonification</a><input aria-label="Toggle navigation of voidorchestra.process.sonification" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../../autoapi/voidorchestra/process/sonification/figure/index.html">voidorchestra.process.sonification.figure</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/tests/index.html">voidorchestra.tests</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of voidorchestra.tests</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/tests/index.html">voidorchestra.tests</a><input aria-label="Toggle navigation of voidorchestra.tests" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/tests/test_all/index.html">voidorchestra.tests.test_all</a></li>
 </ul>
 </li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/zooniverse/index.html">voidorchestra.zooniverse</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle navigation of voidorchestra.zooniverse</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autoapi/voidorchestra/zooniverse/index.html">voidorchestra.zooniverse</a><input aria-label="Toggle navigation of voidorchestra.zooniverse" class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/zooniverse/classifications/index.html">voidorchestra.zooniverse.classifications</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/zooniverse/subject_sets/index.html">voidorchestra.zooniverse.subject_sets</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/voidorchestra/zooniverse/subjects/index.html">voidorchestra.zooniverse.subjects</a></li>
@@ -316,8 +308,7 @@
   </a>
 </div>
 <div class="theme-toggle-container theme-toggle-content">
-            <button class="theme-toggle">
-              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
               <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
               <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
               <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
@@ -325,8 +316,7 @@
             </button>
           </div>
           <label class="toc-overlay-icon toc-content-icon" for="__toc">
-            <div class="visually-hidden">Toggle table of contents sidebar</div>
-            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
           </label>
         </div>
         <article role="main" id="furo-main-content">

@@ -25,6 +25,5 @@ Submodules
    /autoapi/voidorchestra/console/commands/sync/index
    /autoapi/voidorchestra/console/commands/upload/index
    /autoapi/voidorchestra/console/commands/upload_molegazer/index
-   /autoapi/voidorchestra/console/commands/watch/index
 
 
