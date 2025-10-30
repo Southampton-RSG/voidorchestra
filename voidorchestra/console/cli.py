@@ -18,7 +18,6 @@ from voidorchestra.console.commands.init import init
 from voidorchestra.console.commands.input import input
 from voidorchestra.console.commands.sync import sync
 from voidorchestra.console.commands.upload import upload
-from voidorchestra.console.commands.watch import watch
 
 
 @click.group()
@@ -54,7 +53,6 @@ cli.add_command(init)
 cli.add_command(input)
 cli.add_command(upload)
 cli.add_command(create)
-cli.add_command(watch)
 cli.add_command(delete)
 
 cli.add_command(admin)

@@ -182,6 +182,7 @@ class LightcurveSyntheticRegular(LightcurveSynthetic):
             random_state=self.random_state,
         )
         rates_clean: NDArray[floating] = simulator.generate_lightcurve()
+        rates_clean = np.clip(rates_clean, a_min=0, a_max=None)
         rates_noisy, uncertainties = simulator.add_noise(rates_clean)
 
         timeseries["rate"] = (rates_noisy * rate_units,)

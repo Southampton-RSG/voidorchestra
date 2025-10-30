@@ -1,3 +1,4 @@
+from json import dumps
 from logging import INFO, Logger
 from pathlib import Path
 from typing import List
@@ -38,10 +39,17 @@ def write_sonification_files(
     ):
         try:
             timeseries: TimeSeries = sonification.lightcurve.get_data()
+        except Exception as e:
+            logger.warning(f"Failed to get lightcurve data for {sonification} from {sonification.lightcurve} - {type(e).__name__}: {e}")
+            logger.exception(e)
+            continue
+
+        try:
             strauss_sonification: StraussSonification = sonification.sonification_profile.create_sonification(timeseries)
             strauss_sonification.render()
         except Exception as e:
-            logger.warning(f"Failed to create sonification for lightcurve {sonification.lightcurve}: {e}")
+            logger.warning(f"Failed to sonify lightcurve {sonification.lightcurve} - {type(e).__name__}: {e}")
+            logger.exception(e)
             continue
 
         path_wav: Path = (directory_output / sonification.path_audio).with_suffix(".wav")
